@@ -1,0 +1,18 @@
+fim:
+  watch_dirs:
+    linux:
+      - /tmp
+      - /etc
+      - /usr/bin
+      - /home
+    windows:
+      - "C:\\Users\\Public"
+      - "C:\\Windows\\Temp"
+      - "C:\\Program Files"
+
+virustotal:
+  rate_limit: 4  # requêtes par minute (tier gratuit)
+
+logging:
+  level: INFO
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"

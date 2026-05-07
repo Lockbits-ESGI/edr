@@ -1,0 +1,37 @@
+agent:
+  id_file: "./agent_id"
+  version: "1.0.0"
+  heartbeat_interval: 300
+  snapshot_interval: 600
+  generate_local_report: false
+
+server:
+  url: "http://127.0.0.1:8000"
+  events_endpoint: "/api/v1/events"
+  batch_endpoint: "/api/v1/events/batch"
+  heartbeat_endpoint: "/api/v1/heartbeat"
+  timeout: 10
+  auth_token: ""
+
+queue:
+  backend: "jsonl"
+  path: "./queue/pending_events.jsonl"
+  max_retry: 10
+
+fim:
+  watch_dirs:
+    linux:
+      - /tmp
+      - /etc
+      - /usr/bin
+      - /home
+    windows:
+      - "C:\\Users\\Public"
+      - "C:\\Windows\\Temp"
+    darwin:
+      - /tmp
+      - /private/tmp
+
+logging:
+  level: INFO
+  log_file: "./logs/agent.log"

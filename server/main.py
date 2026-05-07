@@ -1,0 +1,66 @@
+"""FastAPI server application entry point."""
+
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from server.database import init_db
+from server.logger import logger
+from server.config import get_settings
+from server.api import router
+
+settings = get_settings()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application startup and shutdown hook."""
+    # Startup
+    logger.info("=" * 60)
+    logger.info("MiniEDR Server starting up")
+    logger.info(f"Database: {settings.DATABASE_URL}")
+    logger.info(f"VT enrichment: {'enabled' if settings.VT_ENABLED else 'disabled'}")
+    logger.info(f"Authentication: {'required' if settings.AUTH_TOKEN else 'disabled'}")
+    
+    init_db()
+    logger.info("Database initialized")
+    logger.info("=" * 60)
+    
+    yield
+    
+    # Shutdown
+    logger.info("MiniEDR Server shutting down")
+
+
+app = FastAPI(
+    title="MiniEDR Server",
+    description="Central event collection and analysis server",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# CORS middleware (disabled by default for security)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all in development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routes
+app.include_router(router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    
+    logger.info(f"Starting server on {settings.SERVER_HOST}:{settings.SERVER_PORT}")
+    uvicorn.run(
+        "server.main:app",
+        host=settings.SERVER_HOST,
+        port=settings.SERVER_PORT,
+        workers=settings.WORKERS,
+        log_level=settings.LOG_LEVEL.lower()
+    )

@@ -1,0 +1,4609 @@
+{
+  "timestamp": "2026-05-07T10:19:32.615455",
+  "system_snapshot": {
+    "timestamp": "2026-05-07T10:19:28.480422",
+    "platform": "Darwin",
+    "hostname": "fsociety.local",
+    "cpu_count": 8,
+    "cpu_percent": 9.5,
+    "memory_total_gb": 8.0,
+    "memory_available_gb": 1.896942138671875,
+    "memory_percent": 76.3,
+    "disk_info": [
+      {
+        "device": "/dev/disk3s3s1",
+        "mountpoint": "/",
+        "fstype": "apfs",
+        "total_gb": 228.27386474609375,
+        "used_gb": 210.7435188293457,
+        "free_gb": 17.530345916748047,
+        "percent": 92.3
+      },
+      {
+        "device": "/dev/disk3s6",
+        "mountpoint": "/System/Volumes/VM",
+        "fstype": "apfs",
+        "total_gb": 228.27386474609375,
+        "used_gb": 210.7435188293457,
+        "free_gb": 17.530345916748047,
+        "percent": 92.3
+      },
+      {
+        "device": "/dev/disk3s4",
+        "mountpoint": "/System/Volumes/Preboot",
+        "fstype": "apfs",
+        "total_gb": 228.27386474609375,
+        "used_gb": 210.7435188293457,
+        "free_gb": 17.530345916748047,
+        "percent": 92.3
+      },
+      {
+        "device": "/dev/disk3s2",
+        "mountpoint": "/System/Volumes/Update",
+        "fstype": "apfs",
+        "total_gb": 228.27386474609375,
+        "used_gb": 210.7435188293457,
+        "free_gb": 17.530345916748047,
+        "percent": 92.3
+      },
+      {
+        "device": "/dev/disk1s2",
+        "mountpoint": "/System/Volumes/xarts",
+        "fstype": "apfs",
+        "total_gb": 0.48828125,
+        "used_gb": 0.018405914306640625,
+        "free_gb": 0.4698753356933594,
+        "percent": 3.8
+      },
+      {
+        "device": "/dev/disk1s1",
+        "mountpoint": "/System/Volumes/iSCPreboot",
+        "fstype": "apfs",
+        "total_gb": 0.48828125,
+        "used_gb": 0.018405914306640625,
+        "free_gb": 0.4698753356933594,
+        "percent": 3.8
+      },
+      {
+        "device": "/dev/disk1s3",
+        "mountpoint": "/System/Volumes/Hardware",
+        "fstype": "apfs",
+        "total_gb": 0.48828125,
+        "used_gb": 0.018405914306640625,
+        "free_gb": 0.4698753356933594,
+        "percent": 3.8
+      },
+      {
+        "device": "/dev/disk3s1",
+        "mountpoint": "/System/Volumes/Data",
+        "fstype": "apfs",
+        "total_gb": 228.27386474609375,
+        "used_gb": 210.7435188293457,
+        "free_gb": 17.530345916748047,
+        "percent": 92.3
+      }
+    ],
+    "processes": [
+      {
+        "pid": 0,
+        "name": "kernel_task",
+        "status": "running",
+        "exe": null,
+        "create_time": 1775757018.735378,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1,
+        "name": "launchd",
+        "status": "running",
+        "exe": "/sbin/launchd",
+        "create_time": 1775757018.968698,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 329,
+        "name": "logd",
+        "status": "running",
+        "exe": "/usr/libexec/logd",
+        "create_time": 1775757083.127213,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 331,
+        "name": "UserEventAgent",
+        "status": "running",
+        "exe": "/usr/libexec/UserEventAgent",
+        "create_time": 1775757083.159506,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 333,
+        "name": "fseventsd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd",
+        "create_time": 1775757083.183098,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 334,
+        "name": "mediaremoted",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted",
+        "create_time": 1775757083.183271,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 337,
+        "name": "systemstats",
+        "status": "running",
+        "exe": "/usr/sbin/systemstats",
+        "create_time": 1775757083.183795,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 340,
+        "name": "configd",
+        "status": "running",
+        "exe": "/usr/libexec/configd",
+        "create_time": 1775757083.184348,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 342,
+        "name": "powerd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/powerd.bundle/powerd",
+        "create_time": 1775757083.184689,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 343,
+        "name": "IOMFB_bics_daemo",
+        "status": "running",
+        "exe": "/usr/libexec/IOMFB_bics_daemon",
+        "create_time": 1775757083.184875,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 347,
+        "name": "remoted",
+        "status": "running",
+        "exe": "/usr/libexec/remoted",
+        "create_time": 1775757083.185611,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 351,
+        "name": "corespeechd_syst",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd_system",
+        "create_time": 1775757083.186308,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 353,
+        "name": "watchdogd",
+        "status": "running",
+        "exe": "/usr/libexec/watchdogd",
+        "create_time": 1775757083.186674,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 357,
+        "name": "mds",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds",
+        "create_time": 1775757083.187307,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 359,
+        "name": "kernelmanagerd",
+        "status": "running",
+        "exe": "/usr/libexec/kernelmanagerd",
+        "create_time": 1775757083.187636,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 360,
+        "name": "diskarbitrationd",
+        "status": "running",
+        "exe": "/usr/libexec/diskarbitrationd",
+        "create_time": 1775757083.187809,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 364,
+        "name": "syslogd",
+        "status": "running",
+        "exe": "/usr/sbin/syslogd",
+        "create_time": 1775757083.188524,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 367,
+        "name": "thermalmonitord",
+        "status": "running",
+        "exe": "/usr/libexec/thermalmonitord",
+        "create_time": 1775757083.18901,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 368,
+        "name": "opendirectoryd",
+        "status": "running",
+        "exe": "/usr/libexec/opendirectoryd",
+        "create_time": 1775757083.189183,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 370,
+        "name": "apsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ApplePushService.framework/apsd",
+        "create_time": 1775757083.189507,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 371,
+        "name": "launchservicesd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/launchservicesd",
+        "create_time": 1775757083.18966,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 372,
+        "name": "timed",
+        "status": "running",
+        "exe": "/usr/libexec/timed",
+        "create_time": 1775757083.189821,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 373,
+        "name": "usbmuxd",
+        "status": "running",
+        "exe": "/Library/Apple/System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/usbmuxd",
+        "create_time": 1775757083.190023,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 374,
+        "name": "securityd",
+        "status": "running",
+        "exe": "/usr/sbin/securityd",
+        "create_time": 1775757083.190191,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 376,
+        "name": "locationd",
+        "status": "running",
+        "exe": "/usr/libexec/locationd",
+        "create_time": 1775757083.190569,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 377,
+        "name": "nesessionmanager",
+        "status": "running",
+        "exe": "/usr/libexec/nesessionmanager",
+        "create_time": 1775757083.190732,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 379,
+        "name": "autofsd",
+        "status": "running",
+        "exe": "/usr/libexec/autofsd",
+        "create_time": 1775757083.19104,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 380,
+        "name": "dasd",
+        "status": "running",
+        "exe": "/usr/libexec/dasd",
+        "create_time": 1775757083.191224,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 382,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757083.191564,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 386,
+        "name": "logind",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/logind",
+        "create_time": 1775757083.192207,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 387,
+        "name": "revisiond",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GenerationalStorage.framework/Versions/A/Support/revisiond",
+        "create_time": 1775757083.19238,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 388,
+        "name": "KernelEventAgent",
+        "status": "running",
+        "exe": "/usr/sbin/KernelEventAgent",
+        "create_time": 1775757083.192552,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 392,
+        "name": "notifyd",
+        "status": "running",
+        "exe": "/usr/sbin/notifyd",
+        "create_time": 1775757083.193268,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 394,
+        "name": "corebrightnessd",
+        "status": "running",
+        "exe": "/usr/libexec/corebrightnessd",
+        "create_time": 1775757083.193577,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 395,
+        "name": "AirPlayXPCHelper",
+        "status": "running",
+        "exe": "/usr/libexec/AirPlayXPCHelper",
+        "create_time": 1775757083.193746,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 396,
+        "name": "com.apple.cmio.r",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/com.apple.cmio.registerassistantservice",
+        "create_time": 1775757083.193898,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 400,
+        "name": "cfprefsd",
+        "status": "running",
+        "exe": "/usr/sbin/cfprefsd",
+        "create_time": 1775757083.606258,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 401,
+        "name": "loginwindow",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow",
+        "create_time": 1775757083.615445,
+        "memory_mb": 16.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 403,
+        "name": "runningboardd",
+        "status": "running",
+        "exe": "/usr/libexec/runningboardd",
+        "create_time": 1775757083.651663,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 404,
+        "name": "contextstored",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreDuetContext.framework/Versions/A/Resources/contextstored",
+        "create_time": 1775757083.688008,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 405,
+        "name": "coreservicesd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Support/coreservicesd",
+        "create_time": 1775757083.69326,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 407,
+        "name": "WindowServer",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/Resources/WindowServer",
+        "create_time": 1775757083.72882,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 408,
+        "name": "airportd",
+        "status": "running",
+        "exe": "/usr/libexec/airportd",
+        "create_time": 1775757083.733265,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 409,
+        "name": "analyticsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsd",
+        "create_time": 1775757083.743067,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 411,
+        "name": "coreaudiod",
+        "status": "running",
+        "exe": "/usr/sbin/coreaudiod",
+        "create_time": 1775757083.775987,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 412,
+        "name": "lsd",
+        "status": "running",
+        "exe": "/usr/libexec/lsd",
+        "create_time": 1775757083.785847,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 420,
+        "name": "apfsd",
+        "status": "running",
+        "exe": "/usr/libexec/apfsd",
+        "create_time": 1775757083.88354,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 421,
+        "name": "nsurlsessiond",
+        "status": "running",
+        "exe": "/usr/libexec/nsurlsessiond",
+        "create_time": 1775757083.886759,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 424,
+        "name": "VDCAssistant",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/VDC.plugin/Contents/Resources/VDCAssistant",
+        "create_time": 1775757083.90851,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 431,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757083.946087,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 437,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757084.129248,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 481,
+        "name": "symptomsd",
+        "status": "running",
+        "exe": "/usr/libexec/symptomsd",
+        "create_time": 1775757084.260493,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 485,
+        "name": "eligibilityd",
+        "status": "running",
+        "exe": "/usr/libexec/eligibilityd",
+        "create_time": 1775757084.284245,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 488,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757084.295841,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 491,
+        "name": "authd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authd.xpc/Contents/MacOS/authd",
+        "create_time": 1775757084.34217,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 494,
+        "name": "socketfilterfw",
+        "status": "running",
+        "exe": "/usr/libexec/ApplicationFirewall/socketfilterfw",
+        "create_time": 1775757084.416245,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 498,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757084.575863,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 512,
+        "name": "syspolicyd",
+        "status": "running",
+        "exe": "/usr/libexec/syspolicyd",
+        "create_time": 1775757084.79023,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 515,
+        "name": "mDNSResponder",
+        "status": "running",
+        "exe": "/usr/sbin/mDNSResponder",
+        "create_time": 1775757084.798311,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 516,
+        "name": "TouchBarServer",
+        "status": "running",
+        "exe": "/usr/libexec/TouchBarServer",
+        "create_time": 1775757084.815967,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 518,
+        "name": "appleh13camerad",
+        "status": "running",
+        "exe": "/usr/sbin/appleh13camerad",
+        "create_time": 1775757084.848954,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 519,
+        "name": "cameracaptured",
+        "status": "running",
+        "exe": "/usr/libexec/cameracaptured",
+        "create_time": 1775757084.853993,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 521,
+        "name": "UVCAssistant",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/UVCAssistant.systemextension/Contents/MacOS/UVCAssistant",
+        "create_time": 1775757084.863016,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 524,
+        "name": "com.apple.audio.",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreAudio.framework/Versions/A/XPCServices/com.apple.audio.Core-Audio-Driver-Service.helper.xpc/Contents/MacOS/com.apple.audio.Core-Audio-Driver-Service.helper",
+        "create_time": 1775757084.881112,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 527,
+        "name": "mDNSResponderHel",
+        "status": "running",
+        "exe": "/usr/sbin/mDNSResponderHelper",
+        "create_time": 1775757084.887104,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 531,
+        "name": "audioclocksyncd",
+        "status": "running",
+        "exe": "/usr/libexec/audioclocksyncd",
+        "create_time": 1775757084.924743,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 535,
+        "name": "appleeventsd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/appleeventsd",
+        "create_time": 1775757085.057109,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 537,
+        "name": "gamepolicyd",
+        "status": "running",
+        "exe": "/usr/libexec/gamepolicyd",
+        "create_time": 1775757085.093826,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 541,
+        "name": "aned",
+        "status": "running",
+        "exe": "/usr/libexec/aned",
+        "create_time": 1775757085.107103,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 543,
+        "name": "modelmanagerd",
+        "status": "running",
+        "exe": "/usr/libexec/modelmanagerd",
+        "create_time": 1775757085.115004,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 545,
+        "name": "ovpnagent",
+        "status": "running",
+        "exe": "/Library/Frameworks/OpenVPNConnect.framework/Versions/Current/usr/sbin/ovpnagent",
+        "create_time": 1775757085.338348,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 547,
+        "name": "ovpnhelper",
+        "status": "running",
+        "exe": "/Library/Frameworks/OVPNHelper.framework/Versions/Current/usr/sbin/ovpnhelper",
+        "create_time": 1775757085.34178,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 548,
+        "name": "perl",
+        "status": "running",
+        "exe": "/Applications/GLPI-Agent/bin/perl",
+        "create_time": 1775757085.343581,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 551,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757085.44756,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 558,
+        "name": "suhelperd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Software Update.app/Contents/Resources/suhelperd",
+        "create_time": 1775757085.603301,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 559,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757085.609287,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 563,
+        "name": "com.apple.Driver",
+        "status": "running",
+        "exe": "/System/Library/DriverExtensions/com.apple.DriverKit-AppleBCMWLAN.dext/com.apple.DriverKit-AppleBCMWLAN",
+        "create_time": 1775757085.835632,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 564,
+        "name": "searchpartyd",
+        "status": "running",
+        "exe": "/usr/libexec/searchpartyd",
+        "create_time": 1775757085.841254,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 565,
+        "name": "com.apple.Driver",
+        "status": "running",
+        "exe": "/System/Library/DriverExtensions/com.apple.DriverKit-IOUserDockChannelSerial.dext/com.apple.DriverKit-IOUserDockChannelSerial",
+        "create_time": 1775757085.846905,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 566,
+        "name": "com.apple.AppleU",
+        "status": "running",
+        "exe": "/System/Library/DriverExtensions/com.apple.AppleUserHIDDrivers.dext/com.apple.AppleUserHIDDrivers",
+        "create_time": 1775757085.854328,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 572,
+        "name": "mds_stores",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores",
+        "create_time": 1775757086.070939,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 574,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757086.240504,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 581,
+        "name": "BTLEServer",
+        "status": "running",
+        "exe": "/usr/sbin/BTLEServer",
+        "create_time": 1775757086.357843,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 584,
+        "name": "com.apple.audio.",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreAudio.framework/Versions/A/XPCServices/com.apple.audio.Core-Audio-Driver-Service.helper.xpc/Contents/MacOS/com.apple.audio.Core-Audio-Driver-Service.helper",
+        "create_time": 1775757086.501299,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 591,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757086.872582,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 595,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757087.008911,
+        "memory_mb": 3.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 597,
+        "name": "cfprefsd",
+        "status": "running",
+        "exe": "/usr/sbin/cfprefsd",
+        "create_time": 1775757087.034312,
+        "memory_mb": 4.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 602,
+        "name": "UserEventAgent",
+        "status": "running",
+        "exe": "/usr/libexec/UserEventAgent",
+        "create_time": 1775757087.194039,
+        "memory_mb": 7.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 608,
+        "name": "universalaccessd",
+        "status": "running",
+        "exe": "/usr/sbin/universalaccessd",
+        "create_time": 1775757087.226828,
+        "memory_mb": 5.234375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 611,
+        "name": "pboard",
+        "status": "running",
+        "exe": "/usr/libexec/pboard",
+        "create_time": 1775757087.272085,
+        "memory_mb": 6.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 613,
+        "name": "lsd",
+        "status": "running",
+        "exe": "/usr/libexec/lsd",
+        "create_time": 1775757087.308419,
+        "memory_mb": 9.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 614,
+        "name": "WindowManager",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/WindowManager.app/Contents/MacOS/WindowManager",
+        "create_time": 1775757087.316911,
+        "memory_mb": 19.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 620,
+        "name": "rapportd",
+        "status": "running",
+        "exe": "/usr/libexec/rapportd",
+        "create_time": 1775757087.443637,
+        "memory_mb": 13.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 621,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757087.452679,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 623,
+        "name": "lockoutagent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/lockoutagent",
+        "create_time": 1775757087.464152,
+        "memory_mb": 3.046875,
+        "cpu_percent": 1.2
+      },
+      {
+        "pid": 625,
+        "name": "usernoted",
+        "status": "running",
+        "exe": "/usr/sbin/usernoted",
+        "create_time": 1775757087.465082,
+        "memory_mb": 10.578125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 627,
+        "name": "ControlStrip",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/ControlStrip.app/Contents/MacOS/ControlStrip",
+        "create_time": 1775757087.466171,
+        "memory_mb": 9.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 629,
+        "name": "BiomeAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/BiomeStreams.framework/Support/BiomeAgent",
+        "create_time": 1775757087.479372,
+        "memory_mb": 10.6875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 634,
+        "name": "usernotificationsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/UserNotificationsCore.framework/Support/usernotificationsd",
+        "create_time": 1775757087.50376,
+        "memory_mb": 4.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 639,
+        "name": "ContinuityCaptureAgent",
+        "status": "running",
+        "exe": "/usr/libexec/ContinuityCaptureAgent",
+        "create_time": 1775757087.586634,
+        "memory_mb": 9.5625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 643,
+        "name": "identityservicesd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/IDS.framework/identityservicesd.app/Contents/MacOS/identityservicesd",
+        "create_time": 1775757087.733169,
+        "memory_mb": 19.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 644,
+        "name": "NotificationCenter",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter",
+        "create_time": 1775757087.751057,
+        "memory_mb": 28.28125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 647,
+        "name": "WiFiAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/WiFiAgent.app/Contents/MacOS/WiFiAgent",
+        "create_time": 1775757087.802693,
+        "memory_mb": 11.796875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 652,
+        "name": "awdd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/WirelessDiagnostics.framework/Support/awdd",
+        "create_time": 1775757087.985819,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 654,
+        "name": "nearbyd",
+        "status": "running",
+        "exe": "/usr/libexec/nearbyd",
+        "create_time": 1775757088.039315,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 655,
+        "name": "wifianalyticsd",
+        "status": "running",
+        "exe": "/usr/libexec/wifianalyticsd",
+        "create_time": 1775757088.117547,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 663,
+        "name": "sharingd",
+        "status": "running",
+        "exe": "/usr/libexec/sharingd",
+        "create_time": 1775757088.653987,
+        "memory_mb": 17.40625,
+        "cpu_percent": 10.2
+      },
+      {
+        "pid": 673,
+        "name": "ctkd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CryptoTokenKit.framework/ctkd",
+        "create_time": 1775757089.137807,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 683,
+        "name": "familycircled",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/FamilyCircle.framework/Versions/A/Resources/familycircled",
+        "create_time": 1775757089.36382,
+        "memory_mb": 6.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 687,
+        "name": "SubmitDiagInfo",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/SubmitDiagInfo",
+        "create_time": 1775757089.43506,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 693,
+        "name": "fontd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontd",
+        "create_time": 1775757089.573311,
+        "memory_mb": 2.71875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 697,
+        "name": "sharedfilelistd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/sharedfilelistd",
+        "create_time": 1775757089.653163,
+        "memory_mb": 6.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 700,
+        "name": "fontworker",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontworker",
+        "create_time": 1775757089.803825,
+        "memory_mb": 1.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 719,
+        "name": "imagent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/IMCore.framework/imagent.app/Contents/MacOS/imagent",
+        "create_time": 1775757090.258748,
+        "memory_mb": 11.796875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 732,
+        "name": "filecoordination",
+        "status": "running",
+        "exe": "/usr/sbin/filecoordinationd",
+        "create_time": 1775757090.533052,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 737,
+        "name": "corespotlightd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd",
+        "create_time": 1775757090.656291,
+        "memory_mb": 20.53125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 747,
+        "name": "fileproviderd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/FileProvider.framework/Support/fileproviderd",
+        "create_time": 1775757090.955661,
+        "memory_mb": 14.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 756,
+        "name": "ViewBridgeAuxiliary",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary",
+        "create_time": 1775757091.452966,
+        "memory_mb": 4.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 768,
+        "name": "Dock",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Dock.app/Contents/MacOS/Dock",
+        "create_time": 1775757091.697655,
+        "memory_mb": 18.25,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 769,
+        "name": "ControlCenter",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter",
+        "create_time": 1775757091.714383,
+        "memory_mb": 38.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 770,
+        "name": "SystemUIServer",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/SystemUIServer.app/Contents/MacOS/SystemUIServer",
+        "create_time": 1775757091.729723,
+        "memory_mb": 7.09375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 771,
+        "name": "Finder",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder",
+        "create_time": 1775757091.740904,
+        "memory_mb": 42.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 775,
+        "name": "WallpaperAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/WallpaperAgent.app/Contents/MacOS/WallpaperAgent",
+        "create_time": 1775757091.83459,
+        "memory_mb": 10.546875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 782,
+        "name": "automountd",
+        "status": "running",
+        "exe": "/usr/libexec/automountd",
+        "create_time": 1775757091.919312,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 785,
+        "name": "AMPDeviceDiscoveryAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AMPDevices.framework/Versions/A/Support/AMPDeviceDiscoveryAgent",
+        "create_time": 1775757091.94193,
+        "memory_mb": 2.90625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 792,
+        "name": "WallpaperDynamicExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/WallpaperDynamicExtension.appex/Contents/MacOS/WallpaperDynamicExtension",
+        "create_time": 1775757092.098346,
+        "memory_mb": 1.734375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 794,
+        "name": "oahd",
+        "status": "running",
+        "exe": "/usr/libexec/rosetta/oahd",
+        "create_time": 1775757092.126945,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 805,
+        "name": "useractivityd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/UserActivity.framework/Agents/useractivityd",
+        "create_time": 1775757092.682486,
+        "memory_mb": 7.421875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 806,
+        "name": "com.apple.dock.extra",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.extra.xpc/Contents/MacOS/com.apple.dock.extra",
+        "create_time": 1775757092.776318,
+        "memory_mb": 10.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 809,
+        "name": "com.apple.CloudDocs.iCloudDriveFileProvider",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudDocs.framework/PlugIns/com.apple.CloudDocs.iCloudDriveFileProvider.appex/Contents/MacOS/com.apple.CloudDocs.iCloudDriveFileProvider",
+        "create_time": 1775757092.860145,
+        "memory_mb": 5.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 820,
+        "name": "imklaunchagent",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/InputMethodKit.framework/Versions/A/Resources/imklaunchagent",
+        "create_time": 1775757093.831832,
+        "memory_mb": 2.640625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 821,
+        "name": "CursorUIViewService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService",
+        "create_time": 1775757093.870993,
+        "memory_mb": 8.125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 822,
+        "name": "PAH_Extension",
+        "status": "running",
+        "exe": "/System/Library/Input Methods/PressAndHold.app/Contents/PlugIns/PAH_Extension.appex/Contents/MacOS/PAH_Extension",
+        "create_time": 1775757093.891246,
+        "memory_mb": 7.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 824,
+        "name": "Spotlight",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight",
+        "create_time": 1775757093.906448,
+        "memory_mb": 52.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 829,
+        "name": "com.apple.Ambien",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AmbientDisplay.framework/Versions/A/XPCServices/com.apple.AmbientDisplayAgent.xpc/Contents/MacOS/com.apple.AmbientDisplayAgent",
+        "create_time": 1775757094.300729,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 830,
+        "name": "CVMServer",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/CVMServer",
+        "create_time": 1775757094.312923,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 844,
+        "name": "UniversalControl",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/UniversalControl.app/Contents/MacOS/UniversalControl",
+        "create_time": 1775757095.066557,
+        "memory_mb": 9.140625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 846,
+        "name": "mediaremoteagent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoteagent",
+        "create_time": 1775757095.247259,
+        "memory_mb": 1.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 847,
+        "name": "avconferenced",
+        "status": "running",
+        "exe": "/usr/libexec/avconferenced",
+        "create_time": 1775757095.330789,
+        "memory_mb": 8.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 869,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757097.603768,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 876,
+        "name": "commerce",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/commerce",
+        "create_time": 1775757098.35219,
+        "memory_mb": 3.5625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 878,
+        "name": "mdbulkimport",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdbulkimport",
+        "create_time": 1775757098.477775,
+        "memory_mb": 6.15625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 896,
+        "name": "EmojiFunctionRowIM_Extension",
+        "status": "running",
+        "exe": "/System/Library/Input Methods/EmojiFunctionRowIM.app/Contents/PlugIns/EmojiFunctionRowIM_Extension.appex/Contents/MacOS/EmojiFunctionRowIM_Extension",
+        "create_time": 1775757099.475865,
+        "memory_mb": 6.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 905,
+        "name": "diagnostics_agent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/diagnostics_agent",
+        "create_time": 1775757100.160499,
+        "memory_mb": 7.09375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1339,
+        "name": "corespeechd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd",
+        "create_time": 1775757107.382846,
+        "memory_mb": 6.5625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1342,
+        "name": "1Password Extens",
+        "status": "running",
+        "exe": "/Applications/1Password 7.app/Contents/Library/LoginItems/1Password Extension Helper.app/Contents/MacOS/1Password Extension Helper",
+        "create_time": 1775757107.386403,
+        "memory_mb": 6.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1348,
+        "name": "icdd",
+        "status": "running",
+        "exe": "/System/Library/Image Capture/Support/icdd",
+        "create_time": 1775757107.393092,
+        "memory_mb": 1.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1349,
+        "name": "ChatGPTHelper",
+        "status": "running",
+        "exe": "/Applications/ChatGPT.app/Contents/Resources/ChatGPTHelper",
+        "create_time": 1775757107.394871,
+        "memory_mb": 11.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1357,
+        "name": "AirPlayUIAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/AirPlayUIAgent.app/Contents/MacOS/AirPlayUIAgent",
+        "create_time": 1775757107.403267,
+        "memory_mb": 3.90625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1359,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757107.4066,
+        "memory_mb": 0.328125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1360,
+        "name": "TextInputMenuAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/TextInputMenuAgent.app/Contents/MacOS/TextInputMenuAgent",
+        "create_time": 1775757107.408474,
+        "memory_mb": 7.734375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1365,
+        "name": "ctkahp",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp",
+        "create_time": 1775757107.42954,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1372,
+        "name": "ctkahp",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp",
+        "create_time": 1775757108.152479,
+        "memory_mb": 1.609375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 1374,
+        "name": "1Password 7",
+        "status": "running",
+        "exe": "/Applications/1Password 7.app/Contents/MacOS/1Password 7",
+        "create_time": 1775757108.25827,
+        "memory_mb": 7.6875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2182,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757115.609538,
+        "memory_mb": 0.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2183,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757115.622993,
+        "memory_mb": 0.453125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2216,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757118.364871,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2226,
+        "name": "fairplayd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/fairplayd",
+        "create_time": 1775757120.453674,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2247,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757123.266065,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2263,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757127.134367,
+        "memory_mb": 0.328125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2264,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757127.13574,
+        "memory_mb": 1.75,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2266,
+        "name": "postgres",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/postgresql@17/17.5/bin/postgres",
+        "create_time": 1775757127.250397,
+        "memory_mb": 0.875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2293,
+        "name": "csimporter",
+        "status": "running",
+        "exe": "/System/Applications/System Settings.app/Contents/PlugIns/csimporter.appex/Contents/MacOS/csimporter",
+        "create_time": 1775757133.587585,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2302,
+        "name": "systemstats",
+        "status": "running",
+        "exe": "/usr/sbin/systemstats",
+        "create_time": 1775757137.633531,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2387,
+        "name": "CrashReporterSup",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/CrashReporterSupportHelper",
+        "create_time": 1775757152.721982,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2494,
+        "name": "audiomxd",
+        "status": "running",
+        "exe": "/usr/libexec/audiomxd",
+        "create_time": 1775757173.989021,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2518,
+        "name": "tipsd",
+        "status": "running",
+        "exe": "/usr/libexec/tipsd",
+        "create_time": 1775757179.290864,
+        "memory_mb": 6.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2563,
+        "name": "dataaccessd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/DataAccess.framework/Support/dataaccessd",
+        "create_time": 1775757194.743214,
+        "memory_mb": 6.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2635,
+        "name": "spotlightknowledged",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged",
+        "create_time": 1775757204.727564,
+        "memory_mb": 3.015625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 2653,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775757205.712399,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4196,
+        "name": "OpenVPN Connect",
+        "status": "running",
+        "exe": "/Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/MacOS/OpenVPN Connect",
+        "create_time": 1777465548.87199,
+        "memory_mb": 14.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4205,
+        "name": "OpenVPN Connect Helper (GPU)",
+        "status": "running",
+        "exe": "/Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper (GPU).app/Contents/MacOS/OpenVPN Connect Helper (GPU)",
+        "create_time": 1777465549.110919,
+        "memory_mb": 6.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4206,
+        "name": "OpenVPN Connect Helper",
+        "status": "running",
+        "exe": "/Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper.app/Contents/MacOS/OpenVPN Connect Helper",
+        "create_time": 1777465549.112727,
+        "memory_mb": 3.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4215,
+        "name": "OpenVPN Connect Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper (Renderer).app/Contents/MacOS/OpenVPN Connect Helper (Renderer)",
+        "create_time": 1777465549.428892,
+        "memory_mb": 4.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4503,
+        "name": "mbuseragent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Setup Assistant.app/Contents/Resources/mbuseragent",
+        "create_time": 1775757287.869797,
+        "memory_mb": 0.390625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4658,
+        "name": "managedcorespotlightd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/managedcorespotlightd",
+        "create_time": 1775757364.580042,
+        "memory_mb": 7.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 4933,
+        "name": "PasswordBreachAgent",
+        "status": "running",
+        "exe": "/System/Volumes/Preboot/Cryptexes/App/usr/libexec/PasswordBreachAgent",
+        "create_time": 1775757397.738911,
+        "memory_mb": 2.890625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5159,
+        "name": "voicebankingd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TextToSpeechVoiceBankingSupport.framework/Support/voicebankingd",
+        "create_time": 1775757415.511903,
+        "memory_mb": 3.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5230,
+        "name": "trustd",
+        "status": "running",
+        "exe": "/usr/libexec/trustd",
+        "create_time": 1775757579.972204,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5250,
+        "name": "tccd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TCC.framework/Support/tccd",
+        "create_time": 1775757589.234849,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5314,
+        "name": "WirelessRadioMan",
+        "status": "running",
+        "exe": "/usr/sbin/WirelessRadioManagerd",
+        "create_time": 1775757653.553027,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5319,
+        "name": "trustd",
+        "status": "running",
+        "exe": "/usr/libexec/trustd",
+        "create_time": 1775757654.481873,
+        "memory_mb": 7.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5346,
+        "name": "akd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd",
+        "create_time": 1775757657.338374,
+        "memory_mb": 9.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5363,
+        "name": "coreauthd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd",
+        "create_time": 1775757658.311264,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 5924,
+        "name": "App Cleaner Moni",
+        "status": "running",
+        "exe": "/Applications/App Cleaner 8.app/Contents/Library/LoginItems/App Cleaner Monitor N.app/Contents/MacOS/App Cleaner Monitor N",
+        "create_time": 1777473516.769752,
+        "memory_mb": 4.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 6118,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777475037.193759,
+        "memory_mb": 5.5625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 7125,
+        "name": "passd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/PassKitCore.framework/passd",
+        "create_time": 1775757987.778694,
+        "memory_mb": 6.34375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 7267,
+        "name": "PowerChime",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/PowerChime.app/Contents/MacOS/PowerChime",
+        "create_time": 1775758315.017898,
+        "memory_mb": 5.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 7379,
+        "name": "IMAutomaticHistoryDeletionAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/IMDPersistence.framework/IMAutomaticHistoryDeletionAgent.app/Contents/MacOS/IMAutomaticHistoryDeletionAgent",
+        "create_time": 1775766584.134455,
+        "memory_mb": 3.546875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 7697,
+        "name": "wifivelocityd",
+        "status": "running",
+        "exe": "/usr/libexec/wifivelocityd",
+        "create_time": 1775811402.386983,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 8210,
+        "name": "AppleSpell",
+        "status": "running",
+        "exe": "/System/Library/Services/AppleSpell.service/Contents/MacOS/AppleSpell",
+        "create_time": 1777538880.423192,
+        "memory_mb": 30.34375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 8441,
+        "name": "biomed",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/BiomeStreams.framework/Support/biomed",
+        "create_time": 1777539370.826869,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 9033,
+        "name": "heard",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/HearingCore.framework/heard",
+        "create_time": 1777539436.881795,
+        "memory_mb": 8.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 9785,
+        "name": "tmux",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/tmux/3.5a/bin/tmux",
+        "create_time": 1775816854.511139,
+        "memory_mb": 5.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 10006,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1775816855.260021,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 10310,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1775816856.560391,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 10315,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1775816856.568375,
+        "memory_mb": 0.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12156,
+        "name": "peopled",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/People.framework/peopled",
+        "create_time": 1775820282.465356,
+        "memory_mb": 5.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12167,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775820285.168279,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12168,
+        "name": "TGOnDeviceInfere",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService",
+        "create_time": 1775820285.217333,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12169,
+        "name": "TGOnDeviceInfere",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService",
+        "create_time": 1775820288.241815,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12444,
+        "name": "universalAccessAuthWarn",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/universalAccessAuthWarn.app/Contents/MacOS/universalAccessAuthWarn",
+        "create_time": 1775836826.18284,
+        "memory_mb": 5.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 12964,
+        "name": "iCloudNotificationAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/iCloudNotification.framework/iCloudNotificationAgent",
+        "create_time": 1775846439.854195,
+        "memory_mb": 8.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 13268,
+        "name": "UserNotificationCenter",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/UserNotificationCenter.app/Contents/MacOS/UserNotificationCenter",
+        "create_time": 1775896537.625945,
+        "memory_mb": 5.53125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 13308,
+        "name": "USBAgent",
+        "status": "running",
+        "exe": "/usr/libexec/USBAgent",
+        "create_time": 1775896570.189435,
+        "memory_mb": 0.265625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 13844,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775900331.691833,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 14133,
+        "name": "nsurlsessiond",
+        "status": "running",
+        "exe": "/usr/libexec/nsurlsessiond",
+        "create_time": 1775901998.817029,
+        "memory_mb": 11.671875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 14170,
+        "name": "distnoted",
+        "status": "running",
+        "exe": "/usr/sbin/distnoted",
+        "create_time": 1775902045.456152,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 14551,
+        "name": "QLPreviewGenerationExtension",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/QuickLookUI.framework/Versions/A/PlugIns/QLPreviewGenerationExtension.appex/Contents/MacOS/QLPreviewGenerationExtension",
+        "create_time": 1775903474.041922,
+        "memory_mb": 4.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 14558,
+        "name": "mdwrite",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdwrite",
+        "create_time": 1775903480.017278,
+        "memory_mb": 1.390625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 15200,
+        "name": "duetexpertd",
+        "status": "running",
+        "exe": "/usr/libexec/duetexpertd",
+        "create_time": 1777541679.102611,
+        "memory_mb": 25.34375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 15903,
+        "name": "SafariNotificationAgent",
+        "status": "running",
+        "exe": "/System/Volumes/Preboot/Cryptexes/App/usr/libexec/SafariNotificationAgent",
+        "create_time": 1775903522.972989,
+        "memory_mb": 1.71875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 17544,
+        "name": "opencode",
+        "status": "running",
+        "exe": "/Users/swannkechar/.opencode/bin/opencode",
+        "create_time": 1776342575.157313,
+        "memory_mb": 380.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 20691,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776539489.665011,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 20981,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776539491.919722,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 20986,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1776539491.927521,
+        "memory_mb": 0.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 22072,
+        "name": "ssh-agent",
+        "status": "running",
+        "exe": "/usr/bin/ssh-agent",
+        "create_time": 1776539929.825182,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 27575,
+        "name": "secd",
+        "status": "running",
+        "exe": "/usr/libexec/secd",
+        "create_time": 1776328199.885306,
+        "memory_mb": 9.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 27869,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776343608.635177,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 28162,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776343610.163337,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 28167,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1776343610.169857,
+        "memory_mb": 0.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32617,
+        "name": "assistantd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/Support/assistantd",
+        "create_time": 1777558423.446924,
+        "memory_mb": 16.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32814,
+        "name": "chronod",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ChronoCore.framework/Support/chronod",
+        "create_time": 1777558676.17082,
+        "memory_mb": 23.53125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32819,
+        "name": "CalendarWidgetExtension",
+        "status": "running",
+        "exe": "/System/Applications/Calendar.app/Contents/PlugIns/CalendarWidgetExtension.appex/Contents/MacOS/CalendarWidgetExtension",
+        "create_time": 1777558676.735685,
+        "memory_mb": 3.703125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32820,
+        "name": "WorldClockWidget",
+        "status": "running",
+        "exe": "/System/Applications/Clock.app/Contents/PlugIns/WorldClockWidget.appex/Contents/MacOS/WorldClockWidget",
+        "create_time": 1777558676.747799,
+        "memory_mb": 5.25,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32821,
+        "name": "BatteriesAvocadoWidgetExtension",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Batteries.app/Contents/PlugIns/BatteriesAvocadoWidgetExtension.appex/Contents/MacOS/BatteriesAvocadoWidgetExtension",
+        "create_time": 1777558676.807545,
+        "memory_mb": 22.3125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32822,
+        "name": "AppearanceIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/AppearanceIntentsExtension.appex/Contents/MacOS/AppearanceIntentsExtension",
+        "create_time": 1777558676.897065,
+        "memory_mb": 3.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32824,
+        "name": "ShortcutsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Applications/Shortcuts.app/Contents/PlugIns/ShortcutsWidgetExtension.appex/Contents/MacOS/ShortcutsWidgetExtension",
+        "create_time": 1777558676.916563,
+        "memory_mb": 3.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32827,
+        "name": "ScreenTimeWidgetExtension",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Screen Time.app/Contents/PlugIns/ScreenTimeWidgetExtension.appex/Contents/MacOS/ScreenTimeWidgetExtension",
+        "create_time": 1777558677.026209,
+        "memory_mb": 25.59375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32830,
+        "name": "HomeWidget",
+        "status": "running",
+        "exe": "/System/Applications/Home.app/Contents/PlugIns/HomeWidget.appex/Contents/MacOS/HomeWidget",
+        "create_time": 1777558677.195843,
+        "memory_mb": 5.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32831,
+        "name": "ScreenTimeWidgetIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Screen Time.app/Contents/PlugIns/ScreenTimeWidgetIntentsExtension.appex/Contents/MacOS/ScreenTimeWidgetIntentsExtension",
+        "create_time": 1777558677.223767,
+        "memory_mb": 4.71875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32832,
+        "name": "PeopleWidget_macOSExtension",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/PeopleViewService.app/Contents/PlugIns/PeopleWidget_macOSExtension.appex/Contents/MacOS/PeopleWidget_macOSExtension",
+        "create_time": 1777558677.291281,
+        "memory_mb": 3.71875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32833,
+        "name": "WeatherIntents",
+        "status": "running",
+        "exe": "/System/Applications/Weather.app/Contents/PlugIns/WeatherIntents.appex/Contents/MacOS/WeatherIntents",
+        "create_time": 1777558677.32928,
+        "memory_mb": 4.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32834,
+        "name": "DesktopSettingsIntents",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/DesktopSettingsIntents.appex/Contents/MacOS/DesktopSettingsIntents",
+        "create_time": 1777558677.352883,
+        "memory_mb": 3.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32837,
+        "name": "SafariWidgetExtension",
+        "status": "running",
+        "exe": "/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app/Contents/Extensions/SafariWidgetExtension.appex/Contents/MacOS/SafariWidgetExtension",
+        "create_time": 1777558677.439713,
+        "memory_mb": 3.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32839,
+        "name": "SelectPerson_iOS",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/PeopleViewService.app/Contents/PlugIns/SelectPerson_iOS.appex/Contents/MacOS/SelectPerson_iOS",
+        "create_time": 1777558677.47453,
+        "memory_mb": 3.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32840,
+        "name": "BluetoothSettingsAppIntentsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/BluetoothSettingsAppIntentsWidgetExtension.appex/Contents/MacOS/BluetoothSettingsAppIntentsWidgetExtension",
+        "create_time": 1777558677.489813,
+        "memory_mb": 3.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32842,
+        "name": "IntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CalendarWidget.framework/PlugIns/IntentsExtension.appex/Contents/MacOS/IntentsExtension",
+        "create_time": 1777558677.690938,
+        "memory_mb": 2.90625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32848,
+        "name": "WallpaperIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/WallpaperIntentsExtension.appex/Contents/MacOS/WallpaperIntentsExtension",
+        "create_time": 1777558678.217729,
+        "memory_mb": 3.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32851,
+        "name": "VoiceMemosSettingsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Applications/VoiceMemos.app/Contents/PlugIns/VoiceMemosSettingsWidgetExtension.appex/Contents/MacOS/VoiceMemosSettingsWidgetExtension",
+        "create_time": 1777558678.317156,
+        "memory_mb": 4.671875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32853,
+        "name": "DateTimeIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/DateTimeIntentsExtension.appex/Contents/MacOS/DateTimeIntentsExtension",
+        "create_time": 1777558678.377789,
+        "memory_mb": 3.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32854,
+        "name": "SoftwareUpdateSettingsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/SoftwareUpdateSettingsWidgetExtension.appex/Contents/MacOS/SoftwareUpdateSettingsWidgetExtension",
+        "create_time": 1777558678.393637,
+        "memory_mb": 3.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32857,
+        "name": "PodcastsWidget",
+        "status": "running",
+        "exe": "/System/Applications/Podcasts.app/Contents/PlugIns/PodcastsWidget.appex/Contents/MacOS/PodcastsWidget",
+        "create_time": 1777558678.424221,
+        "memory_mb": 5.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32858,
+        "name": "ScreenSaverIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/ScreenSaverIntentsExtension.appex/Contents/MacOS/ScreenSaverIntentsExtension",
+        "create_time": 1777558678.44187,
+        "memory_mb": 3.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32859,
+        "name": "NotificationsSettingsIntents",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/NotificationsSettingsIntents.appex/Contents/MacOS/NotificationsSettingsIntents",
+        "create_time": 1777558678.470495,
+        "memory_mb": 3.4375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32860,
+        "name": "MobileTimerIntents",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MobileTimer.framework/PlugIns/MobileTimerIntents.appex/Contents/MacOS/MobileTimerIntents",
+        "create_time": 1777558678.515733,
+        "memory_mb": 3.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32861,
+        "name": "RemindersWidgetExtension",
+        "status": "running",
+        "exe": "/System/Applications/Reminders.app/Contents/PlugIns/RemindersWidgetExtension.appex/Contents/MacOS/RemindersWidgetExtension",
+        "create_time": 1777558678.530026,
+        "memory_mb": 3.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32867,
+        "name": "AssistantSettingsControlsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/AssistantSettingsControlsExtension.appex/Contents/MacOS/AssistantSettingsControlsExtension",
+        "create_time": 1777558678.566728,
+        "memory_mb": 3.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32868,
+        "name": "ControlCenterSettingsIntents",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/ControlCenterSettingsIntents.appex/Contents/MacOS/ControlCenterSettingsIntents",
+        "create_time": 1777558678.601101,
+        "memory_mb": 3.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32869,
+        "name": "FindMyWidgetItems",
+        "status": "running",
+        "exe": "/System/Applications/FindMy.app/Contents/PlugIns/FindMyWidgetItems.appex/Contents/MacOS/FindMyWidgetItems",
+        "create_time": 1777558678.673217,
+        "memory_mb": 4.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32870,
+        "name": "DisplaysSettingsIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/DisplaysSettingsIntentsExtension.appex/Contents/MacOS/DisplaysSettingsIntentsExtension",
+        "create_time": 1777558678.702675,
+        "memory_mb": 3.046875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32871,
+        "name": "RemindersIntentsExtension",
+        "status": "running",
+        "exe": "/System/Applications/Reminders.app/Contents/PlugIns/RemindersIntentsExtension.appex/Contents/MacOS/RemindersIntentsExtension",
+        "create_time": 1777558678.710552,
+        "memory_mb": 3.703125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32872,
+        "name": "TipsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Applications/Tips.app/Contents/PlugIns/TipsWidgetExtension.appex/Contents/MacOS/TipsWidgetExtension",
+        "create_time": 1777558678.721672,
+        "memory_mb": 3.140625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32875,
+        "name": "AccessibilitySettingsWidgetExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/AccessibilitySettingsWidgetExtension.appex/Contents/MacOS/AccessibilitySettingsWidgetExtension",
+        "create_time": 1777558678.792901,
+        "memory_mb": 3.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32878,
+        "name": "HomeEnergyWidgetsExtension",
+        "status": "running",
+        "exe": "/System/Applications/Home.app/Contents/PlugIns/HomeEnergyWidgetsExtension.appex/Contents/MacOS/HomeEnergyWidgetsExtension",
+        "create_time": 1777558678.812817,
+        "memory_mb": 5.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32879,
+        "name": "PhotosReliveWidget",
+        "status": "running",
+        "exe": "/System/Applications/Photos.app/Contents/PlugIns/PhotosReliveWidget.appex/Contents/MacOS/PhotosReliveWidget",
+        "create_time": 1777558678.82677,
+        "memory_mb": 3.484375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32880,
+        "name": "FindMyWidgetPeople",
+        "status": "running",
+        "exe": "/System/Applications/FindMy.app/Contents/PlugIns/FindMyWidgetPeople.appex/Contents/MacOS/FindMyWidgetPeople",
+        "create_time": 1777558678.871727,
+        "memory_mb": 4.734375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32882,
+        "name": "SoundIntentsExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/SoundIntentsExtension.appex/Contents/MacOS/SoundIntentsExtension",
+        "create_time": 1777558678.922482,
+        "memory_mb": 3.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 32914,
+        "name": "bluetoothuserd",
+        "status": "running",
+        "exe": "/usr/libexec/bluetoothuserd",
+        "create_time": 1777558740.458893,
+        "memory_mb": 7.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 34602,
+        "name": "backupd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/TimeMachine/backupd",
+        "create_time": 1776761924.575608,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 34817,
+        "name": "node",
+        "status": "running",
+        "exe": "/Users/swannkechar/.nvm/versions/node/v23.8.0/bin/node",
+        "create_time": 1776593626.827526,
+        "memory_mb": 0.125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 34836,
+        "name": "node",
+        "status": "running",
+        "exe": "/Users/swannkechar/.nvm/versions/node/v23.8.0/bin/node",
+        "create_time": 1776593626.99667,
+        "memory_mb": 8.140625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 35862,
+        "name": "routined",
+        "status": "running",
+        "exe": "/usr/libexec/routined",
+        "create_time": 1777728182.567895,
+        "memory_mb": 16.328125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 37292,
+        "name": "WeatherWidget",
+        "status": "running",
+        "exe": "/System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget",
+        "create_time": 1777817735.676325,
+        "memory_mb": 25.59375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 37771,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1777880447.205278,
+        "memory_mb": 42.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 37781,
+        "name": "nehelper",
+        "status": "running",
+        "exe": "/usr/libexec/nehelper",
+        "create_time": 1777880460.039509,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 37798,
+        "name": "neagent",
+        "status": "running",
+        "exe": "/usr/libexec/neagent",
+        "create_time": 1777880474.12705,
+        "memory_mb": 7.96875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 38000,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777884314.303945,
+        "memory_mb": 56.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 38658,
+        "name": "ScreenTimeAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ScreenTimeCore.framework/Versions/A/ScreenTimeAgent",
+        "create_time": 1776006091.553993,
+        "memory_mb": 6.640625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 38823,
+        "name": "PerfPowerService",
+        "status": "running",
+        "exe": "/usr/libexec/PerfPowerServices",
+        "create_time": 1777888399.580552,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 39582,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1777901315.414614,
+        "memory_mb": 50.359375,
+        "cpu_percent": 3.3
+      },
+      {
+        "pid": 39954,
+        "name": "tccd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TCC.framework/Support/tccd",
+        "create_time": 1777904708.758715,
+        "memory_mb": 11.921875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 39957,
+        "name": "cloudd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd",
+        "create_time": 1777904708.966666,
+        "memory_mb": 20.703125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40052,
+        "name": "systemstatusd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/SystemStatusServer.framework/Support/systemstatusd",
+        "create_time": 1777904754.136711,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40063,
+        "name": "NowPlayingTouchUI",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/NowPlayingTouchUI.app/Contents/MacOS/NowPlayingTouchUI",
+        "create_time": 1777904778.180334,
+        "memory_mb": 7.015625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40340,
+        "name": "generativeexperiencesd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GenerativeExperiencesRuntime.framework/Versions/A/generativeexperiencesd",
+        "create_time": 1776176550.586344,
+        "memory_mb": 6.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40395,
+        "name": "MauiAUSP",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TextToSpeechMauiSupport.framework/Versions/A/PlugIns/MauiAUSP.appex/Contents/MacOS/MauiAUSP",
+        "create_time": 1777905896.170585,
+        "memory_mb": 4.859375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40788,
+        "name": "triald",
+        "status": "running",
+        "exe": "/usr/libexec/triald",
+        "create_time": 1777907442.03369,
+        "memory_mb": 10.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40799,
+        "name": "Siri",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Siri.app/Contents/MacOS/Siri",
+        "create_time": 1777907452.05261,
+        "memory_mb": 8.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40804,
+        "name": "extensionkitservice",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice",
+        "create_time": 1777907477.915158,
+        "memory_mb": 9.859375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40827,
+        "name": "searchpartyuseragent",
+        "status": "running",
+        "exe": "/usr/libexec/searchpartyuseragent",
+        "create_time": 1777907491.555063,
+        "memory_mb": 16.859375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40834,
+        "name": "adid",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreADI.framework/Versions/A/adid",
+        "create_time": 1777907492.578056,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40843,
+        "name": "deleted",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CacheDelete.framework/deleted",
+        "create_time": 1777907493.480837,
+        "memory_mb": 18.96875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40845,
+        "name": "CloudTelemetryService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService",
+        "create_time": 1777907493.590973,
+        "memory_mb": 6.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40875,
+        "name": "suggestd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd",
+        "create_time": 1777907498.870198,
+        "memory_mb": 13.578125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40892,
+        "name": "SiriNCService",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService",
+        "create_time": 1777907532.155225,
+        "memory_mb": 8.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40915,
+        "name": "callservicesd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd",
+        "create_time": 1777908483.3916,
+        "memory_mb": 17.578125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 40922,
+        "name": "UIKitSystem",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/UIKitSystem.app/Contents/MacOS/UIKitSystem",
+        "create_time": 1777908484.556329,
+        "memory_mb": 11.6875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 41116,
+        "name": "Messages Assistant Extension",
+        "status": "running",
+        "exe": "/System/Applications/Messages.app/Contents/PlugIns/Messages Assistant Extension.appex/Contents/MacOS/Messages Assistant Extension",
+        "create_time": 1777925039.578315,
+        "memory_mb": 6.671875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 41437,
+        "name": "homed",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/HomeKitDaemon.framework/Support/homed",
+        "create_time": 1777965880.047378,
+        "memory_mb": 11.96875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 41961,
+        "name": "com.apple.quicklook.ThumbnailsAgent",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/QuickLookThumbnailing.framework/Support/com.apple.quicklook.ThumbnailsAgent",
+        "create_time": 1777968182.521255,
+        "memory_mb": 10.4375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43411,
+        "name": "dmd",
+        "status": "running",
+        "exe": "/usr/libexec/dmd",
+        "create_time": 1778051546.823778,
+        "memory_mb": 5.234375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43424,
+        "name": "PackageThumbnailExtension",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/PackageThumbnailExtension.appex/Contents/MacOS/PackageThumbnailExtension",
+        "create_time": 1778051555.451761,
+        "memory_mb": 3.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43554,
+        "name": "spotlightknowledged",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged",
+        "create_time": 1778052839.182187,
+        "memory_mb": 8.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43566,
+        "name": "mediaanalysisd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MediaAnalysis.framework/Versions/A/mediaanalysisd",
+        "create_time": 1778052840.725279,
+        "memory_mb": 9.796875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43640,
+        "name": "donotdisturbd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework/Support/donotdisturbd",
+        "create_time": 1778053453.642095,
+        "memory_mb": 7.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43798,
+        "name": "sandboxd",
+        "status": "running",
+        "exe": "/usr/libexec/sandboxd",
+        "create_time": 1778059358.170848,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 43881,
+        "name": "amsaccountsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AppleMediaServices.framework/Versions/A/Resources/amsaccountsd",
+        "create_time": 1778062886.564254,
+        "memory_mb": 8.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44068,
+        "name": "ContextStoreAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreDuetContext.framework/Versions/A/Resources/ContextStoreAgent",
+        "create_time": 1778078093.025185,
+        "memory_mb": 14.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44071,
+        "name": "proactived",
+        "status": "running",
+        "exe": "/usr/libexec/proactived",
+        "create_time": 1778078095.175649,
+        "memory_mb": 10.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44109,
+        "name": "talagentd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/talagentd",
+        "create_time": 1778078116.127377,
+        "memory_mb": 7.484375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44110,
+        "name": "com.apple.hiservices-xpcservice",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice",
+        "create_time": 1778078116.143519,
+        "memory_mb": 2.234375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44114,
+        "name": "iconservicesagent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/iconservicesagent",
+        "create_time": 1778078117.791053,
+        "memory_mb": 9.453125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44131,
+        "name": "SidecarRelay",
+        "status": "running",
+        "exe": "/usr/libexec/SidecarRelay",
+        "create_time": 1778078121.94108,
+        "memory_mb": 6.546875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44615,
+        "name": "netbiosd",
+        "status": "running",
+        "exe": "/usr/sbin/netbiosd",
+        "create_time": 1778140033.660869,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44702,
+        "name": "TextInputSwitcher",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/TextInputSwitcher.app/Contents/MacOS/TextInputSwitcher",
+        "create_time": 1778140114.479749,
+        "memory_mb": 9.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44716,
+        "name": "contentlinkingd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/Synapse.framework/Support/contentlinkingd",
+        "create_time": 1778140116.741769,
+        "memory_mb": 6.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44721,
+        "name": "alacritty",
+        "status": "running",
+        "exe": "/Applications/Alacritty.app/Contents/MacOS/alacritty",
+        "create_time": 1778140124.942081,
+        "memory_mb": 28.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44723,
+        "name": "login",
+        "status": "running",
+        "exe": "/usr/bin/login",
+        "create_time": 1778140125.309608,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44725,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1778140125.374685,
+        "memory_mb": 0.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 44960,
+        "name": "DockHelper",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Dock.app/Contents/XPCServices/DockHelper.xpc/Contents/MacOS/DockHelper",
+        "create_time": 1778140128.70957,
+        "memory_mb": 8.609375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45399,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1778140130.157864,
+        "memory_mb": 0.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45404,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1778140130.164882,
+        "memory_mb": 0.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45426,
+        "name": "parsecd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreParsec.framework/parsecd",
+        "create_time": 1778140132.782033,
+        "memory_mb": 8.6875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45443,
+        "name": "tmux",
+        "status": "running",
+        "exe": "/opt/homebrew/Cellar/tmux/3.5a/bin/tmux",
+        "create_time": 1778140140.078098,
+        "memory_mb": 0.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45444,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1778140140.109805,
+        "memory_mb": 0.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45743,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1778140141.607186,
+        "memory_mb": 0.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45748,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1778140141.61645,
+        "memory_mb": 0.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45780,
+        "name": "OSDUIHelper",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/OSDUIHelper.app/Contents/MacOS/OSDUIHelper",
+        "create_time": 1778140150.446051,
+        "memory_mb": 8.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45853,
+        "name": "EABackgroundServ",
+        "status": "running",
+        "exe": "/Applications/EA app.app/Contents/Applications/EABackgroundService.app/Contents/MacOS/EABackgroundService",
+        "create_time": 1778140165.689585,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 45862,
+        "name": "EABackgroundAgent",
+        "status": "running",
+        "exe": "/Applications/EA app.app/Contents/Applications/EABackgroundAgent.app/Contents/MacOS/EABackgroundAgent",
+        "create_time": 1778140165.955004,
+        "memory_mb": 17.484375,
+        "cpu_percent": 0.5
+      },
+      {
+        "pid": 45885,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1778140174.109612,
+        "memory_mb": 21.734375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 46896,
+        "name": "com.apple.geod",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod",
+        "create_time": 1778140681.942938,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 46930,
+        "name": "com.apple.appkit.xpc.openAndSavePanelService",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/com.apple.appkit.xpc.openAndSavePanelService.xpc/Contents/MacOS/com.apple.appkit.xpc.openAndSavePanelService",
+        "create_time": 1778140698.226464,
+        "memory_mb": 19.859375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 46931,
+        "name": "QuickLookUIService",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService",
+        "create_time": 1778140698.419368,
+        "memory_mb": 13.53125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47159,
+        "name": "opencode",
+        "status": "running",
+        "exe": "/Users/swannkechar/.opencode/bin/opencode",
+        "create_time": 1778140822.65198,
+        "memory_mb": 501.671875,
+        "cpu_percent": 50.9
+      },
+      {
+        "pid": 47294,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1778140880.097184,
+        "memory_mb": 93.40625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47499,
+        "name": "Keychain Circle Notification",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Keychain Circle Notification.app/Contents/MacOS/Keychain Circle Notification",
+        "create_time": 1778140979.183122,
+        "memory_mb": 11.71875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47554,
+        "name": "assistant_cdmd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ContinuousDialogManagerService.framework/assistant_cdmd",
+        "create_time": 1778141004.889679,
+        "memory_mb": 6.390625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47555,
+        "name": "inputanalyticsd",
+        "status": "running",
+        "exe": "/usr/libexec/inputanalyticsd",
+        "create_time": 1778141004.890733,
+        "memory_mb": 5.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47563,
+        "name": "extensionkitservice",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice",
+        "create_time": 1778141006.93929,
+        "memory_mb": 5.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47570,
+        "name": "CoreServicesUIAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/CoreServicesUIAgent.app/Contents/MacOS/CoreServicesUIAgent",
+        "create_time": 1778141008.776058,
+        "memory_mb": 13.421875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47589,
+        "name": "CoreLocationAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/CoreLocationAgent.app/Contents/MacOS/CoreLocationAgent",
+        "create_time": 1778141016.066317,
+        "memory_mb": 13.125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47590,
+        "name": "syncdefaultsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/SyncedDefaults.framework/Support/syncdefaultsd",
+        "create_time": 1778141016.157389,
+        "memory_mb": 10.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47598,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1778141020.949967,
+        "memory_mb": 28.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47599,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1778141024.334479,
+        "memory_mb": 28.453125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47607,
+        "name": "iconservicesd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/iconservicesd",
+        "create_time": 1778141025.41864,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47608,
+        "name": "maild",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/EmailDaemon.framework/Versions/A/maild",
+        "create_time": 1778141028.956834,
+        "memory_mb": 9.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47609,
+        "name": "CMFSyncAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CommunicationsFilter.framework/CMFSyncAgent",
+        "create_time": 1778141029.24742,
+        "memory_mb": 4.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47620,
+        "name": "appstoreagent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AppStoreDaemon.framework/Support/appstoreagent",
+        "create_time": 1778141034.573073,
+        "memory_mb": 14.28125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47621,
+        "name": "storagekitd",
+        "status": "running",
+        "exe": "/usr/libexec/storagekitd",
+        "create_time": 1778141035.0291,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47623,
+        "name": "pkd",
+        "status": "running",
+        "exe": "/usr/libexec/pkd",
+        "create_time": 1778141035.105885,
+        "memory_mb": 18.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47624,
+        "name": "installcoordinat",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd",
+        "create_time": 1778141035.117762,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47625,
+        "name": "containermanager",
+        "status": "running",
+        "exe": "/usr/libexec/containermanagerd_system",
+        "create_time": 1778141035.200325,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47633,
+        "name": "com.apple.AppSto",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AppStoreDaemon.framework/Versions/A/XPCServices/com.apple.AppStoreDaemon.StorePrivilegedODRService.xpc/Contents/MacOS/com.apple.AppStoreDaemon.StorePrivilegedODRService",
+        "create_time": 1778141035.280893,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47636,
+        "name": "amsengagementd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AppleMediaServicesUI.framework/amsengagementd",
+        "create_time": 1778141035.613673,
+        "memory_mb": 11.953125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47637,
+        "name": "findmylocateagent",
+        "status": "running",
+        "exe": "/usr/libexec/findmylocateagent",
+        "create_time": 1778141035.666627,
+        "memory_mb": 8.625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47638,
+        "name": "promotedcontentd",
+        "status": "running",
+        "exe": "/usr/libexec/promotedcontentd",
+        "create_time": 1778141035.66987,
+        "memory_mb": 10.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47639,
+        "name": "fairplaydeviceid",
+        "status": "running",
+        "exe": "/usr/libexec/fairplaydeviceidentityd",
+        "create_time": 1778141035.937268,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47642,
+        "name": "mobileactivation",
+        "status": "running",
+        "exe": "/usr/libexec/mobileactivationd",
+        "create_time": 1778141037.071237,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47643,
+        "name": "replayd",
+        "status": "running",
+        "exe": "/usr/libexec/replayd",
+        "create_time": 1778141039.005412,
+        "memory_mb": 12.875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47652,
+        "name": "idleassetsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/TVIdleServices.framework/idleassetsd",
+        "create_time": 1778141042.097819,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47661,
+        "name": "mobileassetd",
+        "status": "running",
+        "exe": "/usr/libexec/mobileassetd",
+        "create_time": 1778141046.040521,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47662,
+        "name": "softwareupdated",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/Software Update.app/Contents/Resources/softwareupdated",
+        "create_time": 1778141046.526806,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47663,
+        "name": "softwareupdated",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated",
+        "create_time": 1778141048.54908,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47664,
+        "name": "modelcatalogd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ModelCatalogRuntime.framework/Versions/A/modelcatalogd",
+        "create_time": 1778141048.612441,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47665,
+        "name": "com.apple.siri.embeddedspeech",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreEmbeddedSpeechRecognition.framework/Versions/A/XPCServices/com.apple.siri.embeddedspeech.xpc/Contents/MacOS/com.apple.siri.embeddedspeech",
+        "create_time": 1778141048.629523,
+        "memory_mb": 7.703125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47667,
+        "name": "com.apple.Mobile",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Versions/A/XPCServices/com.apple.MobileSoftwareUpdate.CleanupPreparePathService.xpc/Contents/MacOS/com.apple.MobileSoftwareUpdate.CleanupPreparePathService",
+        "create_time": 1778141048.997837,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47669,
+        "name": "backupd-helper",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/TimeMachine/backupd-helper",
+        "create_time": 1778141049.402233,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47687,
+        "name": "osanalyticshelpe",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/osanalyticshelper",
+        "create_time": 1778141051.227067,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47698,
+        "name": "CategoriesService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService",
+        "create_time": 1778141058.856289,
+        "memory_mb": 11.828125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47699,
+        "name": "ContextService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService",
+        "create_time": 1778141058.911841,
+        "memory_mb": 6.28125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47700,
+        "name": "MTLCompilerService",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService",
+        "create_time": 1778141059.117283,
+        "memory_mb": 2.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47701,
+        "name": "MTLCompilerService",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService",
+        "create_time": 1778141059.11774,
+        "memory_mb": 2.8125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47710,
+        "name": "online-auth-agen",
+        "status": "running",
+        "exe": "/usr/libexec/online-auth-agent",
+        "create_time": 1778141065.152645,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47718,
+        "name": "feedbackd",
+        "status": "running",
+        "exe": "/usr/libexec/feedbackd",
+        "create_time": 1778141066.158621,
+        "memory_mb": 6.265625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47719,
+        "name": "ospredictiond",
+        "status": "running",
+        "exe": "/usr/libexec/ospredictiond",
+        "create_time": 1778141068.165934,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47720,
+        "name": "intelligenceflowd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/IntelligenceFlowRuntime.framework/Versions/A/intelligenceflowd",
+        "create_time": 1778141070.177858,
+        "memory_mb": 4.515625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47728,
+        "name": "securityd_system",
+        "status": "running",
+        "exe": "/usr/libexec/securityd_system",
+        "create_time": 1778141070.871761,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47729,
+        "name": "gamecontrollerd",
+        "status": "running",
+        "exe": "/usr/libexec/gamecontrollerd",
+        "create_time": 1778141071.19303,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47730,
+        "name": "gamecontrolleragentd",
+        "status": "running",
+        "exe": "/usr/libexec/gamecontrolleragentd",
+        "create_time": 1778141071.315338,
+        "memory_mb": 4.765625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47731,
+        "name": "businessservicesd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/BusinessChatService.framework/businessservicesd",
+        "create_time": 1778141072.18662,
+        "memory_mb": 6.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47732,
+        "name": "MessagesBlastDoorService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService",
+        "create_time": 1778141072.371199,
+        "memory_mb": 0.390625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47734,
+        "name": "ndoagent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/NewDeviceOutreach.framework/ndoagent",
+        "create_time": 1778141073.191673,
+        "memory_mb": 5.5625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47735,
+        "name": "swcd",
+        "status": "running",
+        "exe": "/usr/libexec/swcd",
+        "create_time": 1778141073.287759,
+        "memory_mb": 15.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47750,
+        "name": "CommCenter",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreTelephony.framework/Support/CommCenter",
+        "create_time": 1778141085.26039,
+        "memory_mb": 13.0625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47818,
+        "name": "contactsd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Contacts.framework/Support/contactsd",
+        "create_time": 1778141115.111268,
+        "memory_mb": 11.609375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47826,
+        "name": "AppPredictionIntentsHelperService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AppPredictionFoundation.framework/Versions/A/XPCServices/AppPredictionIntentsHelperService.xpc/Contents/MacOS/AppPredictionIntentsHelperService",
+        "create_time": 1778141115.528948,
+        "memory_mb": 22.875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47827,
+        "name": "calaccessd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CalendarDaemon.framework/Support/calaccessd",
+        "create_time": 1778141116.678111,
+        "memory_mb": 16.875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47828,
+        "name": "usermanagerd",
+        "status": "running",
+        "exe": "/usr/libexec/usermanagerd",
+        "create_time": 1778141116.864932,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47836,
+        "name": "linkd",
+        "status": "running",
+        "exe": "/usr/libexec/linkd",
+        "create_time": 1778141120.33166,
+        "memory_mb": 15.09375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47837,
+        "name": "coreduetd",
+        "status": "running",
+        "exe": "/usr/libexec/coreduetd",
+        "create_time": 1778141120.711675,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47838,
+        "name": "knowledge-agent",
+        "status": "running",
+        "exe": "/usr/libexec/knowledge-agent",
+        "create_time": 1778141120.930029,
+        "memory_mb": 29.921875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47839,
+        "name": "AssetCacheLocatorService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService",
+        "create_time": 1778141121.324949,
+        "memory_mb": 3.859375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47840,
+        "name": "remindd",
+        "status": "running",
+        "exe": "/usr/libexec/remindd",
+        "create_time": 1778141121.381323,
+        "memory_mb": 13.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 47841,
+        "name": "rtcreportingd",
+        "status": "running",
+        "exe": "/usr/libexec/rtcreportingd",
+        "create_time": 1778141121.457736,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48046,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1778141219.603917,
+        "memory_mb": 107.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48113,
+        "name": "networkserviceproxy",
+        "status": "running",
+        "exe": "/usr/libexec/networkserviceproxy",
+        "create_time": 1778141260.54492,
+        "memory_mb": 14.640625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48115,
+        "name": "swtransparencyd",
+        "status": "running",
+        "exe": "/usr/libexec/swtransparencyd",
+        "create_time": 1778141261.013657,
+        "memory_mb": 5.046875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48116,
+        "name": "CloudTelemetryService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService",
+        "create_time": 1778141261.107129,
+        "memory_mb": 4.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48117,
+        "name": "ctkd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CryptoTokenKit.framework/ctkd",
+        "create_time": 1778141261.174077,
+        "memory_mb": 10.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48118,
+        "name": "coreauthd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd",
+        "create_time": 1778141261.238138,
+        "memory_mb": 9.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48126,
+        "name": "dirhelper",
+        "status": "running",
+        "exe": "/usr/libexec/dirhelper",
+        "create_time": 1778141268.424517,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48148,
+        "name": "wifip2pd",
+        "status": "running",
+        "exe": "/usr/libexec/wifip2pd",
+        "create_time": 1778141282.799534,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48221,
+        "name": "sysmond",
+        "status": "running",
+        "exe": "/usr/libexec/sysmond",
+        "create_time": 1778141329.752573,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48298,
+        "name": "SAExtensionOrchestrator",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/SiriAnalytics.framework/Versions/A/XPCServices/SAExtensionOrchestrator.xpc/Contents/MacOS/SAExtensionOrchestrator",
+        "create_time": 1778141380.294373,
+        "memory_mb": 13.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48299,
+        "name": "secinitd",
+        "status": "running",
+        "exe": "/usr/libexec/secinitd",
+        "create_time": 1778141380.327296,
+        "memory_mb": 10.234375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48307,
+        "name": "extensionkitservice",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice",
+        "create_time": 1778141380.582461,
+        "memory_mb": 7.9375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48308,
+        "name": "GMSSELFIngestor",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/GMSSELFIngestor.appex/Contents/MacOS/GMSSELFIngestor",
+        "create_time": 1778141380.656315,
+        "memory_mb": 10.046875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48309,
+        "name": "BiomeSELFIngestor",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/BiomeSELFIngestor.appex/Contents/MacOS/BiomeSELFIngestor",
+        "create_time": 1778141380.744976,
+        "memory_mb": 9.46875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48310,
+        "name": "IFTranscriptSELFIngestor",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/IFTranscriptSELFIngestor.appex/Contents/MacOS/IFTranscriptSELFIngestor",
+        "create_time": 1778141380.834423,
+        "memory_mb": 9.046875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48311,
+        "name": "IFTelemetrySELFIngestor",
+        "status": "running",
+        "exe": "/System/Library/ExtensionKit/Extensions/IFTelemetrySELFIngestor.appex/Contents/MacOS/IFTelemetrySELFIngestor",
+        "create_time": 1778141380.89104,
+        "memory_mb": 8.578125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48320,
+        "name": "UsageTrackingAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/UsageTracking.framework/Versions/A/UsageTrackingAgent",
+        "create_time": 1778141386.752053,
+        "memory_mb": 14.328125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48321,
+        "name": "ManagedSettingsAgent",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/ManagedSettings.framework/Versions/A/ManagedSettingsAgent",
+        "create_time": 1778141386.814069,
+        "memory_mb": 3.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48550,
+        "name": "siriactionsd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/VoiceShortcuts.framework/Versions/A/Support/siriactionsd",
+        "create_time": 1778141516.585992,
+        "memory_mb": 26.765625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48551,
+        "name": "bird",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/iCloudDriveCore.framework/Versions/A/Support/bird",
+        "create_time": 1778141516.647374,
+        "memory_mb": 22.390625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48552,
+        "name": "ContainerMetadataExtractor",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/iCloudDriveService.framework/XPCServices/ContainerMetadataExtractor.xpc/Contents/MacOS/ContainerMetadataExtractor",
+        "create_time": 1778141517.002202,
+        "memory_mb": 11.15625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48553,
+        "name": "deleted_helper",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CacheDelete.framework/deleted_helper",
+        "create_time": 1778141517.234306,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48554,
+        "name": "triald_system",
+        "status": "running",
+        "exe": "/usr/libexec/triald_system",
+        "create_time": 1778141517.424223,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48555,
+        "name": "cloudd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd",
+        "create_time": 1778141518.766722,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48556,
+        "name": "geodMachServiceBridge",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GeoServices.framework/geodMachServiceBridge",
+        "create_time": 1778141519.302612,
+        "memory_mb": 3.875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48557,
+        "name": "AssetCache",
+        "status": "running",
+        "exe": "/usr/libexec/AssetCache/AssetCache",
+        "create_time": 1778141519.303701,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48558,
+        "name": "com.apple.geod",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod",
+        "create_time": 1778141519.337107,
+        "memory_mb": 10.046875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48559,
+        "name": "AssetCacheTether",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AssetCacheServicesExtensions.framework/Versions/A/XPCServices/AssetCacheTetheratorService.xpc/Contents/MacOS/AssetCacheTetheratorService",
+        "create_time": 1778141519.389991,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48560,
+        "name": "com.apple.geod",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod",
+        "create_time": 1778141519.411873,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48561,
+        "name": "secinitd",
+        "status": "running",
+        "exe": "/usr/libexec/secinitd",
+        "create_time": 1778141519.427597,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48562,
+        "name": "cfprefsd",
+        "status": "running",
+        "exe": "/usr/sbin/cfprefsd",
+        "create_time": 1778141519.482919,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48563,
+        "name": "trustd",
+        "status": "running",
+        "exe": "/usr/libexec/trustd",
+        "create_time": 1778141519.550516,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48564,
+        "name": "trustdFileHelper",
+        "status": "running",
+        "exe": "/usr/libexec/trustdFileHelper",
+        "create_time": 1778141519.619952,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48566,
+        "name": "containermanager",
+        "status": "running",
+        "exe": "/usr/libexec/containermanagerd",
+        "create_time": 1778141519.752179,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48569,
+        "name": "aneuserd",
+        "status": "running",
+        "exe": "/usr/libexec/aneuserd",
+        "create_time": 1778141519.968917,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48571,
+        "name": "csnameddatad",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/XPCServices/csnameddatad.xpc/Contents/MacOS/csnameddatad",
+        "create_time": 1778141520.024774,
+        "memory_mb": 1.546875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48582,
+        "name": "system_installd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/PackageKit.framework/Versions/A/Resources/system_installd",
+        "create_time": 1778141520.774578,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48583,
+        "name": "installd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/PackageKit.framework/Versions/A/Resources/installd",
+        "create_time": 1778141520.775439,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48584,
+        "name": "coresymbolicatio",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreSymbolication.framework/coresymbolicationd",
+        "create_time": 1778141520.893558,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48597,
+        "name": "photolibraryd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/PhotoLibraryServices.framework/Versions/A/Support/photolibraryd",
+        "create_time": 1778141530.365867,
+        "memory_mb": 8.609375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48605,
+        "name": "ScopedBookmarkAgent",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/ScopedBookmarkAgent",
+        "create_time": 1778141530.497594,
+        "memory_mb": 6.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48606,
+        "name": "PlugInLibraryService",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService",
+        "create_time": 1778141530.652506,
+        "memory_mb": 1.734375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48608,
+        "name": "keybagd",
+        "status": "running",
+        "exe": "/usr/libexec/keybagd",
+        "create_time": 1778141535.315073,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48617,
+        "name": "findmybeaconingd",
+        "status": "running",
+        "exe": "/usr/libexec/findmybeaconingd",
+        "create_time": 1778141535.396268,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48634,
+        "name": "com.apple.iCloudHelper",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/AOSKit.framework/Versions/A/XPCServices/com.apple.iCloudHelper.xpc/Contents/MacOS/com.apple.iCloudHelper",
+        "create_time": 1778141545.919497,
+        "memory_mb": 5.328125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48635,
+        "name": "siriknowledged",
+        "status": "running",
+        "exe": "/usr/libexec/siriknowledged",
+        "create_time": 1778141547.20852,
+        "memory_mb": 25.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48636,
+        "name": "IMDPersistenceAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/IMDPersistence.framework/XPCServices/IMDPersistenceAgent.xpc/Contents/MacOS/IMDPersistenceAgent",
+        "create_time": 1778141547.254241,
+        "memory_mb": 10.640625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48637,
+        "name": "contactsdonationagent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/ContactsDonation.framework/Versions/A/Support/contactsdonationagent",
+        "create_time": 1778141547.575592,
+        "memory_mb": 14.75,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48638,
+        "name": "SetStoreUpdateService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService",
+        "create_time": 1778141547.726286,
+        "memory_mb": 8.28125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48740,
+        "name": "keyboardservicesd",
+        "status": "running",
+        "exe": "/usr/libexec/keyboardservicesd",
+        "create_time": 1778141607.483268,
+        "memory_mb": 8.15625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48996,
+        "name": "amfid",
+        "status": "running",
+        "exe": "/usr/libexec/amfid",
+        "create_time": 1778141773.005189,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48997,
+        "name": "CloudTelemetrySe",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService",
+        "create_time": 1778141773.749573,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 48998,
+        "name": "XProtectBridgeSe",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectBridgeService.xpc/Contents/MacOS/XProtectBridgeService",
+        "create_time": 1778141773.752548,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49006,
+        "name": "logd_helper",
+        "status": "running",
+        "exe": "/usr/libexec/logd_helper",
+        "create_time": 1778141778.26818,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49014,
+        "name": "python3.12",
+        "status": "running",
+        "exe": "/opt/anaconda3/bin/python3.12",
+        "create_time": 1778141780.994222,
+        "memory_mb": 4.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49015,
+        "name": "XprotectService",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService",
+        "create_time": 1778141781.004478,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49016,
+        "name": "ReportCrash",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/ReportCrash",
+        "create_time": 1778141781.214912,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49018,
+        "name": "node",
+        "status": "running",
+        "exe": "/opt/anaconda3/lib/python3.12/site-packages/nodejs_wheel/bin/node",
+        "create_time": 1778141781.31484,
+        "memory_mb": 45.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49126,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1778141823.898053,
+        "memory_mb": 59.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49152,
+        "name": "python3.12",
+        "status": "running",
+        "exe": "/opt/anaconda3/bin/python3.12",
+        "create_time": 1778141838.604609,
+        "memory_mb": 4.03125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49153,
+        "name": "node",
+        "status": "running",
+        "exe": "/opt/anaconda3/lib/python3.12/site-packages/nodejs_wheel/bin/node",
+        "create_time": 1778141838.643104,
+        "memory_mb": 117.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49251,
+        "name": "mdworker_shared",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared",
+        "create_time": 1778141894.566439,
+        "memory_mb": 25.359375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49279,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1778141909.332227,
+        "memory_mb": 178.609375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49354,
+        "name": "AXVisualSupportAgent",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/AXVisualSupportAgent.app/Contents/MacOS/AXVisualSupportAgent",
+        "create_time": 1778141952.872458,
+        "memory_mb": 33.765625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49365,
+        "name": "biomesyncd",
+        "status": "running",
+        "exe": "/usr/libexec/biomesyncd",
+        "create_time": 1778141956.714453,
+        "memory_mb": 10.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49374,
+        "name": "mdworker_shared",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared",
+        "create_time": 1778141964.439559,
+        "memory_mb": 21.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49375,
+        "name": "mdworker_shared",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared",
+        "create_time": 1778141964.441378,
+        "memory_mb": 24.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49376,
+        "name": "mdworker_shared",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared",
+        "create_time": 1778141964.442288,
+        "memory_mb": 19.125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 49387,
+        "name": "python3.12",
+        "status": "running",
+        "exe": "/opt/anaconda3/bin/python3.12",
+        "create_time": 1778141968.32527,
+        "memory_mb": 29.953125,
+        "cpu_percent": 0.5
+      },
+      {
+        "pid": 49405,
+        "name": "SceneKitQLPreviewExtension",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/SceneKit.framework/PlugIns/SceneKitQLPreviewExtension.appex/Contents/MacOS/SceneKitQLPreviewExtension",
+        "create_time": 1776064654.920564,
+        "memory_mb": 4.421875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 50758,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776934792.552219,
+        "memory_mb": 0.15625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 51051,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776934794.166604,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 51056,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1776934794.173341,
+        "memory_mb": 0.21875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 51195,
+        "name": "Rectangle",
+        "status": "running",
+        "exe": "/Applications/Rectangle.app/Contents/MacOS/Rectangle",
+        "create_time": 1776547691.975412,
+        "memory_mb": 14.3125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 54431,
+        "name": "audioaccessoryd",
+        "status": "running",
+        "exe": "/System/Library/CoreServices/audioaccessoryd",
+        "create_time": 1775915386.216369,
+        "memory_mb": 11.140625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 61860,
+        "name": "com.apple.CodeSi",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/com.apple.CodeSigningHelper.xpc/Contents/MacOS/com.apple.CodeSigningHelper",
+        "create_time": 1776240382.761233,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 68041,
+        "name": "accountsd",
+        "status": "running",
+        "exe": "/System/Library/Frameworks/Accounts.framework/Versions/A/Support/accountsd",
+        "create_time": 1775919085.499597,
+        "memory_mb": 11.109375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 72786,
+        "name": "DiskUnmountWatcher",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/KerberosHelper/Helpers/DiskUnmountWatcher",
+        "create_time": 1776351777.363288,
+        "memory_mb": 0.890625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 77008,
+        "name": "pingsender",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/pingsender",
+        "create_time": 1776978948.366497,
+        "memory_mb": 0.421875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 82950,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1775939690.318205,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 83243,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1775939691.406233,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 83248,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1775939691.412448,
+        "memory_mb": 0.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 83351,
+        "name": "containermanagerd",
+        "status": "running",
+        "exe": "/usr/libexec/containermanagerd",
+        "create_time": 1776357490.197263,
+        "memory_mb": 6.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 86353,
+        "name": "bluetoothd",
+        "status": "running",
+        "exe": "/usr/sbin/bluetoothd",
+        "create_time": 1777289165.670841,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 86395,
+        "name": "IOUserBluetoothS",
+        "status": "running",
+        "exe": "/System/Library/DriverExtensions/IOUserBluetoothSerialDriver.dext/IOUserBluetoothSerialDriver",
+        "create_time": 1777289177.714312,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 86718,
+        "name": "MobileDeviceUpdater",
+        "status": "running",
+        "exe": "/Library/Apple/System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/MobileDeviceUpdater.app/Contents/MacOS/MobileDeviceUpdater",
+        "create_time": 1776258519.350493,
+        "memory_mb": 3.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 91478,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776341729.677692,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 91774,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1776341730.903564,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 91779,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1776341730.910634,
+        "memory_mb": 0.171875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 92466,
+        "name": "ollama",
+        "status": "running",
+        "exe": "/Applications/Ollama.app/Contents/Resources/ollama",
+        "create_time": 1775943662.023437,
+        "memory_mb": 3.09375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 93499,
+        "name": "followupd",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Support/followupd",
+        "create_time": 1777300282.515031,
+        "memory_mb": 3.265625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 93500,
+        "name": "FollowUpUI",
+        "status": "running",
+        "exe": "/System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Resources/FollowUpUI.app/Contents/MacOS/FollowUpUI",
+        "create_time": 1777300282.549926,
+        "memory_mb": 6.84375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96092,
+        "name": "Google Chrome",
+        "status": "running",
+        "exe": "/private/var/folders/fr/x7d4p5gd4m5gfy3z_7h23k040000gn/X/com.google.Chrome.code_sign_clone/code_sign_clone.yD5cPW/Google Chrome.app.bundle/Contents/MacOS/Google Chrome",
+        "create_time": 1775986917.719504,
+        "memory_mb": 256.09375,
+        "cpu_percent": 26.2
+      },
+      {
+        "pid": 96102,
+        "name": "chrome_crashpad_handler",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/chrome_crashpad_handler",
+        "create_time": 1775986918.068295,
+        "memory_mb": 0.484375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96108,
+        "name": "Google Chrome Helper",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper.app/Contents/MacOS/Google Chrome Helper",
+        "create_time": 1775986918.54346,
+        "memory_mb": 60.65625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96109,
+        "name": "Google Chrome Helper",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper.app/Contents/MacOS/Google Chrome Helper",
+        "create_time": 1775986918.554635,
+        "memory_mb": 58.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96110,
+        "name": "Google Chrome Helper",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper.app/Contents/MacOS/Google Chrome Helper",
+        "create_time": 1775986918.67884,
+        "memory_mb": 9.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96127,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1775986919.278118,
+        "memory_mb": 43.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96130,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1775986919.475881,
+        "memory_mb": 196.78125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96133,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1775986919.688664,
+        "memory_mb": 7.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96135,
+        "name": "Google Chrome Helper (Renderer)",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)",
+        "create_time": 1775986919.848885,
+        "memory_mb": 70.703125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96147,
+        "name": "Google Chrome Helper",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper.app/Contents/MacOS/Google Chrome Helper",
+        "create_time": 1775986921.552622,
+        "memory_mb": 6.265625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 96148,
+        "name": "Google Chrome Helper",
+        "status": "running",
+        "exe": "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/146.0.7680.178/Helpers/Google Chrome Helper.app/Contents/MacOS/Google Chrome Helper",
+        "create_time": 1775986921.553242,
+        "memory_mb": 10.375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97385,
+        "name": "firefox",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/firefox",
+        "create_time": 1777450237.206472,
+        "memory_mb": 204.015625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97391,
+        "name": "crashhelper",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/crashhelper",
+        "create_time": 1777450240.674669,
+        "memory_mb": 0.28125,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97392,
+        "name": "Firefox GPU Helper",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/gpu-helper.app/Contents/MacOS/Firefox GPU Helper",
+        "create_time": 1777450240.98205,
+        "memory_mb": 23.890625,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97393,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777450241.087299,
+        "memory_mb": 4.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97394,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777450241.358835,
+        "memory_mb": 48.28125,
+        "cpu_percent": 1.0
+      },
+      {
+        "pid": 97395,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777450241.379834,
+        "memory_mb": 5.5,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97400,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777450243.482192,
+        "memory_mb": 76.25,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 97401,
+        "name": "plugin-container",
+        "status": "running",
+        "exe": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container",
+        "create_time": 1777450244.194358,
+        "memory_mb": 5.546875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 98074,
+        "name": "biometrickitd",
+        "status": "running",
+        "exe": "/usr/libexec/biometrickitd",
+        "create_time": 1777453287.715535,
+        "memory_mb": 0.0,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 98182,
+        "name": "opencode",
+        "status": "running",
+        "exe": "/Users/swannkechar/.opencode/bin/opencode",
+        "create_time": 1776757449.801432,
+        "memory_mb": 94.984375,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 99143,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1777459702.394501,
+        "memory_mb": 0.296875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 99437,
+        "name": "zsh",
+        "status": "running",
+        "exe": "/bin/zsh",
+        "create_time": 1777459704.684346,
+        "memory_mb": 0.1875,
+        "cpu_percent": 0.0
+      },
+      {
+        "pid": 99442,
+        "name": "gitstatusd-darwin-arm64",
+        "status": "running",
+        "exe": "/Users/swannkechar/.cache/gitstatus/gitstatusd-darwin-arm64",
+        "create_time": 1777459704.690885,
+        "memory_mb": 0.4375,
+        "cpu_percent": 0.0
+      }
+    ]
+  },
+  "fim_alerts": [],
+  "alert_count": 0
+}

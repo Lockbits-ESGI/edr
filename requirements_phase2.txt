@@ -1,0 +1,17 @@
+# Phase 1 dependencies (standalone agent)
+psutil>=5.9
+requests>=2.31
+watchdog>=3.0
+jinja2>=3.1
+pyyaml>=6.0
+python-dotenv>=1.0
+
+# Phase 2 dependencies (agent + server)
+fastapi>=0.104
+uvicorn>=0.24
+sqlalchemy>=2.0
+pydantic>=2.0
+pydantic-settings>=2.0
+httpx>=0.25
+pytest>=7.0
+pytest-cov>=4.0
