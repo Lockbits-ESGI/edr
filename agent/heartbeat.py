@@ -4,10 +4,9 @@ import logging
 import threading
 import time
 
-from shared.event_schema import MiniEDREvent, HeartbeatPayload
-from shared.utils import generate_uuid, utc_now_iso
+from shared.event_schema import HeartbeatPayload
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("miniedr.agent.heartbeat")
 
 
 class HeartbeatWorker(threading.Thread):
@@ -35,24 +34,19 @@ class HeartbeatWorker(threading.Thread):
         
         while not self.stop_event.is_set():
             try:
-                event = MiniEDREvent(
-                    event_id=generate_uuid(),
-                    agent_id=self.agent_id,
-                    hostname=self.hostname,
-                    platform=self.platform,
-                    event_type="heartbeat",
-                    severity="low",
-                    timestamp=utc_now_iso(),
-                    source="agent",
-                    payload=HeartbeatPayload(
-                        agent_version="1.0.0",
-                        status="online",
-                        ip=None,
-                        hostname=self.hostname
-                    ).dict(),
-                    tags=["heartbeat"]
-                )
-                self.sender.send_event(event)
+                payload = HeartbeatPayload(
+                    agent_version="1.0.0",
+                    status="online",
+                    ip=None,
+                    hostname=self.hostname
+                ).model_dump()
+                payload.update({
+                    "agent_id": self.agent_id,
+                    "hostname": self.hostname,
+                    "platform": self.platform,
+                    "agent_version": payload["agent_version"],
+                })
+                self.sender.send_heartbeat(payload)
             except Exception as e:
                 logger.error(f"Heartbeat send failed: {e}")
             

@@ -1,13 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 """PyInstaller spec for MiniEDR Server onefile binary."""
 
+from pathlib import Path
+
+project_root = Path(SPECPATH).parent
+
 a = Analysis(
-    ['server/main.py'],
-    pathex=[],
+    [str(project_root / 'server' / 'main.py')],
+    pathex=[str(project_root)],
     binaries=[],
     datas=[
-        ('server/.env.example', 'server'),
-        ('shared', 'shared'),
+        (str(project_root / 'server' / '.env.example'), 'server'),
     ],
     hiddenimports=[
         'fastapi',

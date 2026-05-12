@@ -41,6 +41,14 @@ def upsert_agent(
 def store_event(db: Session, event: MiniEDREvent) -> Event:
     """Store event in database with vt_status pending."""
     import json
+
+    upsert_agent(
+        db,
+        agent_id=event.agent_id,
+        hostname=event.hostname,
+        platform=event.platform,
+        version=str(event.payload.get("agent_version", "1.0.0")),
+    )
     
     event_record = Event(
         event_id=event.event_id,

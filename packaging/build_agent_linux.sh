@@ -2,9 +2,12 @@
 set -e
 
 echo "Building MiniEDR Agent for Linux..."
-pip install -q pyinstaller
+PYTHON_BIN="${PYTHON:-python3}"
+export PYINSTALLER_CONFIG_DIR="${PYINSTALLER_CONFIG_DIR:-./.pyinstaller}"
+mkdir -p "$PYINSTALLER_CONFIG_DIR"
+"$PYTHON_BIN" -m pip install -q pyinstaller
 
-pyinstaller packaging/pyinstaller_agent.spec --distpath dist/linux
+"$PYTHON_BIN" -m PyInstaller packaging/pyinstaller_agent.spec --distpath dist/linux
 
 chmod +x dist/linux/miniedr-agent
 

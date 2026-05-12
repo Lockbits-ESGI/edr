@@ -30,7 +30,6 @@ python main.py --mode scan
 #### Start Server
 
 ```bash
-cd server
 pip install -r requirements.txt
 cp .env.example .env
 # Edit .env: set VT_API_KEY, optional AUTH_TOKEN
@@ -45,12 +44,11 @@ uvicorn server.main:app --host 0.0.0.0 --port 8000
 #### Start Agent
 
 ```bash
-cd agent
-# Ensure server/config.yaml points to server URL
-python agent/main.py --mode monitor
+# From repository root.
+MINIEDR_SERVER_URL=http://127.0.0.1:8000 python -m agent.main --mode monitor
 
 # Or use binary (after build)
-./dist/linux/miniedr-agent --mode monitor
+MINIEDR_SERVER_URL=http://127.0.0.1:8000 ./dist/linux/miniedr-agent --mode monitor
 ```
 
 #### Build Single Binaries
@@ -93,18 +91,20 @@ curl http://localhost:8000/api/v1/stats
 curl -X POST http://localhost:8000/api/v1/events \
   -H "Content-Type: application/json" \
   -d '{
-    "event_id": "e1",
-    "agent_id": "a1",
+    "event_id": "11111111-1111-4111-8111-111111111111",
+    "agent_id": "22222222-2222-4222-8222-222222222222",
     "hostname": "myhost",
     "platform": "Linux",
     "event_type": "heartbeat",
     "severity": "low",
     "timestamp": "2026-05-07T10:00:00Z",
     "source": "agent",
-    "payload": {},
+    "payload": {"agent_version": "1.0.0", "status": "online", "hostname": "myhost"},
     "tags": []
   }'
 ```
+
+Deployment details for a GitHub clone, server build, and client agent execution are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 
@@ -442,4 +442,3 @@ Research conducted May 2026.
 All research complete. All patterns verified. All documentation prepared.
 
 Begin implementation following [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) and [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md).
-

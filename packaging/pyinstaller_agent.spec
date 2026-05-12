@@ -1,14 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 """PyInstaller spec for MiniEDR Agent onefile binary."""
 
+from pathlib import Path
+
+project_root = Path(SPECPATH).parent
+
 a = Analysis(
-    ['agent/main.py'],
-    pathex=[],
+    [str(project_root / 'agent' / 'main.py')],
+    pathex=[str(project_root)],
     binaries=[],
     datas=[
-        ('agent/config.yaml', 'agent'),
-        ('templates/report.html.j2', 'templates'),
-        ('shared', 'shared'),
+        (str(project_root / 'agent' / 'config.yaml'), 'agent'),
+        (str(project_root / 'templates' / 'report.html.j2'), 'templates'),
     ],
     hiddenimports=[
         'psutil',

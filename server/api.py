@@ -6,7 +6,9 @@ import json
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi.responses import HTMLResponse
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from server.database import get_db
@@ -61,7 +63,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
     uptime = time.time() - _startup_time
     
     try:
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db_ok = True
     except Exception:
         db_ok = False
@@ -79,7 +81,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
 async def ingest_event(
     event_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Query(None, alias="Authorization")
+    authorization: Optional[str] = Header(None)
 ) -> dict:
     """Receive and store single event from agent."""
     verify_auth(authorization)
@@ -109,7 +111,7 @@ async def ingest_event(
 async def ingest_batch(
     batch_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Query(None, alias="Authorization")
+    authorization: Optional[str] = Header(None)
 ) -> BatchIngestResponse:
     """Receive and store batch of events."""
     verify_auth(authorization)
@@ -147,7 +149,7 @@ async def ingest_batch(
 def heartbeat(
     hb_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Query(None, alias="Authorization")
+    authorization: Optional[str] = Header(None)
 ) -> dict:
     """Agent heartbeat and registration."""
     verify_auth(authorization)
@@ -288,8 +290,8 @@ def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
     return StatsResponse(**stats)
 
 
-@router.get("/dashboard")
-def dashboard() -> str:
+@router.get("/dashboard", response_class=HTMLResponse)
+def dashboard() -> HTMLResponse:
     """Serve inline HTML dashboard."""
     html = """
     <!DOCTYPE html>
@@ -456,4 +458,4 @@ def dashboard() -> str:
     </body>
     </html>
     """
-    return html
+    return HTMLResponse(content=html)

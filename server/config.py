@@ -1,6 +1,10 @@
 """Server configuration loaded from environment and config file."""
 
 from pydantic_settings import BaseSettings
+try:
+    from pydantic_settings import SettingsConfigDict
+except ImportError:  # pragma: no cover - pydantic-settings v1 fallback
+    SettingsConfigDict = None
 
 
 class Settings(BaseSettings):
@@ -16,9 +20,16 @@ class Settings(BaseSettings):
     MAX_EVENTS_PER_PAGE: int = 100
     WORKERS: int = 1
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    if SettingsConfigDict:
+        model_config = SettingsConfigDict(
+            env_file=(".env", "server/.env"),
+            case_sensitive=True,
+            extra="ignore",
+        )
+    else:
+        class Config:
+            env_file = (".env", "server/.env")
+            case_sensitive = True
 
 
 # Global settings instance (lazy loaded)

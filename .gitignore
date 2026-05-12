@@ -6,6 +6,11 @@ __pycache__/
 dist/
 build/
 .pytest_cache/
+.pyinstaller/
 reports/
+logs/
+queue/
+agent_id
+*.db
 *.log
 .DS_Store

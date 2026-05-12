@@ -10,7 +10,7 @@ import requests
 
 from shared.event_schema import MiniEDREvent
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("miniedr.agent.sender")
 
 
 class EventSender:
@@ -23,8 +23,8 @@ class EventSender:
         timeout: int = 10,
         queue_path: Optional[str] = None
     ):
-        self.server_url = server_url
-        self.auth_token = auth_token
+        self.server_url = server_url.rstrip("/")
+        self.auth_token = auth_token or None
         self.timeout = timeout
         self.queue_path = Path(queue_path) if queue_path else Path("queue") / "pending_events.jsonl"
     
@@ -35,8 +35,12 @@ class EventSender:
     def send_batch(self, events: list[MiniEDREvent]) -> bool:
         """Send batch of events."""
         return self._post("/api/v1/events/batch", {"events": [e.model_dump() for e in events]})
+
+    def send_heartbeat(self, payload: dict) -> bool:
+        """Send heartbeat/registration payload to the dedicated endpoint."""
+        return self._post("/api/v1/heartbeat", payload, queue_on_failure=False)
     
-    def _post(self, endpoint: str, payload: dict) -> bool:
+    def _post(self, endpoint: str, payload: dict, queue_on_failure: bool = True) -> bool:
         """POST with retry logic (3 attempts, backoff: 2s, 4s, 8s)."""
         for attempt in range(3):
             try:
@@ -63,7 +67,8 @@ class EventSender:
                 logger.debug(f"Retrying in {sleep_duration}s...")
                 time.sleep(sleep_duration)
         
-        self._queue_locally(payload)
+        if queue_on_failure:
+            self._queue_locally(payload)
         return False
     
     def _headers(self) -> dict:
@@ -78,8 +83,13 @@ class EventSender:
         try:
             self.queue_path.parent.mkdir(exist_ok=True, parents=True)
             with open(self.queue_path, "a") as f:
-                json.dump(payload, f)
-                f.write("\n")
+                if isinstance(payload.get("events"), list):
+                    for event in payload["events"]:
+                        json.dump(event, f)
+                        f.write("\n")
+                else:
+                    json.dump(payload, f)
+                    f.write("\n")
             logger.info(f"Event queued locally: {self.queue_path}")
         except Exception as e:
             logger.error(f"Failed to queue event locally: {e}")
@@ -121,7 +131,11 @@ class EventSender:
             with open(self.queue_path) as f:
                 for line in f:
                     if line.strip():
-                        events.append(json.loads(line))
+                        payload = json.loads(line)
+                        if isinstance(payload.get("events"), list):
+                            events.extend(payload["events"])
+                        else:
+                            events.append(payload)
         except Exception as e:
             logger.error(f"Failed to load queue: {e}")
         
