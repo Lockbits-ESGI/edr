@@ -1,17 +1,20 @@
 """Tests for FastAPI server endpoints."""
 
-import json
 import pytest
+import uuid
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from server.main import app
 from server.database import get_db
 from server.models import Base
-from shared.event_schema import MiniEDREvent
 
 TEST_SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+EVENT_ID = "11111111-1111-4111-8111-111111111111"
+AGENT_ID = "22222222-2222-4222-8222-222222222222"
+HEARTBEAT_PAYLOAD = {"agent_version": "1.0.0", "status": "online", "hostname": "test"}
 
 
 @pytest.fixture(scope="function")
@@ -20,6 +23,7 @@ def db_engine():
     engine = create_engine(
         TEST_SQLALCHEMY_DATABASE_URL,
         connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
     )
     Base.metadata.create_all(bind=engine)
     yield engine
@@ -70,15 +74,15 @@ class TestEventEndpoints:
     def test_post_single_event(self, client):
         """Test POST /api/v1/events with valid event."""
         event_data = {
-            "event_id": "e1",
-            "agent_id": "a1",
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
             "hostname": "test",
             "platform": "Linux",
             "event_type": "heartbeat",
             "severity": "low",
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
-            "payload": {},
+            "payload": HEARTBEAT_PAYLOAD,
             "tags": []
         }
         
@@ -86,22 +90,22 @@ class TestEventEndpoints:
         assert response.status_code == 201
         data = response.json()
         assert data["accepted"] is True
-        assert data["event_id"] == "e1"
+        assert data["event_id"] == EVENT_ID
     
     def test_post_batch_events(self, client):
         """Test POST /api/v1/events/batch."""
         batch_data = {
             "events": [
                 {
-                    "event_id": f"e{i}",
-                    "agent_id": "a1",
+                    "event_id": str(uuid.uuid4()),
+                    "agent_id": AGENT_ID,
                     "hostname": "test",
                     "platform": "Linux",
                     "event_type": "heartbeat",
                     "severity": "low",
                     "timestamp": "2026-05-07T10:00:00Z",
                     "source": "agent",
-                    "payload": {},
+                    "payload": HEARTBEAT_PAYLOAD,
                     "tags": []
                 }
                 for i in range(3)
@@ -117,15 +121,15 @@ class TestEventEndpoints:
     def test_get_events_list(self, client):
         """Test GET /api/v1/events."""
         event_data = {
-            "event_id": "e1",
-            "agent_id": "a1",
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
             "hostname": "test",
             "platform": "Linux",
             "event_type": "heartbeat",
             "severity": "low",
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
-            "payload": {},
+            "payload": HEARTBEAT_PAYLOAD,
             "tags": []
         }
         
@@ -135,29 +139,29 @@ class TestEventEndpoints:
         assert response.status_code == 200
         events = response.json()
         assert len(events) >= 1
-        assert events[0]["event_id"] == "e1"
+        assert events[0]["event_id"] == EVENT_ID
     
     def test_get_single_event(self, client):
         """Test GET /api/v1/events/{event_id}."""
         event_data = {
-            "event_id": "e1",
-            "agent_id": "a1",
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
             "hostname": "test",
             "platform": "Linux",
             "event_type": "heartbeat",
             "severity": "low",
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
-            "payload": {},
+            "payload": HEARTBEAT_PAYLOAD,
             "tags": []
         }
         
         client.post("/api/v1/events", json=event_data)
         
-        response = client.get("/api/v1/events/e1")
+        response = client.get(f"/api/v1/events/{EVENT_ID}")
         assert response.status_code == 200
         event = response.json()
-        assert event["event_id"] == "e1"
+        assert event["event_id"] == EVENT_ID
     
     def test_get_nonexistent_event(self, client):
         """Test GET nonexistent event returns 404."""
