@@ -31,6 +31,44 @@ _startup_time = time.time()
 _vt_worker: Optional[vt_worker.VTWorker] = None
 
 
+def _extract_event_view_fields(event_type: str, platform_name: str, payload: dict, tags: list[str]) -> dict:
+    """Build derived event fields for API consumers and dashboard views."""
+    filepath = None
+    event_action = None
+    suspicious_file = False
+
+    if isinstance(payload, dict):
+        filepath = payload.get("filepath")
+        event_action = payload.get("event_action")
+
+    # Simple first-pass suspicious heuristics for FIM and scan events.
+    suspicious_suffixes = (
+        ".exe", ".dll", ".bat", ".ps1", ".vbs", ".js", ".jse", ".wsf", ".scr",
+        ".dmg", ".pkg", ".app", ".command", ".sh",
+    )
+    suspicious_path_markers = (
+        "/tmp/", "/var/tmp/", "/private/tmp/", "\\temp\\", "\\appdata\\local\\temp\\",
+        "startup", "launchagents", "launchdaemons",
+    )
+
+    if isinstance(filepath, str) and filepath:
+        lower_path = filepath.lower()
+        suspicious_file = lower_path.endswith(suspicious_suffixes) or any(
+            marker in lower_path for marker in suspicious_path_markers
+        )
+
+    if event_type == "fim" and isinstance(event_action, str):
+        if event_action in {"created", "moved"} and any(t in tags for t in ["created", "moved"]):
+            suspicious_file = suspicious_file or True
+
+    return {
+        "os": platform_name,
+        "event_action": event_action,
+        "filepath": filepath,
+        "suspicious_file": suspicious_file,
+    }
+
+
 def get_vt_worker() -> Optional[vt_worker.VTWorker]:
     """Get VirusTotal worker instance."""
     global _vt_worker
@@ -205,16 +243,18 @@ def list_events(
             severity=e.severity,
             source=e.source,
             timestamp=e.timestamp,
-            payload=json.loads(e.payload_json),
-            tags=json.loads(e.tags_json),
+            payload=payload,
+            tags=tags,
             vt_status=e.vt_status,
             vt_malicious=e.vt_malicious,
             vt_suspicious=e.vt_suspicious,
             vt_undetected=e.vt_undetected,
             vt_total=e.vt_total,
-            created_at=e.created_at
+            created_at=e.created_at,
+            **_extract_event_view_fields(e.event_type, e.platform, payload, tags),
         )
         for e in events
+        for payload, tags in [(json.loads(e.payload_json), json.loads(e.tags_json))]
     ]
 
 
@@ -225,6 +265,9 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
     
+    payload = json.loads(event.payload_json)
+    tags = json.loads(event.tags_json)
+
     return EventResponse(
         event_id=event.event_id,
         agent_id=event.agent_id,
@@ -234,14 +277,15 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
         severity=event.severity,
         source=event.source,
         timestamp=event.timestamp,
-        payload=json.loads(event.payload_json),
-        tags=json.loads(event.tags_json),
+        payload=payload,
+        tags=tags,
         vt_status=event.vt_status,
         vt_malicious=event.vt_malicious,
         vt_suspicious=event.vt_suspicious,
         vt_undetected=event.vt_undetected,
         vt_total=event.vt_total,
-        created_at=event.created_at
+        created_at=event.created_at,
+        **_extract_event_view_fields(event.event_type, event.platform, payload, tags),
     )
 
 
@@ -403,7 +447,11 @@ def dashboard() -> HTMLResponse:
                         <th>Timestamp</th>
                         <th>Agent</th>
                         <th>Hostname</th>
+                        <th>OS</th>
                         <th>Type</th>
+                        <th>Action</th>
+                        <th>Suspicious File</th>
+                        <th>Filepath</th>
                         <th>Severity</th>
                         <th>Status</th>
                     </tr>
@@ -435,13 +483,20 @@ def dashboard() -> HTMLResponse:
                         const row = document.createElement('tr');
                         const ts = new Date(event.timestamp).toLocaleString();
                         const severityClass = `severity-${event.severity}`;
-                        const statusClass = `severity-${event.severity}`;
+                        const suspiciousLabel = event.suspicious_file ? 'yes' : 'no';
+                        const suspiciousColor = event.suspicious_file ? '#f44336' : '#4caf50';
+                        const action = event.event_action || '-';
+                        const filepath = event.filepath || '-';
                         
                         row.innerHTML = `
                             <td>${ts}</td>
                             <td>${event.agent_id.substring(0, 8)}</td>
                             <td>${event.hostname}</td>
+                            <td>${event.os || event.platform}</td>
                             <td>${event.event_type}</td>
+                            <td>${action}</td>
+                            <td style="color:${suspiciousColor}; font-weight:600;">${suspiciousLabel}</td>
+                            <td>${filepath}</td>
                             <td class="${severityClass}">${event.severity}</td>
                             <td>${event.vt_status}</td>
                         `;

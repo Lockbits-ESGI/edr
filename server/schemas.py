@@ -19,6 +19,10 @@ class EventResponse(BaseModel):
     timestamp: datetime
     payload: dict
     tags: List[str]
+    os: str
+    event_action: Optional[str] = None
+    filepath: Optional[str] = None
+    suspicious_file: bool = False
     vt_status: str
     vt_malicious: int = 0
     vt_suspicious: int = 0
