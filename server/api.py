@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from server.database import get_db
 from server.config import get_settings
+from server.ratelimit import limiter
 from server.schemas import (
     EventResponse,
     AgentResponse,
@@ -21,7 +22,6 @@ from server.schemas import (
     BatchIngestResponse
 )
 from server import storage, vt_worker
-from server.main import limiter
 from shared.event_schema import MiniEDREvent
 
 logger = logging.getLogger(__name__)
