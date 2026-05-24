@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     VT_ENABLED: bool = True
     VT_API_KEY: str | None = None
     LOG_LEVEL: str = "INFO"
+    CORS_ORIGINS: str = "*"  # comma-separated list of allowed origins, or "*" for all
     MAX_EVENTS_PER_PAGE: int = 100
     WORKERS: int = 1
 
