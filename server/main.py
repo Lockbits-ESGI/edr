@@ -22,6 +22,7 @@ async def lifespan(app: FastAPI):
     logger.info(f"Database: {settings.DATABASE_URL}")
     logger.info(f"VT enrichment: {'enabled' if settings.VT_ENABLED else 'disabled'}")
     logger.info(f"Authentication: {'required' if settings.AUTH_TOKEN else 'disabled'}")
+    logger.info(f"CORS origins: {settings.CORS_ORIGINS}")
     
     init_db()
     logger.info("Database initialized")
@@ -40,10 +41,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS middleware (disabled by default for security)
+# CORS middleware — restrict origins in production via CORS_ORIGINS env var
+# In development, keep "*" (all origins). In production, set a comma-separated
+# list of allowed origins (e.g. "https://app.example.com,https://admin.example.com").
+_cors_origins = settings.CORS_ORIGINS.strip()
+if _cors_origins == "*":
+    allow_origins = ["*"]
+else:
+    allow_origins = [o.strip() for o in _cors_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all in development
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
