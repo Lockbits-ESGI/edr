@@ -258,7 +258,8 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
 @limiter.limit("30/minute")
 def list_agents(
     request: Request,
-    db: Session = Depends(get_db) -> list[AgentResponse]:
+    db: Session = Depends(get_db)
+) -> list[AgentResponse]:
     """List all registered agents."""
     agents = storage.get_agents(db)
     return [
