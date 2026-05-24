@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -81,6 +81,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
 @router.post("/api/v1/events", status_code=201)
 @limiter.limit("60/minute")
 async def ingest_event(
+    request: Request,
     event_data: dict,
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(None)
@@ -112,6 +113,7 @@ async def ingest_event(
 @router.post("/api/v1/events/batch", status_code=201, response_model=BatchIngestResponse)
 @limiter.limit("30/minute")
 async def ingest_batch(
+    request: Request,
     batch_data: dict,
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(None)
@@ -151,6 +153,7 @@ async def ingest_batch(
 @router.post("/api/v1/heartbeat")
 @limiter.limit("30/minute")
 def heartbeat(
+    request: Request,
     hb_data: dict,
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(None)
@@ -179,6 +182,7 @@ def heartbeat(
 @router.get("/api/v1/events", response_model=list[EventResponse])
 @limiter.limit("60/minute")
 def list_events(
+    request: Request,
     agent_id: Optional[str] = None,
     event_type: Optional[str] = None,
     severity: Optional[str] = None,
@@ -252,7 +256,9 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
 
 @router.get("/api/v1/agents", response_model=list[AgentResponse])
 @limiter.limit("30/minute")
-def list_agents(db: Session = Depends(get_db)) -> list[AgentResponse]:
+def list_agents(
+    request: Request,
+    db: Session = Depends(get_db) -> list[AgentResponse]:
     """List all registered agents."""
     agents = storage.get_agents(db)
     return [
@@ -291,7 +297,10 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
 
 @router.get("/api/v1/stats", response_model=StatsResponse)
 @limiter.limit("30/minute")
-def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
+def get_stats(
+    request: Request,
+    db: Session = Depends(get_db)
+) -> StatsResponse:
     """Get server statistics."""
     stats = storage.get_stats(db)
     return StatsResponse(**stats)
@@ -299,7 +308,9 @@ def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
 
 @router.get("/dashboard", response_class=HTMLResponse)
 @limiter.limit("10/minute")
-def dashboard() -> HTMLResponse:
+def dashboard(
+    request: Request
+) -> HTMLResponse:
     """Serve inline HTML dashboard."""
     html = """
     <!DOCTYPE html>
