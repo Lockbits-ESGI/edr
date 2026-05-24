@@ -21,6 +21,7 @@ from server.schemas import (
     BatchIngestResponse
 )
 from server import storage, vt_worker
+from server.main import limiter
 from shared.event_schema import MiniEDREvent
 
 logger = logging.getLogger(__name__)
@@ -78,6 +79,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
 
 
 @router.post("/api/v1/events", status_code=201)
+@limiter.limit("60/minute")
 async def ingest_event(
     event_data: dict,
     db: Session = Depends(get_db),
@@ -108,6 +110,7 @@ async def ingest_event(
 
 
 @router.post("/api/v1/events/batch", status_code=201, response_model=BatchIngestResponse)
+@limiter.limit("30/minute")
 async def ingest_batch(
     batch_data: dict,
     db: Session = Depends(get_db),
@@ -146,6 +149,7 @@ async def ingest_batch(
 
 
 @router.post("/api/v1/heartbeat")
+@limiter.limit("30/minute")
 def heartbeat(
     hb_data: dict,
     db: Session = Depends(get_db),
@@ -173,6 +177,7 @@ def heartbeat(
 
 
 @router.get("/api/v1/events", response_model=list[EventResponse])
+@limiter.limit("60/minute")
 def list_events(
     agent_id: Optional[str] = None,
     event_type: Optional[str] = None,
@@ -246,6 +251,7 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
 
 
 @router.get("/api/v1/agents", response_model=list[AgentResponse])
+@limiter.limit("30/minute")
 def list_agents(db: Session = Depends(get_db)) -> list[AgentResponse]:
     """List all registered agents."""
     agents = storage.get_agents(db)
@@ -284,6 +290,7 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
 
 
 @router.get("/api/v1/stats", response_model=StatsResponse)
+@limiter.limit("30/minute")
 def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
     """Get server statistics."""
     stats = storage.get_stats(db)
@@ -291,6 +298,7 @@ def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
 
 
 @router.get("/dashboard", response_class=HTMLResponse)
+@limiter.limit("10/minute")
 def dashboard() -> HTMLResponse:
     """Serve inline HTML dashboard."""
     html = """
