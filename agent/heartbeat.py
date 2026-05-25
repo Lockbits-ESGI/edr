@@ -2,7 +2,6 @@
 
 import logging
 import threading
-import time
 
 from shared.event_schema import HeartbeatPayload
 

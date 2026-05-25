@@ -8,7 +8,6 @@ Main entry point. Supports two modes:
 """
 
 import argparse
-import logging
 import sys
 import time
 from pathlib import Path

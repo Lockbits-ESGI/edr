@@ -129,7 +129,7 @@ async def ingest_batch(
     for event_data in events:
         try:
             event = MiniEDREvent(**event_data)
-            stored = storage.store_event(db, event)
+            storage.store_event(db, event)
             accepted += 1
             
             # Schedule VT enrichment

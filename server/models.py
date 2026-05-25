@@ -1,7 +1,7 @@
 """SQLAlchemy ORM models for server persistence."""
 
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime, Integer, Float, Text, ForeignKey, Index, UniqueConstraint, create_engine
+from sqlalchemy import Column, String, DateTime, Integer, Text, ForeignKey, Index, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
