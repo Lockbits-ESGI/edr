@@ -85,7 +85,9 @@ def generate_html_report(
         template = env.get_template("report.html.j2")
 
         malicious_count = sum(1 for a in fim_alerts if a.get("event_type") == "created")
-        suspicious_count = sum(1 for a in fim_alerts if a.get("event_type") == "modified")
+        suspicious_count = sum(
+            1 for a in fim_alerts if a.get("event_type") == "modified"
+        )
 
         html_content = template.render(
             timestamp=datetime.now().isoformat(),

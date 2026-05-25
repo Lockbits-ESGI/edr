@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 class EventResponse(BaseModel):
     """Event response with all fields and VT enrichment status."""
-    
+
     event_id: str
     agent_id: str
     hostname: str
@@ -29,7 +29,7 @@ class EventResponse(BaseModel):
 
 class AgentResponse(BaseModel):
     """Agent registration and status response."""
-    
+
     agent_id: str
     hostname: str
     platform: str
@@ -42,7 +42,7 @@ class AgentResponse(BaseModel):
 
 class StatsResponse(BaseModel):
     """Server statistics response."""
-    
+
     total_events: int
     total_agents: int
     events_24h: int
@@ -51,7 +51,7 @@ class StatsResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response."""
-    
+
     status: str = "ok"
     version: str
     db_ok: bool
@@ -61,7 +61,7 @@ class HealthResponse(BaseModel):
 
 class BatchIngestResponse(BaseModel):
     """Batch event ingest response."""
-    
+
     accepted: int
     rejected: int
     errors: List[str] = Field(default_factory=list)

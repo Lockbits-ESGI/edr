@@ -12,14 +12,14 @@ def setup_logging(
     log_file: Optional[Path] = None,
 ) -> logging.Logger:
     """Setup cross-platform logging with file and console handlers.
-    
+
     File handler: DEBUG level with rotation (10MB max, 5 backups)
     Console handler: INFO level (user-facing)
-    
+
     Args:
         level: Log level for console output (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_file: Path to log file. If None, logs to console only.
-        
+
     Returns:
         Configured logger instance.
     """

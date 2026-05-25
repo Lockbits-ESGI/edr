@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 class VTResult(BaseModel):
     """VirusTotal analysis result."""
+
     malicious: int = 0
     suspicious: int = 0
     undetected: int = 0
@@ -26,7 +27,12 @@ class VTResult(BaseModel):
     @field_validator("*", mode="before")
     @classmethod
     def ensure_non_negative(cls, v: Any, info) -> int:
-        if info.field_name in {"malicious", "suspicious", "undetected", "total"} and isinstance(v, (int, float)):
+        if info.field_name in {
+            "malicious",
+            "suspicious",
+            "undetected",
+            "total",
+        } and isinstance(v, (int, float)):
             if v < 0:
                 raise ValueError(f"{info.field_name} must be non-negative")
             return int(v)
@@ -37,12 +43,15 @@ class VTResult(BaseModel):
         """Ensure total equals sum of malicious + suspicious + undetected."""
         computed = self.malicious + self.suspicious + self.undetected
         if self.total != computed:
-            raise ValueError(f"total ({self.total}) must equal malicious+suspicious+undetected ({computed})")
+            raise ValueError(
+                f"total ({self.total}) must equal malicious+suspicious+undetected ({computed})"
+            )
         return self
 
 
 class FIMPayload(BaseModel):
     """File Integrity Monitoring event payload."""
+
     filepath: str
     event_action: str  # created | modified | deleted
     hash_md5: Optional[str] = None
@@ -67,6 +76,7 @@ class FIMPayload(BaseModel):
 
 class ProcessSnapshot(BaseModel):
     """Process snapshot data."""
+
     pid: int
     name: str
     cpu_percent: float = Field(ge=0.0, le=100.0)
@@ -76,6 +86,7 @@ class ProcessSnapshot(BaseModel):
 
 class NetworkSnapshot(BaseModel):
     """Network connection snapshot data."""
+
     laddr: str  # local IP:port
     raddr: str  # remote IP:port
     status: str
@@ -84,6 +95,7 @@ class NetworkSnapshot(BaseModel):
 
 class SystemInfo(BaseModel):
     """System information payload."""
+
     os: str
     hostname: str
     kernel: str
@@ -93,6 +105,7 @@ class SystemInfo(BaseModel):
 
 class HeartbeatPayload(BaseModel):
     """Heartbeat event payload."""
+
     agent_version: str
     status: str = "online"  # online | offline
     ip: Optional[str] = None
@@ -109,6 +122,7 @@ class HeartbeatPayload(BaseModel):
 
 class MiniEDREvent(BaseModel):
     """Top-level event envelope for agent-server communication."""
+
     event_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     agent_id: str
     hostname: str

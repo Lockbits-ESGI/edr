@@ -51,7 +51,11 @@ class VirusTotalChecker:
 
             if response.status_code == 200:
                 data = response.json()
-                stats = data.get("data", {}).get("attributes", {}).get("last_analysis_stats", {})
+                stats = (
+                    data.get("data", {})
+                    .get("attributes", {})
+                    .get("last_analysis_stats", {})
+                )
                 return {
                     "detection_count": stats.get("malicious", 0),
                     "harmless_count": stats.get("harmless", 0),
@@ -61,7 +65,12 @@ class VirusTotalChecker:
 
             elif response.status_code == 404:
                 logger.debug(f"Hash not found on VirusTotal: {file_hash}")
-                return {"detection_count": 0, "harmless_count": 0, "undetected_count": 0, "suspicious_count": 0}
+                return {
+                    "detection_count": 0,
+                    "harmless_count": 0,
+                    "undetected_count": 0,
+                    "suspicious_count": 0,
+                }
 
             elif response.status_code == 429:
                 logger.warning("VirusTotal rate limit exceeded (429)")

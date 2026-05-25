@@ -25,13 +25,13 @@ async def lifespan(app: FastAPI):
     logger.info(f"VT enrichment: {'enabled' if settings.VT_ENABLED else 'disabled'}")
     logger.info(f"Authentication: {'required' if settings.AUTH_TOKEN else 'disabled'}")
     logger.info(f"CORS origins: {settings.CORS_ORIGINS}")
-    
+
     init_db()
     logger.info("Database initialized")
     logger.info("=" * 60)
-    
+
     yield
-    
+
     # Shutdown
     logger.info("MiniEDR Server shutting down")
 
@@ -40,7 +40,7 @@ app = FastAPI(
     title="MiniEDR Server",
     description="Central event collection and analysis server",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # CORS middleware — restrict origins in production via CORS_ORIGINS env var
@@ -69,12 +69,12 @@ app.include_router(router)
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     logger.info(f"Starting server on {settings.SERVER_HOST}:{settings.SERVER_PORT}")
     uvicorn.run(
         "server.main:app",
         host=settings.SERVER_HOST,
         port=settings.SERVER_PORT,
         workers=settings.WORKERS,
-        log_level=settings.LOG_LEVEL.lower()
+        log_level=settings.LOG_LEVEL.lower(),
     )

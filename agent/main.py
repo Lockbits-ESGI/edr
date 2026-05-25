@@ -45,18 +45,26 @@ logger = logging.getLogger("miniedr.agent")
 
 class MiniEDRAgent:
     """Agent that collects events and sends to server."""
-    
+
     def __init__(self, config_path: Path, output_dir: Path):
         self.config_path = config_path
         self.output_dir = output_dir
         self.config = _load_agent_config(config_path)
-        agent_id_file = os.environ.get("MINIEDR_AGENT_ID_FILE") or self.config.get("agent", {}).get("id_file")
-        self.agent_id = load_agent_id(Path(agent_id_file) if agent_id_file else get_config_dir() / "agent_id")
-        
+        agent_id_file = os.environ.get("MINIEDR_AGENT_ID_FILE") or self.config.get(
+            "agent", {}
+        ).get("id_file")
+        self.agent_id = load_agent_id(
+            Path(agent_id_file) if agent_id_file else get_config_dir() / "agent_id"
+        )
+
         server_config = self.config.get("server", {})
         queue_config = self.config.get("queue", {})
-        server_url = os.environ.get("MINIEDR_SERVER_URL") or server_config.get("url", "http://127.0.0.1:8000")
-        auth_token = os.environ.get("MINIEDR_AUTH_TOKEN") or server_config.get("auth_token")
+        server_url = os.environ.get("MINIEDR_SERVER_URL") or server_config.get(
+            "url", "http://127.0.0.1:8000"
+        )
+        auth_token = os.environ.get("MINIEDR_AUTH_TOKEN") or server_config.get(
+            "auth_token"
+        )
         queue_path = queue_config.get("path")
         if not queue_path:
             queue_path = str(get_queue_file())
@@ -65,18 +73,18 @@ class MiniEDRAgent:
             server_url=server_url,
             auth_token=auth_token,
             timeout=server_config.get("timeout", 10),
-            queue_path=queue_path
+            queue_path=queue_path,
         )
-        
+
         self.heartbeat_worker: Optional[HeartbeatWorker] = None
         self.observer = None
-    
+
     def create_event(
         self,
         event_type: str,
         severity: str,
         payload: dict,
-        tags: list[str] | None = None
+        tags: list[str] | None = None,
     ) -> MiniEDREvent:
         """Create MiniEDREvent with standard fields."""
         return MiniEDREvent(
@@ -89,27 +97,27 @@ class MiniEDRAgent:
             timestamp=utc_now_iso(),
             source="agent",
             payload=payload,
-            tags=tags or []
+            tags=tags or [],
         )
-    
+
     def run_scan_mode(self) -> int:
         """Run single snapshot mode."""
         logger.info("Running in SCAN mode (single snapshot)")
-        
+
         try:
             snapshot = get_system_snapshot()
             snapshot_dict = snapshot_to_dict(snapshot)
-            
+
             event = self.create_event(
                 event_type="scan",
                 severity="low",
                 payload=snapshot_dict,
-                tags=["scan", "snapshot"]
+                tags=["scan", "snapshot"],
             )
-            
+
             if self.sender.send_batch([event]):
                 self.sender.flush_queue()
-            
+
             if self.config.get("agent", {}).get("generate_local_report", False):
                 generate_json_report(snapshot_dict, [], self.output_dir / "report.json")
                 generate_html_report(
@@ -119,44 +127,48 @@ class MiniEDRAgent:
                     template_dir=resource_path("templates"),
                 )
                 logger.info(f"Reports generated in {self.output_dir}")
-            
+
             return 0
-        
+
         except Exception as e:
             logger.error(f"Scan mode failed: {e}", exc_info=True)
             return 1
-    
+
     def run_monitor_mode(self) -> int:
         """Run continuous monitoring mode with FIM and heartbeat."""
         logger.info("Running in MONITOR mode (continuous FIM)")
-        
+
         try:
             fim_config = self.config.get("fim", {})
-            watch_dirs = fim_config.get("watch_dirs", {}).get(self._platform_config_key(), [])
-            
+            watch_dirs = fim_config.get("watch_dirs", {}).get(
+                self._platform_config_key(), []
+            )
+
             if not watch_dirs:
                 logger.warning(f"No watch directories configured for {sys.platform}")
                 return 1
-            
+
             logger.info(f"Watching directories: {watch_dirs}")
-            
+
             self.observer, alerts, alerts_lock = start_fim_monitor(watch_dirs)
-            
+
             self.heartbeat_worker = HeartbeatWorker(
                 sender=self.sender,
                 agent_id=self.agent_id,
                 hostname=socket.gethostname(),
                 platform=platform.system(),
-                interval_s=self.config.get("agent", {}).get("heartbeat_interval", 300)
+                interval_s=self.config.get("agent", {}).get("heartbeat_interval", 300),
             )
             self.heartbeat_worker.start()
-            
-            snapshot_interval = self.config.get("agent", {}).get("snapshot_interval", 600)
+
+            snapshot_interval = self.config.get("agent", {}).get(
+                "snapshot_interval", 600
+            )
             last_snapshot = time.time()
             last_flush = time.time()
-            
+
             logger.info("Monitor mode started. Press Ctrl+C to stop.")
-            
+
             while True:
                 time.sleep(1)
 
@@ -164,7 +176,7 @@ class MiniEDRAgent:
                 if fim_alerts:
                     events = [self._fim_alert_to_event(alert) for alert in fim_alerts]
                     self.sender.send_batch(events)
-                
+
                 if time.time() - last_snapshot >= snapshot_interval:
                     try:
                         snapshot = get_system_snapshot()
@@ -172,37 +184,37 @@ class MiniEDRAgent:
                             event_type="system_info",
                             severity="low",
                             payload=snapshot_to_dict(snapshot),
-                            tags=["monitor", "snapshot"]
+                            tags=["monitor", "snapshot"],
                         )
                         self.sender.send_event(event)
                         last_snapshot = time.time()
                     except Exception as e:
                         logger.error(f"Snapshot send failed: {e}")
-                
+
                 if time.time() - last_flush >= 60:
                     self.sender.flush_queue()
                     last_flush = time.time()
-        
+
         except KeyboardInterrupt:
             logger.info("Received interrupt signal")
-        
+
         except Exception as e:
             logger.error(f"Monitor mode error: {e}", exc_info=True)
             return 1
-        
+
         finally:
             self.stop()
-        
+
         return 0
-    
+
     def stop(self) -> None:
         """Stop monitoring and cleanup."""
         logger.info("Stopping agent...")
-        
+
         if self.heartbeat_worker:
             self.heartbeat_worker.stop()
             self.heartbeat_worker.join(timeout=5)
-        
+
         self.sender.flush_queue()
         if self.observer:
             stop_fim_monitor(self.observer)
@@ -301,7 +313,7 @@ def main() -> int:
         default=Path("./reports"),
         help="Output directory for reports",
     )
-    
+
     args = parser.parse_args()
 
     config_path = args.config or _default_config_path()
@@ -317,7 +329,7 @@ def main() -> int:
     )
 
     agent = MiniEDRAgent(config_path, args.output_dir)
-    
+
     if args.mode == "scan":
         return agent.run_scan_mode()
     else:

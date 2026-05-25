@@ -103,8 +103,12 @@ def main() -> int:
                 final_alerts = get_alerts(alerts, lock)
                 snapshot = get_system_snapshot()
                 snapshot_dict = snapshot_to_dict(snapshot)
-                generate_json_report(snapshot_dict, final_alerts, args.output_dir / "report.json")
-                generate_html_report(snapshot_dict, final_alerts, args.output_dir / "report.html")
+                generate_json_report(
+                    snapshot_dict, final_alerts, args.output_dir / "report.json"
+                )
+                generate_html_report(
+                    snapshot_dict, final_alerts, args.output_dir / "report.html"
+                )
                 logger.info(f"Final reports generated in {args.output_dir}")
                 return 0
 

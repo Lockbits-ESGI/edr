@@ -10,7 +10,7 @@ from typing import Optional
 
 def resource_path(relative_path: str) -> Path:
     """Get path to resource file, compatible with PyInstaller onefile packaging.
-    
+
     When running as PyInstaller executable, resources are in sys._MEIPASS.
     When running as script, resources are relative to __file__.
     """
@@ -18,13 +18,13 @@ def resource_path(relative_path: str) -> Path:
         base = Path(sys._MEIPASS)
     else:
         base = Path(__file__).parent.parent
-    
+
     return base / relative_path
 
 
 def get_config_dir(app_name: str = "miniedr") -> Path:
     """Get platform-specific config directory for application.
-    
+
     Windows: %APPDATA%/miniedr
     POSIX: $XDG_CONFIG_HOME/miniedr or ~/.config/miniedr
     """
@@ -33,11 +33,11 @@ def get_config_dir(app_name: str = "miniedr") -> Path:
         if appdata:
             return Path(appdata) / app_name
         return Path.home() / "AppData" / "Roaming" / app_name
-    
+
     xdg = os.environ.get("XDG_CONFIG_HOME")
     if xdg:
         return Path(xdg) / app_name
-    
+
     return Path.home() / ".config" / app_name
 
 
@@ -48,11 +48,11 @@ def get_cache_dir(app_name: str = "miniedr") -> Path:
         if localappdata:
             return Path(localappdata) / app_name / "cache"
         return Path.home() / "AppData" / "Local" / app_name / "cache"
-    
+
     xdg = os.environ.get("XDG_CACHE_HOME")
     if xdg:
         return Path(xdg) / app_name
-    
+
     return Path.home() / ".cache" / app_name
 
 
@@ -79,12 +79,12 @@ def get_queue_file(config_dir: Optional[Path] = None) -> Path:
 def load_agent_id(agent_id_file: Path) -> str:
     """Load or create agent ID from file."""
     agent_id_file = Path(agent_id_file)
-    
+
     if agent_id_file.exists():
         agent_id = agent_id_file.read_text().strip()
         if agent_id:
             return agent_id
-    
+
     agent_id_file.parent.mkdir(parents=True, exist_ok=True)
     new_id = generate_uuid()
     agent_id_file.write_text(new_id)

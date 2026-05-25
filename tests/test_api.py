@@ -57,7 +57,7 @@ def client(override_get_db):
 
 class TestHealthEndpoint:
     """Test /health endpoint."""
-    
+
     def test_health_check(self, client):
         """Test health check returns 200."""
         response = client.get("/health")
@@ -70,7 +70,7 @@ class TestHealthEndpoint:
 
 class TestEventEndpoints:
     """Test event ingestion endpoints."""
-    
+
     def test_post_single_event(self, client):
         """Test POST /api/v1/events with valid event."""
         event_data = {
@@ -83,15 +83,15 @@ class TestEventEndpoints:
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
             "payload": HEARTBEAT_PAYLOAD,
-            "tags": []
+            "tags": [],
         }
-        
+
         response = client.post("/api/v1/events", json=event_data)
         assert response.status_code == 201
         data = response.json()
         assert data["accepted"] is True
         assert data["event_id"] == EVENT_ID
-    
+
     def test_post_batch_events(self, client):
         """Test POST /api/v1/events/batch."""
         batch_data = {
@@ -106,18 +106,18 @@ class TestEventEndpoints:
                     "timestamp": "2026-05-07T10:00:00Z",
                     "source": "agent",
                     "payload": HEARTBEAT_PAYLOAD,
-                    "tags": []
+                    "tags": [],
                 }
                 for i in range(3)
             ]
         }
-        
+
         response = client.post("/api/v1/events/batch", json=batch_data)
         assert response.status_code == 201
         data = response.json()
         assert data["accepted"] == 3
         assert data["rejected"] == 0
-    
+
     def test_get_events_list(self, client):
         """Test GET /api/v1/events."""
         event_data = {
@@ -130,17 +130,17 @@ class TestEventEndpoints:
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
             "payload": HEARTBEAT_PAYLOAD,
-            "tags": []
+            "tags": [],
         }
-        
+
         client.post("/api/v1/events", json=event_data)
-        
+
         response = client.get("/api/v1/events")
         assert response.status_code == 200
         events = response.json()
         assert len(events) >= 1
         assert events[0]["event_id"] == EVENT_ID
-    
+
     def test_get_single_event(self, client):
         """Test GET /api/v1/events/{event_id}."""
         event_data = {
@@ -153,16 +153,16 @@ class TestEventEndpoints:
             "timestamp": "2026-05-07T10:00:00Z",
             "source": "agent",
             "payload": HEARTBEAT_PAYLOAD,
-            "tags": []
+            "tags": [],
         }
-        
+
         client.post("/api/v1/events", json=event_data)
-        
+
         response = client.get(f"/api/v1/events/{EVENT_ID}")
         assert response.status_code == 200
         event = response.json()
         assert event["event_id"] == EVENT_ID
-    
+
     def test_get_nonexistent_event(self, client):
         """Test GET nonexistent event returns 404."""
         response = client.get("/api/v1/events/nonexistent")
@@ -171,7 +171,7 @@ class TestEventEndpoints:
 
 class TestAgentEndpoints:
     """Test agent management endpoints."""
-    
+
     def test_post_heartbeat(self, client):
         """Test POST /api/v1/heartbeat."""
         hb_data = {
@@ -179,15 +179,15 @@ class TestAgentEndpoints:
             "hostname": "test",
             "platform": "Linux",
             "agent_version": "1.0.0",
-            "status": "online"
+            "status": "online",
         }
-        
+
         response = client.post("/api/v1/heartbeat", json=hb_data)
         assert response.status_code == 200
         data = response.json()
         assert data["acknowledged"] is True
         assert "server_time" in data
-    
+
     def test_get_agents(self, client):
         """Test GET /api/v1/agents."""
         hb_data = {
@@ -195,17 +195,17 @@ class TestAgentEndpoints:
             "hostname": "test",
             "platform": "Linux",
             "agent_version": "1.0.0",
-            "status": "online"
+            "status": "online",
         }
-        
+
         client.post("/api/v1/heartbeat", json=hb_data)
-        
+
         response = client.get("/api/v1/agents")
         assert response.status_code == 200
         agents = response.json()
         assert len(agents) >= 1
         assert agents[0]["agent_id"] == "a1"
-    
+
     def test_get_single_agent(self, client):
         """Test GET /api/v1/agents/{agent_id}."""
         hb_data = {
@@ -213,11 +213,11 @@ class TestAgentEndpoints:
             "hostname": "test",
             "platform": "Linux",
             "agent_version": "1.0.0",
-            "status": "online"
+            "status": "online",
         }
-        
+
         client.post("/api/v1/heartbeat", json=hb_data)
-        
+
         response = client.get("/api/v1/agents/a1")
         assert response.status_code == 200
         agent = response.json()
@@ -226,7 +226,7 @@ class TestAgentEndpoints:
 
 class TestStatsEndpoint:
     """Test statistics endpoint."""
-    
+
     def test_get_stats(self, client):
         """Test GET /api/v1/stats."""
         response = client.get("/api/v1/stats")
@@ -240,7 +240,7 @@ class TestStatsEndpoint:
 
 class TestDashboard:
     """Test dashboard endpoint."""
-    
+
     def test_get_dashboard(self, client):
         """Test GET /dashboard returns HTML."""
         response = client.get("/dashboard")
