@@ -1,6 +1,7 @@
 """Unit tests for vt_checker.py with mocked API responses."""
 
-from unittest.mock import Mock, patch, MagicMock
+from pathlib import Path
+from unittest.mock import Mock, patch
 import time
 
 import pytest
@@ -153,5 +154,3 @@ class TestVirusTotalChecker:
             assert result is None
 
 
-# Import Path for upload_file tests
-from pathlib import Path

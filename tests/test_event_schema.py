@@ -2,7 +2,6 @@
 
 import pytest
 import uuid
-from datetime import datetime
 from pydantic import ValidationError
 
 from shared.event_schema import (
@@ -10,7 +9,6 @@ from shared.event_schema import (
     VTResult,
     FIMPayload,
     HeartbeatPayload,
-    SystemInfo,
 )
 
 

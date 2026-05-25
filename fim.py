@@ -4,7 +4,7 @@ import logging
 import threading
 from collections import deque
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
