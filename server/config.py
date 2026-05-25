@@ -1,6 +1,7 @@
 """Server configuration loaded from environment and config file."""
 
 from pydantic_settings import BaseSettings
+
 try:
     from pydantic_settings import SettingsConfigDict
 except ImportError:  # pragma: no cover - pydantic-settings v1 fallback
@@ -28,6 +29,7 @@ class Settings(BaseSettings):
             extra="ignore",
         )
     else:
+
         class Config:
             env_file = (".env", "server/.env")
             case_sensitive = True

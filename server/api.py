@@ -19,7 +19,7 @@ from server.schemas import (
     AgentResponse,
     StatsResponse,
     HealthResponse,
-    BatchIngestResponse
+    BatchIngestResponse,
 )
 from server import storage, vt_worker
 from shared.event_schema import MiniEDREvent
@@ -44,17 +44,17 @@ def verify_auth(authorization: Optional[str] = None) -> bool:
     """Verify Bearer token if AUTH_TOKEN is configured."""
     if not settings.AUTH_TOKEN:
         return True
-    
+
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing authorization header")
-    
+
     try:
         scheme, token = authorization.split()
         if scheme.lower() != "bearer" or token != settings.AUTH_TOKEN:
             raise HTTPException(status_code=401, detail="Invalid token")
     except ValueError:
         raise HTTPException(status_code=401, detail="Invalid authorization format")
-    
+
     return True
 
 
@@ -62,19 +62,19 @@ def verify_auth(authorization: Optional[str] = None) -> bool:
 def health_check(db: Session = Depends(get_db)) -> HealthResponse:
     """Health check endpoint."""
     uptime = time.time() - _startup_time
-    
+
     try:
         db.execute(text("SELECT 1"))
         db_ok = True
     except Exception:
         db_ok = False
-    
+
     return HealthResponse(
         status="ok",
         version="1.0.0",
         db_ok=db_ok,
         uptime=uptime,
-        timestamp=datetime.utcnow()
+        timestamp=datetime.utcnow(),
     )
 
 
@@ -84,15 +84,15 @@ async def ingest_event(
     request: Request,
     event_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
 ) -> dict:
     """Receive and store single event from agent."""
     verify_auth(authorization)
-    
+
     try:
         event = MiniEDREvent(**event_data)
         stored = storage.store_event(db, event)
-        
+
         # Schedule VT enrichment if hash present
         if settings.VT_ENABLED:
             payload = event.payload
@@ -100,38 +100,43 @@ async def ingest_event(
                 vt = get_vt_worker()
                 if vt:
                     import asyncio
-                    asyncio.create_task(vt.enrich_event(db, event.event_id, payload.get("hash_sha256")))
-        
+
+                    asyncio.create_task(
+                        vt.enrich_event(db, event.event_id, payload.get("hash_sha256"))
+                    )
+
         logger.info(f"Event stored: {event.event_id} from {event.agent_id}")
         return {"event_id": stored.event_id, "accepted": True}
-    
+
     except Exception as e:
         logger.error(f"Event ingest failed: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.post("/api/v1/events/batch", status_code=201, response_model=BatchIngestResponse)
+@router.post(
+    "/api/v1/events/batch", status_code=201, response_model=BatchIngestResponse
+)
 @limiter.limit("30/minute")
 async def ingest_batch(
     request: Request,
     batch_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
 ) -> BatchIngestResponse:
     """Receive and store batch of events."""
     verify_auth(authorization)
-    
+
     events = batch_data.get("events", [])
     accepted = 0
     rejected = 0
     errors = []
-    
+
     for event_data in events:
         try:
             event = MiniEDREvent(**event_data)
             storage.store_event(db, event)
             accepted += 1
-            
+
             # Schedule VT enrichment
             if settings.VT_ENABLED:
                 payload = event.payload
@@ -139,13 +144,18 @@ async def ingest_batch(
                     vt = get_vt_worker()
                     if vt:
                         import asyncio
-                        asyncio.create_task(vt.enrich_event(db, event.event_id, payload.get("hash_sha256")))
-        
+
+                        asyncio.create_task(
+                            vt.enrich_event(
+                                db, event.event_id, payload.get("hash_sha256")
+                            )
+                        )
+
         except Exception as e:
             rejected += 1
             errors.append(str(e))
             logger.error(f"Batch event rejected: {e}")
-    
+
     logger.info(f"Batch processed: {accepted} accepted, {rejected} rejected")
     return BatchIngestResponse(accepted=accepted, rejected=rejected, errors=errors)
 
@@ -156,23 +166,23 @@ def heartbeat(
     request: Request,
     hb_data: dict,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
 ) -> dict:
     """Agent heartbeat and registration."""
     verify_auth(authorization)
-    
+
     try:
         agent_id = hb_data.get("agent_id")
         hostname = hb_data.get("hostname")
         platform = hb_data.get("platform")
         version = hb_data.get("agent_version", "1.0.0")
-        
+
         storage.upsert_agent(db, agent_id, hostname, platform, version)
         logger.info(f"Heartbeat from {agent_id} ({hostname})")
-        
+
         return {
             "acknowledged": True,
-            "server_time": datetime.utcnow().isoformat() + "Z"
+            "server_time": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"Heartbeat failed: {e}")
@@ -189,7 +199,7 @@ def list_events(
     hostname: Optional[str] = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=500),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ) -> list[EventResponse]:
     """List events with optional filters."""
     filters = {}
@@ -201,9 +211,9 @@ def list_events(
         filters["severity"] = severity
     if hostname:
         filters["hostname"] = hostname
-    
+
     events = storage.get_events(db, filters, page, page_size)
-    
+
     return [
         EventResponse(
             event_id=e.event_id,
@@ -221,7 +231,7 @@ def list_events(
             vt_suspicious=e.vt_suspicious,
             vt_undetected=e.vt_undetected,
             vt_total=e.vt_total,
-            created_at=e.created_at
+            created_at=e.created_at,
         )
         for e in events
     ]
@@ -233,7 +243,7 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
     event = storage.get_event_by_id(db, event_id)
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
-    
+
     return EventResponse(
         event_id=event.event_id,
         agent_id=event.agent_id,
@@ -250,16 +260,13 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
         vt_suspicious=event.vt_suspicious,
         vt_undetected=event.vt_undetected,
         vt_total=event.vt_total,
-        created_at=event.created_at
+        created_at=event.created_at,
     )
 
 
 @router.get("/api/v1/agents", response_model=list[AgentResponse])
 @limiter.limit("30/minute")
-def list_agents(
-    request: Request,
-    db: Session = Depends(get_db)
-) -> list[AgentResponse]:
+def list_agents(request: Request, db: Session = Depends(get_db)) -> list[AgentResponse]:
     """List all registered agents."""
     agents = storage.get_agents(db)
     return [
@@ -271,7 +278,7 @@ def list_agents(
             first_seen=a.first_seen,
             last_seen=a.last_seen,
             status=a.status,
-            ip_address=a.ip_address
+            ip_address=a.ip_address,
         )
         for a in agents
     ]
@@ -283,7 +290,7 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
     agent = storage.get_agent_by_id(db, agent_id)
     if not agent:
         raise HTTPException(status_code=404, detail="Agent not found")
-    
+
     return AgentResponse(
         agent_id=agent.agent_id,
         hostname=agent.hostname,
@@ -292,16 +299,13 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
         first_seen=agent.first_seen,
         last_seen=agent.last_seen,
         status=agent.status,
-        ip_address=agent.ip_address
+        ip_address=agent.ip_address,
     )
 
 
 @router.get("/api/v1/stats", response_model=StatsResponse)
 @limiter.limit("30/minute")
-def get_stats(
-    request: Request,
-    db: Session = Depends(get_db)
-) -> StatsResponse:
+def get_stats(request: Request, db: Session = Depends(get_db)) -> StatsResponse:
     """Get server statistics."""
     stats = storage.get_stats(db)
     return StatsResponse(**stats)
@@ -309,9 +313,7 @@ def get_stats(
 
 @router.get("/dashboard", response_class=HTMLResponse)
 @limiter.limit("10/minute")
-def dashboard(
-    request: Request
-) -> HTMLResponse:
+def dashboard(request: Request) -> HTMLResponse:
     """Serve inline HTML dashboard."""
     html = """
     <!DOCTYPE html>

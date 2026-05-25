@@ -72,7 +72,9 @@ def start_fim_monitor(
     return observer, alerts, lock
 
 
-def get_alerts(alerts_deque: deque[dict[str, object]], lock: threading.Lock) -> list[dict[str, object]]:
+def get_alerts(
+    alerts_deque: deque[dict[str, object]], lock: threading.Lock
+) -> list[dict[str, object]]:
     """Retrieve and clear accumulated alerts (thread-safe)."""
     with lock:
         current_alerts = list(alerts_deque)

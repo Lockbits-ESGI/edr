@@ -119,7 +119,9 @@ class TestVirusTotalChecker:
         """Test checking file hash with request exception."""
         import requests
 
-        with patch.object(vt_checker.session, "get", side_effect=requests.RequestException()):
+        with patch.object(
+            vt_checker.session, "get", side_effect=requests.RequestException()
+        ):
             result = vt_checker.check_file_hash("any-hash")
             assert result is None
 
@@ -152,5 +154,3 @@ class TestVirusTotalChecker:
         with patch.object(vt_checker.session, "post", return_value=mock_response):
             result = vt_checker.upload_file(test_file)
             assert result is None
-
-

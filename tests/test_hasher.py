@@ -27,14 +27,20 @@ def test_compute_md5(temp_file):
 def test_compute_sha256(temp_file):
     """Test SHA256 hash computation."""
     sha256_hash = compute_sha256(temp_file)
-    assert sha256_hash == "e25dd806d495b413931f4eea50b677a7a5c02d00460924661283f211a37f7e7f"
+    assert (
+        sha256_hash
+        == "e25dd806d495b413931f4eea50b677a7a5c02d00460924661283f211a37f7e7f"
+    )
 
 
 def test_compute_both_hashes(temp_file):
     """Test computing both hashes in single pass."""
     md5_hash, sha256_hash = compute_both_hashes(temp_file)
     assert md5_hash == "8454e1a036eeaf298bb90b7b7c9723fd"
-    assert sha256_hash == "e25dd806d495b413931f4eea50b677a7a5c02d00460924661283f211a37f7e7f"
+    assert (
+        sha256_hash
+        == "e25dd806d495b413931f4eea50b677a7a5c02d00460924661283f211a37f7e7f"
+    )
 
 
 def test_compute_md5_nonexistent_file():

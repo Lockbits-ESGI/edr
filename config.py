@@ -10,7 +10,7 @@ import yaml
 
 def get_config_dir() -> Optional[Path]:
     """Get platform-specific config directory.
-    
+
     Windows: %APPDATA%/miniedr
     POSIX: $XDG_CONFIG_HOME/miniedr or ~/.config/miniedr
     """
@@ -33,10 +33,10 @@ def get_config_dir() -> Optional[Path]:
 
 def load_config(config_path: Optional[Path] = None) -> dict[str, Any]:
     """Load configuration from YAML file.
-    
+
     Args:
         config_path: Path to config file. If None, uses bundled config.yaml.
-        
+
     Returns:
         Configuration dict. Returns empty dict if file not found or error occurs.
     """
@@ -58,7 +58,7 @@ def load_config(config_path: Optional[Path] = None) -> dict[str, Any]:
 
 def get_config_value(config: dict[str, Any], key: str, default: Any = None) -> Any:
     """Get nested config value using dot notation.
-    
+
     Examples:
         get_config_value(config, "fim.watch_dirs.linux")
         get_config_value(config, "logging.level", "INFO")
