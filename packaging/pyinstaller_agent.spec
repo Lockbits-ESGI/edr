@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller spec for MiniEDR Agent onefile binary."""
+"""PyInstaller spec for LockBits EDR Agent onefile binary."""
 
 from pathlib import Path
 
@@ -14,19 +14,38 @@ a = Analysis(
         (str(project_root / 'templates' / 'report.html.j2'), 'templates'),
     ],
     hiddenimports=[
+        # Agent modules
+        'agent.main',
+        'agent.sender',
+        'agent.heartbeat',
+        # Shared modules
+        'shared.utils',
+        'shared.event_schema',
+        # Third-party deps
         'psutil',
+        'requests',
         'watchdog',
         'watchdog.observers',
         'watchdog.events',
         'jinja2',
+        'jinja2.ext',
         'yaml',
         'pydantic',
+        'pydantic.v1',
         'dotenv',
+    ],
+    # Exclude server-side modules (not needed in agent binary)
+    excludedimports=[
+        'server',
+        'fastapi',
+        'uvicorn',
+        'sqlalchemy',
+        'httpx',
+        'slowapi',
     ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludedimports=[],
     noarchive=False,
 )
 
@@ -39,7 +58,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='miniedr-agent',
+    name='lockbits-agent',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
