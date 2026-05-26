@@ -1,15 +1,6 @@
 #!/bin/bash
+# build_agent_linux.sh — Build LockBits EDR Agent for Linux (legacy wrapper)
 set -e
 
-echo "Building MiniEDR Agent for Linux..."
-PYTHON_BIN="${PYTHON:-python3}"
-export PYINSTALLER_CONFIG_DIR="${PYINSTALLER_CONFIG_DIR:-./.pyinstaller}"
-mkdir -p "$PYINSTALLER_CONFIG_DIR"
-"$PYTHON_BIN" -m pip install -q pyinstaller
-
-"$PYTHON_BIN" -m PyInstaller packaging/pyinstaller_agent.spec --distpath dist/linux
-
-chmod +x dist/linux/miniedr-agent
-
-echo "✅ Agent binary: dist/linux/miniedr-agent"
-echo "Usage: ./dist/linux/miniedr-agent --mode monitor"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+exec bash "$SCRIPT_DIR/build_agent.sh" --target linux --arch "${ARCH:-amd64}"
