@@ -26,7 +26,6 @@ from server.metrics import (
     events_ingested_total,
     events_ingested_batch_size,
     agents_registered_total,
-    vt_enrichments_total,
     db_health,
     auth_failures_total,
 )
