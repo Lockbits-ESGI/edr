@@ -22,6 +22,14 @@ from server.schemas import (
     BatchIngestResponse,
 )
 from server import storage, vt_worker
+from server.metrics import (
+    events_ingested_total,
+    events_ingested_batch_size,
+    agents_registered_total,
+    vt_enrichments_total,
+    db_health,
+    auth_failures_total,
+)
 from shared.event_schema import MiniEDREvent
 
 logger = logging.getLogger(__name__)
@@ -41,18 +49,20 @@ def get_vt_worker() -> Optional[vt_worker.VTWorker]:
 
 
 def verify_auth(authorization: Optional[str] = None) -> bool:
-    """Verify Bearer token if AUTH_TOKEN is configured."""
     if not settings.AUTH_TOKEN:
         return True
 
     if not authorization:
+        auth_failures_total.inc()
         raise HTTPException(status_code=401, detail="Missing authorization header")
 
     try:
         scheme, token = authorization.split()
         if scheme.lower() != "bearer" or token != settings.AUTH_TOKEN:
+            auth_failures_total.inc()
             raise HTTPException(status_code=401, detail="Invalid token")
     except ValueError:
+        auth_failures_total.inc()
         raise HTTPException(status_code=401, detail="Invalid authorization format")
 
     return True
@@ -60,14 +70,15 @@ def verify_auth(authorization: Optional[str] = None) -> bool:
 
 @router.get("/health", response_model=HealthResponse)
 def health_check(db: Session = Depends(get_db)) -> HealthResponse:
-    """Health check endpoint."""
     uptime = time.time() - _startup_time
 
     try:
         db.execute(text("SELECT 1"))
         db_ok = True
+        db_health.set(1)
     except Exception:
         db_ok = False
+        db_health.set(0)
 
     return HealthResponse(
         status="ok",
@@ -105,10 +116,12 @@ async def ingest_event(
                         vt.enrich_event(db, event.event_id, payload.get("hash_sha256"))
                     )
 
+        events_ingested_total.labels(event_type=event.event_type).inc()
         logger.info(f"Event stored: {event.event_id} from {event.agent_id}")
         return {"event_id": stored.event_id, "accepted": True}
 
     except Exception as e:
+        events_ingested_total.labels(event_type="error").inc()
         logger.error(f"Event ingest failed: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -156,6 +169,8 @@ async def ingest_batch(
             errors.append(str(e))
             logger.error(f"Batch event rejected: {e}")
 
+    events_ingested_total.labels(event_type="batch").inc(accepted)
+    events_ingested_batch_size.observe(accepted)
     logger.info(f"Batch processed: {accepted} accepted, {rejected} rejected")
     return BatchIngestResponse(accepted=accepted, rejected=rejected, errors=errors)
 
@@ -178,6 +193,7 @@ def heartbeat(
         version = hb_data.get("agent_version", "1.0.0")
 
         storage.upsert_agent(db, agent_id, hostname, platform, version)
+        agents_registered_total.inc()
         logger.info(f"Heartbeat from {agent_id} ({hostname})")
 
         return {

@@ -9,6 +9,7 @@ import httpx
 
 from shared.event_schema import VTResult
 from server import storage
+from server.metrics import vt_enrichments_total
 
 logger = logging.getLogger(__name__)
 
@@ -55,10 +56,12 @@ class VTWorker:
             if result:
                 storage.store_hash_cache(db, sha256, result)
                 storage.update_event_vt_status(db, event_id, "enriched", result)
+                vt_enrichments_total.labels(status="success").inc()
                 logger.info(
                     f"VT enriched {sha256[:8]}... : {result.status} ({result.malicious} malicious)"
                 )
             else:
+                vt_enrichments_total.labels(status="failed").inc()
                 logger.warning(f"VT lookup failed for {sha256[:8]}...")
                 storage.update_event_vt_status(db, event_id, "skipped")
 

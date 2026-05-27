@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 from slowapi import _rate_limit_exceeded_handler
 
 from server.database import init_db
@@ -17,8 +18,6 @@ settings = get_settings()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Application startup and shutdown hook."""
-    # Startup
     logger.info("=" * 60)
     logger.info("MiniEDR Server starting up")
     logger.info(f"Database: {settings.DATABASE_URL}")
@@ -32,7 +31,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    # Shutdown
     logger.info("MiniEDR Server shutting down")
 
 
@@ -42,6 +40,11 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+# Prometheus metrics — auto-instrumentation
+# Exposes /metrics with default HTTP metrics (request count, duration, etc.)
+# plus custom EDR metrics defined in server.metrics
+Instrumentator().instrument(app).expose(app)
 
 # CORS middleware — restrict origins in production via CORS_ORIGINS env var
 # In development, keep "*" (all origins). In production, set a comma-separated
