@@ -121,7 +121,14 @@ class EDRDatabaseCollector:
     Yields GaugeMetricFamily objects reflecting live aggregate statistics.
     Uses its own short-lived SessionLocal so it does not interfere with the
     request-scoped session used by FastAPI endpoints.
+
+    describe() returns an empty list so prometheus_client skips the
+    registration-time collect() call — DB tables may not exist yet at that
+    point (e.g. during test collection).
     """
+
+    def describe(self):
+        return []
 
     def collect(self):  # noqa: C901
         from server.database import SessionLocal
