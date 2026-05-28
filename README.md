@@ -23,12 +23,26 @@ VT_API_KEY=
 AUTH_TOKEN=change-me
 DATABASE_URL=sqlite:///./miniedr.db
 VT_ENABLED=false
+GLPI_ENABLED=false
+GLPI_WEB_URL=https://glpi.lockbits.pro
+GLPI_API_URL=https://glpi.lockbits.pro/api.php/v2.2
+GLPI_OAUTH_CLIENT_ID=
+GLPI_OAUTH_CLIENT_SECRET=
+GLPI_API_USERNAME=
+GLPI_API_PASSWORD=
+GLPI_APP_TOKEN=
+GLPI_USER_TOKEN=
 SERVER_HOST=0.0.0.0
 SERVER_PORT=8000
 LOG_LEVEL=INFO
 MAX_EVENTS_PER_PAGE=100
 WORKERS=1
 ```
+
+Pour creer automatiquement un ticket GLPI a chaque evenement accepte par le
+serveur, configure `GLPI_ENABLED=true` et les variables OAuth `GLPI_OAUTH_*`,
+`GLPI_API_USERNAME` et `GLPI_API_PASSWORD`. Les tickets sont crees via l'API
+GLPI v2 exposee par `GLPI_API_URL`.
 
 ## Lancer le serveur
 

@@ -108,11 +108,8 @@ class MiniEDRAgent:
             snapshot = get_system_snapshot()
             snapshot_dict = snapshot_to_dict(snapshot)
 
-            event = self.create_event(
-                event_type="scan",
-                severity="low",
-                payload=snapshot_dict,
-                tags=["scan", "snapshot"],
+            event = self._snapshot_to_event(
+                snapshot_dict, event_type="scan", tags=["scan", "snapshot"]
             )
 
             if self.sender.send_batch([event]):
@@ -180,10 +177,9 @@ class MiniEDRAgent:
                 if time.time() - last_snapshot >= snapshot_interval:
                     try:
                         snapshot = get_system_snapshot()
-                        event = self.create_event(
+                        event = self._snapshot_to_event(
+                            snapshot_to_dict(snapshot),
                             event_type="system_info",
-                            severity="low",
-                            payload=snapshot_to_dict(snapshot),
                             tags=["monitor", "snapshot"],
                         )
                         self.sender.send_event(event)
@@ -228,6 +224,17 @@ class MiniEDRAgent:
         if current == "Darwin":
             return "darwin"
         return "linux"
+
+    def _snapshot_to_event(
+        self, snapshot: dict, event_type: str, tags: list[str]
+    ) -> MiniEDREvent:
+        """Create an event for a full system snapshot payload."""
+        return self.create_event(
+            event_type=event_type,
+            severity="low",
+            payload=snapshot,
+            tags=tags,
+        )
 
     def _fim_alert_to_event(self, alert: dict) -> MiniEDREvent:
         """Convert a watchdog alert to a MiniEDR event."""

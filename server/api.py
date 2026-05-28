@@ -1,5 +1,6 @@
 """FastAPI router with all server endpoints."""
 
+import asyncio
 import logging
 import time
 import json
@@ -13,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from server.database import get_db
 from server.config import get_settings
+from server.glpi_client import build_glpi_client
 from server.ratelimit import limiter
 from server.schemas import (
     EventResponse,
@@ -37,6 +39,7 @@ router = APIRouter()
 
 _startup_time = time.time()
 _vt_worker: Optional[vt_worker.VTWorker] = None
+_glpi_client = build_glpi_client(settings)
 
 
 def _extract_event_view_fields(
@@ -107,6 +110,33 @@ def get_vt_worker() -> Optional[vt_worker.VTWorker]:
     return _vt_worker
 
 
+async def _create_glpi_ticket_for_event(event: MiniEDREvent) -> None:
+    if not _glpi_client:
+        return
+
+    try:
+        await asyncio.to_thread(_glpi_client.create_ticket_for_event, event)
+    except Exception as exc:
+        logger.error(
+            "GLPI ticket creation failed for event %s: %s", event.event_id, exc
+        )
+
+
+def _schedule_event_side_effects(event: MiniEDREvent, db: Session) -> None:
+    """Schedule non-blocking enrichment and external ticket creation."""
+    if settings.VT_ENABLED:
+        payload = event.payload
+        if isinstance(payload, dict) and "hash_sha256" in payload:
+            vt = get_vt_worker()
+            if vt:
+                asyncio.create_task(
+                    vt.enrich_event(db, event.event_id, payload.get("hash_sha256"))
+                )
+
+    if _glpi_client:
+        asyncio.create_task(_create_glpi_ticket_for_event(event))
+
+
 def verify_auth(authorization: Optional[str] = None) -> bool:
     if not settings.AUTH_TOKEN:
         return True
@@ -162,18 +192,7 @@ async def ingest_event(
     try:
         event = MiniEDREvent(**event_data)
         stored = storage.store_event(db, event)
-
-        # Schedule VT enrichment if hash present
-        if settings.VT_ENABLED:
-            payload = event.payload
-            if isinstance(payload, dict) and "hash_sha256" in payload:
-                vt = get_vt_worker()
-                if vt:
-                    import asyncio
-
-                    asyncio.create_task(
-                        vt.enrich_event(db, event.event_id, payload.get("hash_sha256"))
-                    )
+        _schedule_event_side_effects(event, db)
 
         events_ingested_total.labels(event_type=event.event_type).inc()
         logger.info(f"Event stored: {event.event_id} from {event.agent_id}")
@@ -209,20 +228,7 @@ async def ingest_batch(
             storage.store_event(db, event)
             accepted += 1
             events_ingested_total.labels(event_type=event.event_type).inc()
-
-            # Schedule VT enrichment
-            if settings.VT_ENABLED:
-                payload = event.payload
-                if isinstance(payload, dict) and "hash_sha256" in payload:
-                    vt = get_vt_worker()
-                    if vt:
-                        import asyncio
-
-                        asyncio.create_task(
-                            vt.enrich_event(
-                                db, event.event_id, payload.get("hash_sha256")
-                            )
-                        )
+            _schedule_event_side_effects(event, db)
 
         except Exception as e:
             rejected += 1

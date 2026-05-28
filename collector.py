@@ -1,6 +1,7 @@
 """System information collection using psutil with cross-platform exception handling."""
 
 import platform
+import time
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from typing import Optional
@@ -35,6 +36,9 @@ class SystemSnapshot:
     timestamp: str
     platform: str
     hostname: str
+    os: str
+    kernel: str
+    uptime: float
     cpu_count: int
     cpu_percent: float
     memory_total_gb: float
@@ -53,6 +57,9 @@ def get_system_snapshot() -> SystemSnapshot:
         timestamp=now,
         platform=platform_system,
         hostname=_safe_get_hostname(),
+        os=_safe_get_os(),
+        kernel=_safe_get_kernel(),
+        uptime=_safe_get_uptime(),
         cpu_count=psutil.cpu_count(logical=False) or 0,
         cpu_percent=_safe_cpu_percent(),
         memory_total_gb=_safe_memory_total(),
@@ -69,6 +76,27 @@ def _safe_get_hostname() -> str:
         return platform.node()
     except Exception:
         return "unknown"
+
+
+def _safe_get_os() -> str:
+    try:
+        return platform.platform()
+    except Exception:
+        return "unknown"
+
+
+def _safe_get_kernel() -> str:
+    try:
+        return platform.release()
+    except Exception:
+        return "unknown"
+
+
+def _safe_get_uptime() -> float:
+    try:
+        return max(0.0, time.time() - psutil.boot_time())
+    except Exception:
+        return 0.0
 
 
 def _safe_cpu_percent() -> float:
