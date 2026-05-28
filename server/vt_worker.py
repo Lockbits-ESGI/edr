@@ -9,7 +9,11 @@ import httpx
 
 from shared.event_schema import VTResult
 from server import storage
-from server.metrics import vt_enrichments_total
+from server.metrics import (
+    vt_enrichments_total,
+    vt_malicious_found_total,
+    vt_suspicious_found_total,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +61,10 @@ class VTWorker:
                 storage.store_hash_cache(db, sha256, result)
                 storage.update_event_vt_status(db, event_id, "enriched", result)
                 vt_enrichments_total.labels(status="success").inc()
+                if result.malicious > 0:
+                    vt_malicious_found_total.inc()
+                if result.suspicious > 0:
+                    vt_suspicious_found_total.inc()
                 logger.info(
                     f"VT enriched {sha256[:8]}... : {result.status} ({result.malicious} malicious)"
                 )
