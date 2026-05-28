@@ -148,6 +148,7 @@ async def ingest_batch(
             event = MiniEDREvent(**event_data)
             storage.store_event(db, event)
             accepted += 1
+            events_ingested_total.labels(event_type=event.event_type).inc()
 
             # Schedule VT enrichment
             if settings.VT_ENABLED:
@@ -168,7 +169,6 @@ async def ingest_batch(
             errors.append(str(e))
             logger.error(f"Batch event rejected: {e}")
 
-    events_ingested_total.labels(event_type="batch").inc(accepted)
     events_ingested_batch_size.observe(accepted)
     logger.info(f"Batch processed: {accepted} accepted, {rejected} rejected")
     return BatchIngestResponse(accepted=accepted, rejected=rejected, errors=errors)

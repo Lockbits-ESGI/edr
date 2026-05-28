@@ -1,52 +1,25 @@
-"""Prometheus metrics for MiniEDR server.
+"""Prometheus metrics for MiniEDR server."""
 
-This module defines custom EDR-specific metrics in addition to the
-auto-instrumentation provided by prometheus-fastapi-instrumentator.
-"""
-
+from datetime import datetime, timedelta
 from prometheus_client import Counter, Gauge, Histogram
+from sqlalchemy import func
+from server.database import SessionLocal
+from server.models import Agent
 
-# ── Custom EDR Metrics ──────────────────────────────────────────────────────
+events_ingested_total = Counter("edr_events_ingested_total", "Total events ingested", labelnames=["event_type"])
+events_ingested_batch_size = Histogram("edr_events_ingested_batch_size", "Batch size of ingested events", buckets=[1, 5, 10, 25, 50, 100, 250, 500])
+agents_registered_total = Counter("edr_agents_registered_total", "Total agent heartbeats")
 
-# Events
-events_ingested_total = Counter(
-    "edr_events_ingested_total",
-    "Total number of events ingested",
-    labelnames=["event_type"],
-)
+def _count_active_agents() -> float:
+    db = SessionLocal()
+    try:
+        cutoff = datetime.utcnow() - timedelta(minutes=5)
+        return float(db.query(func.count(Agent.id)).filter(Agent.last_seen >= cutoff).scalar() or 0)
+    finally:
+        db.close()
 
-events_ingested_batch_size = Histogram(
-    "edr_events_ingested_batch_size",
-    "Batch size of ingested events",
-    buckets=[1, 5, 10, 25, 50, 100, 250, 500],
-)
-
-# Heartbeats / Agents
-agents_registered_total = Counter(
-    "edr_agents_registered_total",
-    "Total number of agent heartbeats (registrations)",
-)
-
-active_agents = Gauge(
-    "edr_active_agents",
-    "Number of active agents (heartbeat received within last 5 minutes)",
-)
-
-# VirusTotal enrichment
-vt_enrichments_total = Counter(
-    "edr_vt_enrichments_total",
-    "Total number of VirusTotal enrichments performed",
-    labelnames=["status"],  # "success" or "failed"
-)
-
-# Database
-db_health = Gauge(
-    "edr_db_health",
-    "Database health status (1 = healthy, 0 = unhealthy)",
-)
-
-# Authentication
-auth_failures_total = Counter(
-    "edr_auth_failures_total",
-    "Total number of authentication failures",
-)
+active_agents = Gauge("edr_active_agents", "Active agents (heartbeat within last 5min)")
+active_agents.set_function(_count_active_agents)
+vt_enrichments_total = Counter("edr_vt_enrichments_total", "VirusTotal enrichments", labelnames=["status"])
+db_health = Gauge("edr_db_health", "Database health (1=healthy, 0=unhealthy)")
+auth_failures_total = Counter("edr_auth_failures_total", "Authentication failures")
