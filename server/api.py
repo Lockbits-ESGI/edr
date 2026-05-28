@@ -38,9 +38,6 @@ from server.metrics import (
     fim_suspicious_total,
     scan_events_total,
     heartbeat_errors_total,
-    vt_malicious_found_total,
-    vt_suspicious_found_total,
-    vt_enrichments_total,
 )
 from shared.event_schema import MiniEDREvent
 
