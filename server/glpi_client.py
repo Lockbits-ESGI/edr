@@ -139,8 +139,7 @@ class GLPIClient:
         filepath = payload.get("filepath")
 
         name = (
-            f"[MiniEDR] {event.severity.upper()} "
-            f"{event.event_type} on {event.hostname}"
+            f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
         )
         content = {
             "event_id": event.event_id,

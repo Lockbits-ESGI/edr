@@ -48,11 +48,25 @@ def override_get_db(db_engine):
 
 
 @pytest.fixture
-def client(override_get_db):
-    """Create test client with dependency override."""
+def client(override_get_db, db_engine):
+    """Create test client with dependency override and patched SessionLocal.
+
+    Metrics that bypass FastAPI DI (active_agents, EDRDatabaseCollector) call
+    server.database.SessionLocal directly.  We redirect it to the same
+    in-memory engine so those queries hit the test schema instead of a
+    missing real-DB file.
+    """
+    from sqlalchemy.orm import sessionmaker
+    import server.database as _db_module
+
+    _orig = _db_module.SessionLocal
+    _db_module.SessionLocal = sessionmaker(
+        autocommit=False, autoflush=False, bind=db_engine
+    )
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
     app.dependency_overrides.clear()
+    _db_module.SessionLocal = _orig
 
 
 class TestHealthEndpoint:
@@ -247,3 +261,120 @@ class TestDashboard:
         assert response.status_code == 200
         assert "text/html" in response.headers.get("content-type", "")
         assert "MiniEDR Dashboard" in response.text
+
+
+class TestMetricsEndpoint:
+    """Test /metrics Prometheus endpoint."""
+
+    def test_metrics_returns_200(self, client):
+        """GET /metrics returns HTTP 200."""
+        response = client.get("/metrics")
+        assert response.status_code == 200
+
+    def test_metrics_content_type(self, client):
+        """GET /metrics returns Prometheus text content-type."""
+        response = client.get("/metrics")
+        assert "text/plain" in response.headers.get("content-type", "")
+
+    def test_metrics_legacy_counters_present(self, client):
+        """Original metric families are present for backward compatibility."""
+        body = client.get("/metrics").text
+        assert "edr_events_ingested_total" in body
+        assert "edr_events_ingested_batch_size" in body
+        assert "edr_agents_registered_total" in body
+        assert "edr_active_agents" in body
+        assert "edr_vt_enrichments_total" in body
+        assert "edr_db_health" in body
+        assert "edr_auth_failures_total" in body
+
+    def test_metrics_new_counters_present(self, client):
+        """Newly added metric families are present."""
+        body = client.get("/metrics").text
+        assert "edr_events_ingested_detail_total" in body
+        assert "edr_events_rejected_total" in body
+        assert "edr_batch_events_accepted_total" in body
+        assert "edr_batch_events_rejected_total" in body
+        assert "edr_fim_events_total" in body
+        assert "edr_fim_suspicious_total" in body
+        assert "edr_scan_events_total" in body
+        assert "edr_heartbeat_errors_total" in body
+        assert "edr_vt_malicious_found_total" in body
+        assert "edr_vt_suspicious_found_total" in body
+
+    def test_metrics_db_gauges_present(self, client):
+        """Database-backed gauge families appear in the output."""
+        body = client.get("/metrics").text
+        assert "edr_agents_total" in body
+        assert "edr_agents_online_total" in body
+        assert "edr_agents_offline_total" in body
+        assert "edr_agents_by_platform_total" in body
+        assert "edr_agents_by_version_total" in body
+        assert "edr_events_db_total" in body
+        assert "edr_events_by_type_total" in body
+        assert "edr_events_by_severity_total" in body
+        assert "edr_events_by_platform_total" in body
+        assert "edr_events_24h_total" in body
+        assert "edr_events_1h_total" in body
+        assert "edr_events_5m_total" in body
+        assert "edr_vt_malicious_events_db_total" in body
+        assert "edr_vt_suspicious_events_db_total" in body
+        assert "edr_events_by_vt_status_total" in body
+        assert "edr_hash_cache_entries_total" in body
+        assert "edr_hash_cache_by_verdict_total" in body
+
+    def test_metrics_db_counts_after_events(self, client):
+        """edr_events_db_total reflects stored events."""
+        for _ in range(2):
+            client.post(
+                "/api/v1/events",
+                json={
+                    "event_id": str(uuid.uuid4()),
+                    "agent_id": AGENT_ID,
+                    "hostname": "test",
+                    "platform": "Linux",
+                    "event_type": "heartbeat",
+                    "severity": "low",
+                    "timestamp": "2026-05-07T10:00:00Z",
+                    "source": "agent",
+                    "payload": HEARTBEAT_PAYLOAD,
+                    "tags": [],
+                },
+            )
+        body = client.get("/metrics").text
+        assert "edr_events_db_total 2.0" in body
+
+    def test_metrics_agents_by_platform_label(self, client):
+        """edr_agents_by_platform_total carries a platform label after heartbeat."""
+        client.post(
+            "/api/v1/heartbeat",
+            json={
+                "agent_id": "a1",
+                "hostname": "test-host",
+                "platform": "Linux",
+                "agent_version": "1.0.0",
+                "status": "online",
+            },
+        )
+        body = client.get("/metrics").text
+        assert "edr_agents_by_platform_total" in body
+        assert 'platform="Linux"' in body
+
+    def test_metrics_events_by_severity_label(self, client):
+        """edr_events_by_severity_total carries a severity label after a high event."""
+        client.post(
+            "/api/v1/events",
+            json={
+                "event_id": str(uuid.uuid4()),
+                "agent_id": AGENT_ID,
+                "hostname": "test",
+                "platform": "Linux",
+                "event_type": "scan",
+                "severity": "high",
+                "timestamp": "2026-05-07T10:00:00Z",
+                "source": "agent",
+                "payload": {"scan_result": "threat_found"},
+                "tags": [],
+            },
+        )
+        body = client.get("/metrics").text
+        assert 'severity="high"' in body

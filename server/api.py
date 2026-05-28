@@ -30,6 +30,14 @@ from server.metrics import (
     agents_registered_total,
     db_health,
     auth_failures_total,
+    events_ingested_detail_total,
+    events_rejected_total,
+    batch_events_accepted_total,
+    batch_events_rejected_total,
+    fim_events_total,
+    fim_suspicious_total,
+    scan_events_total,
+    heartbeat_errors_total,
 )
 from shared.event_schema import MiniEDREvent
 
@@ -195,11 +203,27 @@ async def ingest_event(
         _schedule_event_side_effects(event, db)
 
         events_ingested_total.labels(event_type=event.event_type).inc()
+        events_ingested_detail_total.labels(
+            event_type=event.event_type,
+            severity=event.severity,
+            platform=event.platform,
+        ).inc()
+
+        if event.event_type == "fim":
+            fim_events_total.labels(
+                action=event.payload.get("event_action", "unknown")
+            ).inc()
+            if event.payload.get("suspicious_file"):
+                fim_suspicious_total.inc()
+        elif event.event_type == "scan":
+            scan_events_total.labels(severity=event.severity).inc()
+
         logger.info(f"Event stored: {event.event_id} from {event.agent_id}")
         return {"event_id": stored.event_id, "accepted": True}
 
     except Exception as e:
         events_ingested_total.labels(event_type="error").inc()
+        events_rejected_total.inc()
         logger.error(f"Event ingest failed: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -227,11 +251,26 @@ async def ingest_batch(
             event = MiniEDREvent(**event_data)
             storage.store_event(db, event)
             accepted += 1
+
             events_ingested_total.labels(event_type=event.event_type).inc()
             _schedule_event_side_effects(event, db)
 
+            batch_events_accepted_total.labels(
+                event_type=event.event_type,
+                severity=event.severity,
+                platform=event.platform,
+            ).inc()
+
+            if event.event_type == "fim":
+                fim_events_total.labels(
+                    action=event.payload.get("event_action", "unknown")
+                ).inc()
+            elif event.event_type == "scan":
+                scan_events_total.labels(severity=event.severity).inc()
+
         except Exception as e:
             rejected += 1
+            batch_events_rejected_total.inc()
             errors.append(str(e))
             logger.error(f"Batch event rejected: {e}")
 
@@ -266,6 +305,7 @@ def heartbeat(
             "server_time": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
+        heartbeat_errors_total.inc()
         logger.error(f"Heartbeat failed: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
