@@ -187,7 +187,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
 
 
 @router.post("/api/v1/events", status_code=201)
-@limiter.limit("60/minute")
+@limiter.limit("500/minute")
 async def ingest_event(
     request: Request,
     event_data: dict,
@@ -231,7 +231,7 @@ async def ingest_event(
 @router.post(
     "/api/v1/events/batch", status_code=201, response_model=BatchIngestResponse
 )
-@limiter.limit("30/minute")
+@limiter.limit("500/minute")
 async def ingest_batch(
     request: Request,
     batch_data: dict,
@@ -280,7 +280,7 @@ async def ingest_batch(
 
 
 @router.post("/api/v1/heartbeat")
-@limiter.limit("30/minute")
+@limiter.limit("500/minute")
 def heartbeat(
     request: Request,
     hb_data: dict,
@@ -311,7 +311,7 @@ def heartbeat(
 
 
 @router.get("/api/v1/events", response_model=list[EventResponse])
-@limiter.limit("60/minute")
+@limiter.limit("500/minute")
 def list_events(
     request: Request,
     agent_id: Optional[str] = None,
@@ -392,7 +392,7 @@ def get_event(event_id: str, db: Session = Depends(get_db)) -> EventResponse:
 
 
 @router.get("/api/v1/agents", response_model=list[AgentResponse])
-@limiter.limit("30/minute")
+@limiter.limit("500/minute")
 def list_agents(request: Request, db: Session = Depends(get_db)) -> list[AgentResponse]:
     """List all registered agents."""
     agents = storage.get_agents(db)
@@ -431,7 +431,7 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
 
 
 @router.get("/api/v1/stats", response_model=StatsResponse)
-@limiter.limit("30/minute")
+@limiter.limit("500/minute")
 def get_stats(request: Request, db: Session = Depends(get_db)) -> StatsResponse:
     """Get server statistics."""
     stats = storage.get_stats(db)
@@ -439,7 +439,7 @@ def get_stats(request: Request, db: Session = Depends(get_db)) -> StatsResponse:
 
 
 @router.get("/dashboard", response_class=HTMLResponse)
-@limiter.limit("10/minute")
+@limiter.limit("500/minute")
 def dashboard(request: Request) -> HTMLResponse:
     """Serve inline HTML dashboard."""
     html = """
