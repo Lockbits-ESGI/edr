@@ -7,7 +7,15 @@ import json
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    Header,
+    HTTPException,
+    Query,
+    Request,
+)
 from fastapi.responses import HTMLResponse
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -47,7 +55,8 @@ router = APIRouter()
 
 _startup_time = time.time()
 _vt_worker: Optional[vt_worker.VTWorker] = None
-_glpi_client = build_glpi_client(settings)
+_glpi_client = None
+_glpi_client_loaded = False
 
 
 def _extract_event_view_fields(
@@ -118,19 +127,35 @@ def get_vt_worker() -> Optional[vt_worker.VTWorker]:
     return _vt_worker
 
 
-async def _create_glpi_ticket_for_event(event: MiniEDREvent) -> None:
-    if not _glpi_client:
+def get_glpi_client():
+    """Get the configured GLPI client, building it lazily if needed."""
+    global _glpi_client, _glpi_client_loaded
+    if _glpi_client is not None:
+        return _glpi_client
+    if not _glpi_client_loaded:
+        _glpi_client = build_glpi_client(settings)
+        _glpi_client_loaded = True
+    return _glpi_client
+
+
+def _create_glpi_ticket_for_event(event: MiniEDREvent) -> None:
+    client = get_glpi_client()
+    if not client:
         return
 
     try:
-        await asyncio.to_thread(_glpi_client.create_ticket_for_event, event)
+        client.create_ticket_for_event(event)
     except Exception as exc:
         logger.error(
             "GLPI ticket creation failed for event %s: %s", event.event_id, exc
         )
 
 
-def _schedule_event_side_effects(event: MiniEDREvent, db: Session) -> None:
+def _schedule_event_side_effects(
+    event: MiniEDREvent,
+    db: Session,
+    background_tasks: BackgroundTasks | None = None,
+) -> None:
     """Schedule non-blocking enrichment and external ticket creation."""
     if settings.VT_ENABLED:
         payload = event.payload
@@ -141,8 +166,11 @@ def _schedule_event_side_effects(event: MiniEDREvent, db: Session) -> None:
                     vt.enrich_event(db, event.event_id, payload.get("hash_sha256"))
                 )
 
-    if _glpi_client:
-        asyncio.create_task(_create_glpi_ticket_for_event(event))
+    if get_glpi_client():
+        if background_tasks is not None:
+            background_tasks.add_task(_create_glpi_ticket_for_event, event)
+        else:
+            asyncio.create_task(asyncio.to_thread(_create_glpi_ticket_for_event, event))
 
 
 def verify_auth(authorization: Optional[str] = None) -> bool:
@@ -191,6 +219,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
 async def ingest_event(
     request: Request,
     event_data: dict,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(None),
 ) -> dict:
@@ -200,7 +229,7 @@ async def ingest_event(
     try:
         event = MiniEDREvent(**event_data)
         stored = storage.store_event(db, event)
-        _schedule_event_side_effects(event, db)
+        _schedule_event_side_effects(event, db, background_tasks)
 
         events_ingested_total.labels(event_type=event.event_type).inc()
         events_ingested_detail_total.labels(
@@ -235,6 +264,7 @@ async def ingest_event(
 async def ingest_batch(
     request: Request,
     batch_data: dict,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(None),
 ) -> BatchIngestResponse:
@@ -253,7 +283,7 @@ async def ingest_batch(
             accepted += 1
 
             events_ingested_total.labels(event_type=event.event_type).inc()
-            _schedule_event_side_effects(event, db)
+            _schedule_event_side_effects(event, db, background_tasks)
 
             batch_events_accepted_total.labels(
                 event_type=event.event_type,
