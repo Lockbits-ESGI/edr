@@ -106,6 +106,36 @@ class TestEventEndpoints:
         assert data["accepted"] is True
         assert data["event_id"] == EVENT_ID
 
+    def test_post_single_event_creates_glpi_ticket(self, client, monkeypatch):
+        """Test accepted EDR events are forwarded to the GLPI ticket client."""
+        created_events = []
+
+        class FakeGLPIClient:
+            def create_ticket_for_event(self, event):
+                created_events.append(event.event_id)
+                return 123
+
+        import server.api as api
+
+        monkeypatch.setattr(api, "_glpi_client", FakeGLPIClient())
+        event_data = {
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
+            "hostname": "test",
+            "platform": "Linux",
+            "event_type": "fim",
+            "severity": "high",
+            "timestamp": "2026-05-07T10:00:00Z",
+            "source": "agent",
+            "payload": {"filepath": "/tmp/suspicious.sh", "event_action": "created"},
+            "tags": ["fim", "created"],
+        }
+
+        response = client.post("/api/v1/events", json=event_data)
+
+        assert response.status_code == 201
+        assert created_events == [EVENT_ID]
+
     def test_post_batch_events(self, client):
         """Test POST /api/v1/events/batch."""
         batch_data = {
