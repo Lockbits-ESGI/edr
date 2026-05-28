@@ -48,11 +48,25 @@ def override_get_db(db_engine):
 
 
 @pytest.fixture
-def client(override_get_db):
-    """Create test client with dependency override."""
+def client(override_get_db, db_engine):
+    """Create test client with dependency override and patched SessionLocal.
+
+    Metrics that bypass FastAPI DI (active_agents, EDRDatabaseCollector) call
+    server.database.SessionLocal directly.  We redirect it to the same
+    in-memory engine so those queries hit the test schema instead of a
+    missing real-DB file.
+    """
+    from sqlalchemy.orm import sessionmaker
+    import server.database as _db_module
+
+    _orig = _db_module.SessionLocal
+    _db_module.SessionLocal = sessionmaker(
+        autocommit=False, autoflush=False, bind=db_engine
+    )
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
     app.dependency_overrides.clear()
+    _db_module.SessionLocal = _orig
 
 
 class TestHealthEndpoint:
