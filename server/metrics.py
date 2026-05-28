@@ -141,9 +141,7 @@ class EDRDatabaseCollector:
             # ── Agents ────────────────────────────────────────────────────
             total_agents = db.query(func.count(Agent.id)).scalar() or 0
             agents_online = (
-                db.query(func.count(Agent.id))
-                .filter(Agent.status == "online")
-                .scalar()
+                db.query(func.count(Agent.id)).filter(Agent.status == "online").scalar()
                 or 0
             )
 
@@ -281,9 +279,7 @@ class EDRDatabaseCollector:
             g.add_metric(
                 [],
                 db.query(func.count(Event.id))
-                .filter(
-                    and_(Event.vt_status == "enriched", Event.vt_malicious > 0)
-                )
+                .filter(and_(Event.vt_status == "enriched", Event.vt_malicious > 0))
                 .scalar()
                 or 0,
             )
@@ -296,9 +292,7 @@ class EDRDatabaseCollector:
             g.add_metric(
                 [],
                 db.query(func.count(Event.id))
-                .filter(
-                    and_(Event.vt_status == "enriched", Event.vt_suspicious > 0)
-                )
+                .filter(and_(Event.vt_status == "enriched", Event.vt_suspicious > 0))
                 .scalar()
                 or 0,
             )
