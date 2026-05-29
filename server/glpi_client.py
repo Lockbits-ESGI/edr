@@ -30,6 +30,7 @@ class GLPIConfig:
     ticket_entity_id: int | None = None
     ticket_category_id: int | None = None
     company_requester_type: str = "Group"
+    entity_recursive: bool = True
 
 
 class GLPIClient:
@@ -117,34 +118,77 @@ class GLPIClient:
             )
 
     def _add_company_requester(self, ticket_id: int, company: str) -> None:
-        requester_type = self.config.company_requester_type.strip() or "Group"
+        requester_type = self._normalize_requester_type(
+            self.config.company_requester_type
+        )
         requester_id = self._resolve_requester_actor_id(requester_type, company)
         if requester_id is None:
             logger.warning(
                 "GLPI requester '%s' of type '%s' was not found; ticket %s left "
-                "without company requester",
+                "without resolved requester id; trying direct requester name assignment",
                 company,
                 requester_type,
                 ticket_id,
             )
+            response = self._post_team_member_requester(
+                ticket_id,
+                {
+                    "type": requester_type,
+                    "name": company,
+                    "role": "requester",
+                },
+            )
+            if response.status_code < 400:
+                logger.info(
+                    "GLPI requester added to ticket %s by name: %s %s",
+                    ticket_id,
+                    requester_type,
+                    company,
+                )
+                return
+            raise RuntimeError(
+                "direct requester name assignment failed: "
+                f"{self._response_error_detail(response)}"
+            )
+
+        id_payload = {
+            "type": requester_type,
+            "id": requester_id,
+            "role": "requester",
+        }
+        response = self._post_team_member_requester(ticket_id, id_payload)
+        if response.status_code < 400:
+            logger.info(
+                "GLPI requester added to ticket %s: %s %s",
+                ticket_id,
+                requester_type,
+                company,
+            )
             return
 
-        response = requests.post(
-            self._api_url(f"Assistance/Ticket/{ticket_id}/TeamMember"),
-            headers=self._bearer_headers(),
-            json={
+        id_error = self._response_error_detail(response)
+        name_response = self._post_team_member_requester(
+            ticket_id,
+            {
                 "type": requester_type,
-                "id": requester_id,
+                "name": company,
                 "role": "requester",
             },
-            timeout=self.config.timeout_seconds,
         )
-        response.raise_for_status()
-        logger.info(
-            "GLPI requester added to ticket %s: %s %s",
-            ticket_id,
-            requester_type,
-            company,
+        if name_response.status_code < 400:
+            logger.info(
+                "GLPI requester added to ticket %s by name after id assignment "
+                "failed: %s %s",
+                ticket_id,
+                requester_type,
+                company,
+            )
+            return
+
+        raise RuntimeError(
+            "requester id assignment failed: "
+            f"{id_error}; requester name assignment failed: "
+            f"{self._response_error_detail(name_response)}"
         )
 
     def _resolve_requester_actor_id(self, actor_type: str, company: str) -> int | None:
@@ -152,27 +196,63 @@ class GLPIClient:
         if stripped_company.isdigit():
             return int(stripped_company)
 
-        path = self._requester_collection_path(actor_type)
-        exact_filter = f'name=="{self._escape_rsql_value(stripped_company)}"'
-        filtered = self._get_collection(
-            path, params={"filter": exact_filter, "limit": 20}
-        )
-        actor_id = self._find_actor_id_by_name(filtered, stripped_company)
-        if actor_id is not None:
-            return actor_id
+        for path in self._requester_collection_paths(actor_type):
+            exact_filter = f'name=="{self._escape_rsql_value(stripped_company)}"'
+            try:
+                filtered = self._get_collection(
+                    path, params={"filter": exact_filter, "limit": 20}
+                )
+                actor_id = self._find_actor_id_by_name(filtered, stripped_company)
+                if actor_id is not None:
+                    return actor_id
 
-        start = 0
-        limit = 100
-        while start < 500:
-            page = self._get_collection(path, params={"start": start, "limit": limit})
-            actor_id = self._find_actor_id_by_name(page, stripped_company)
-            if actor_id is not None:
-                return actor_id
-            if len(page) < limit:
-                break
-            start += limit
+                start = 0
+                limit = 100
+                while start < 500:
+                    page = self._get_collection(
+                        path, params={"start": start, "limit": limit}
+                    )
+                    actor_id = self._find_actor_id_by_name(page, stripped_company)
+                    if actor_id is not None:
+                        return actor_id
+                    if len(page) < limit:
+                        break
+                    start += limit
+            except requests.RequestException as exc:
+                logger.warning(
+                    "GLPI requester lookup failed on %s for %s '%s': %s",
+                    path,
+                    actor_type,
+                    stripped_company,
+                    exc,
+                )
 
         return None
+
+    def _post_team_member_requester(
+        self, ticket_id: int, payload: dict[str, Any]
+    ) -> requests.Response:
+        candidate_paths = (
+            f"Assistance/Ticket/{ticket_id}/TeamMember",
+            f"Ticket/{ticket_id}/TeamMember",
+        )
+        fallback_statuses = {400, 404, 405, 422}
+        last_response: requests.Response | None = None
+
+        for path in candidate_paths:
+            response = requests.post(
+                self._api_url(path),
+                headers=self._bearer_headers(),
+                json=payload,
+                timeout=self.config.timeout_seconds,
+            )
+            if response.status_code not in fallback_statuses:
+                return response
+            last_response = response
+
+        if last_response is None:
+            raise RuntimeError("No GLPI TeamMember endpoint was attempted")
+        return last_response
 
     def _get_collection(
         self, path: str, params: dict[str, Any]
@@ -195,18 +275,32 @@ class GLPIClient:
         return []
 
     @staticmethod
-    def _requester_collection_path(actor_type: str) -> str:
-        paths = {
-            "group": "Administration/Group",
-            "supplier": "Management/Supplier",
-            "user": "Administration/User",
+    def _normalize_requester_type(actor_type: str) -> str:
+        types = {
+            "group": "Group",
+            "supplier": "Supplier",
+            "user": "User",
         }
-        path = paths.get(actor_type.strip().lower())
-        if path is None:
+        normalized = types.get(actor_type.strip().lower())
+        if normalized is None:
             raise ValueError(
                 "GLPI_COMPANY_REQUESTER_TYPE must be one of Group, Supplier, User"
             )
-        return path
+        return normalized
+
+    @staticmethod
+    def _requester_collection_paths(actor_type: str) -> tuple[str, str]:
+        paths = {
+            "group": ("Administration/Group", "Group"),
+            "supplier": ("Management/Supplier", "Supplier"),
+            "user": ("Administration/User", "User"),
+        }
+        candidate_paths = paths.get(actor_type.strip().lower())
+        if candidate_paths is None:
+            raise ValueError(
+                "GLPI_COMPANY_REQUESTER_TYPE must be one of Group, Supplier, User"
+            )
+        return candidate_paths
 
     @staticmethod
     def _find_actor_id_by_name(
@@ -260,11 +354,17 @@ class GLPIClient:
         return access_token
 
     def _bearer_headers(self) -> dict[str, str]:
-        return {
+        headers = {
             "Authorization": f"Bearer {self._get_access_token()}",
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+        if self.config.ticket_entity_id is not None:
+            headers["GLPI-Entity"] = str(self.config.ticket_entity_id)
+        headers["GLPI-Entity-Recursive"] = (
+            "true" if self.config.entity_recursive else "false"
+        )
+        return headers
 
     def _token_url(self) -> str:
         return urljoin(self.web_url, "api.php/token")
@@ -330,6 +430,8 @@ class GLPIClient:
             item_id = data.get("id")
             if isinstance(item_id, int):
                 return item_id
+            if isinstance(item_id, str) and item_id.isdigit():
+                return int(item_id)
             href = data.get("href")
             if isinstance(href, str):
                 tail = href.rstrip("/").rsplit("/", 1)[-1]
@@ -337,8 +439,23 @@ class GLPIClient:
             return None
         if isinstance(data, list) and data and isinstance(data[0], dict):
             item_id = data[0].get("id")
-            return item_id if isinstance(item_id, int) else None
+            if isinstance(item_id, int):
+                return item_id
+            if isinstance(item_id, str) and item_id.isdigit():
+                return int(item_id)
         return None
+
+    @staticmethod
+    def _response_error_detail(response: requests.Response) -> str:
+        body = response.text.strip()
+        if not body:
+            try:
+                body = json.dumps(response.json(), sort_keys=True)
+            except ValueError:
+                body = ""
+        if len(body) > 1000:
+            body = body[:1000] + "...[truncated]"
+        return f"HTTP {response.status_code}: {body}"
 
 
 def build_glpi_client(settings: Any) -> GLPIClient | None:
@@ -372,5 +489,6 @@ def build_glpi_client(settings: Any) -> GLPIClient | None:
             ticket_entity_id=settings.GLPI_TICKET_ENTITY_ID,
             ticket_category_id=settings.GLPI_TICKET_CATEGORY_ID,
             company_requester_type=settings.GLPI_COMPANY_REQUESTER_TYPE,
+            entity_recursive=settings.GLPI_ENTITY_RECURSIVE,
         )
     )
