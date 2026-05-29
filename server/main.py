@@ -37,9 +37,13 @@ async def lifespan(app: FastAPI):
             try:
                 db = SessionLocal()
                 try:
-                    count = storage.mark_stale_agents_offline(db, settings.AGENT_TIMEOUT_SECONDS)
+                    count = storage.mark_stale_agents_offline(
+                        db, settings.AGENT_TIMEOUT_SECONDS
+                    )
                     if count:
-                        logger.info(f"Marked {count} agent(s) offline (timeout={settings.AGENT_TIMEOUT_SECONDS}s)")
+                        logger.info(
+                            f"Marked {count} agent(s) offline (timeout={settings.AGENT_TIMEOUT_SECONDS}s)"
+                        )
                 finally:
                     db.close()
             except Exception as exc:

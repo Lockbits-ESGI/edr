@@ -156,9 +156,7 @@ def mark_stale_agents_offline(db: Session, timeout_seconds: int) -> int:
     """Mark agents as offline if last_seen exceeds timeout. Returns count updated."""
     cutoff = datetime.utcnow() - timedelta(seconds=timeout_seconds)
     updated = (
-        db.query(Agent)
-        .filter(Agent.status == "online", Agent.last_seen < cutoff)
-        .all()
+        db.query(Agent).filter(Agent.status == "online", Agent.last_seen < cutoff).all()
     )
     for agent in updated:
         agent.status = "offline"
