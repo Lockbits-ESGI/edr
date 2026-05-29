@@ -154,6 +154,29 @@ class TestEventSender:
 
         assert not temp_queue.exists()
 
+    def test_flush_queue_keeps_only_unsent_events(self, sender, temp_queue):
+        """Failed flushes must not duplicate events already in the queue."""
+        temp_queue.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(temp_queue, "w") as f:
+            json.dump({"event_id": "e1", "agent_id": "a1"}, f)
+            f.write("\n")
+            json.dump({"event_id": "e2", "agent_id": "a1"}, f)
+            f.write("\n")
+
+        with (
+            patch("agent.sender.requests.post") as mock_post,
+            patch("agent.sender.time.sleep"),
+        ):
+            mock_post.return_value.status_code = 500
+            mock_post.return_value.text = "server error"
+            count = sender.flush_queue()
+
+        assert count == 0
+        lines = temp_queue.read_text().strip().split("\n")
+        assert len(lines) == 2
+        assert [json.loads(line)["event_id"] for line in lines] == ["e1", "e2"]
+
     def test_no_token_when_not_set(self):
         """Test no auth header when token not set."""
         sender = EventSender(server_url="http://localhost:8000", timeout=5)

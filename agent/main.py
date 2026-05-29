@@ -54,9 +54,10 @@ class MiniEDRAgent:
         agent_id_file = os.environ.get("MINIEDR_AGENT_ID_FILE") or self.config.get(
             "agent", {}
         ).get("id_file")
-        self.agent_id = load_agent_id(
+        self.agent_id_file = (
             Path(agent_id_file) if agent_id_file else get_config_dir() / "agent_id"
         )
+        self.agent_id = load_agent_id(self.agent_id_file)
         self.company = self._load_company()
 
         server_config = self.config.get("server", {})
@@ -70,6 +71,7 @@ class MiniEDRAgent:
         queue_path = queue_config.get("path")
         if not queue_path:
             queue_path = str(get_queue_file())
+        self.queue_path = Path(queue_path)
 
         self.sender = EventSender(
             server_url=server_url,
@@ -149,7 +151,10 @@ class MiniEDRAgent:
 
             logger.info(f"Watching directories: {watch_dirs}")
 
-            self.observer, alerts, alerts_lock = start_fim_monitor(watch_dirs)
+            self.observer, alerts, alerts_lock = start_fim_monitor(
+                watch_dirs,
+                ignored_paths=self._fim_ignored_paths(),
+            )
 
             self.heartbeat_worker = HeartbeatWorker(
                 sender=self.sender,
@@ -242,6 +247,28 @@ class MiniEDRAgent:
             return config_company
 
         return extract_company_from_tags(agent_config.get("tags", []))
+
+    def _fim_ignored_paths(self) -> list[Path]:
+        """Return runtime files that should not generate FIM events."""
+        ignored_paths = [
+            self.agent_id_file,
+            self.queue_path,
+            self.queue_path.parent,
+            self.output_dir,
+        ]
+
+        logging_config = self.config.get("logging", {})
+        log_file = logging_config.get("log_file")
+        if log_file:
+            log_path = Path(log_file)
+        else:
+            log_path = self.output_dir / "agent.log"
+        ignored_paths.extend([log_path, log_path.parent])
+
+        for ignored_path in self.config.get("fim", {}).get("ignore_paths", []):
+            ignored_paths.append(Path(ignored_path))
+
+        return ignored_paths
 
     def _snapshot_to_event(
         self, snapshot: dict, event_type: str, tags: list[str]

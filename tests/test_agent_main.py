@@ -80,3 +80,41 @@ def test_agent_adds_normalized_company_tag(tmp_path, monkeypatch):
     )
 
     assert event.tags == ["scan", "company:EntrepriseA"]
+
+
+def test_agent_fim_ignored_paths_include_runtime_files(tmp_path, monkeypatch):
+    """FIM must not monitor files written by the agent itself."""
+    config_path = tmp_path / "config.yaml"
+    agent_id_file = tmp_path / "agent_id"
+    queue_path = tmp_path / "queue" / "pending_events.jsonl"
+    log_file = tmp_path / "logs" / "agent.log"
+    custom_ignore = tmp_path / "custom-runtime"
+    config_path.write_text(
+        "\n".join(
+            [
+                "agent:",
+                f"  id_file: {agent_id_file}",
+                "server:",
+                "  url: http://127.0.0.1:8000",
+                "queue:",
+                f"  path: {queue_path}",
+                "logging:",
+                f"  log_file: {log_file}",
+                "fim:",
+                "  ignore_paths:",
+                f"    - {custom_ignore}",
+            ]
+        )
+    )
+    monkeypatch.delenv("MINIEDR_AGENT_COMPANY", raising=False)
+    monkeypatch.delenv("AGENT_COMPANY", raising=False)
+
+    agent = MiniEDRAgent(config_path=config_path, output_dir=tmp_path / "reports")
+    ignored_paths = {path.resolve() for path in agent._fim_ignored_paths()}
+
+    assert agent_id_file.resolve() in ignored_paths
+    assert queue_path.resolve() in ignored_paths
+    assert queue_path.parent.resolve() in ignored_paths
+    assert log_file.resolve() in ignored_paths
+    assert log_file.parent.resolve() in ignored_paths
+    assert custom_ignore.resolve() in ignored_paths

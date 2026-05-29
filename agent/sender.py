@@ -113,18 +113,22 @@ class EventSender:
 
         logger.info(f"Flushing queue ({len(events)} pending events)...")
         sent = 0
+        remaining = []
 
         for event_data in events:
-            if self._post("/api/v1/events", event_data):
+            if self._post("/api/v1/events", event_data, queue_on_failure=False):
                 sent += 1
+            else:
+                remaining.append(event_data)
 
-        if sent == len(events):
+        if not remaining:
             try:
                 self.queue_path.unlink()
                 logger.info(f"Queue cleared ({sent}/{len(events)} events sent)")
             except Exception as e:
                 logger.error(f"Failed to remove queue file: {e}")
         else:
+            self._replace_queue(remaining)
             logger.warning(
                 f"Queue not fully flushed ({sent}/{len(events)} events sent)"
             )
@@ -150,3 +154,14 @@ class EventSender:
             logger.error(f"Failed to load queue: {e}")
 
         return events
+
+    def _replace_queue(self, events: list[dict]) -> None:
+        """Replace the JSONL queue with events that still need retrying."""
+        try:
+            self.queue_path.parent.mkdir(exist_ok=True, parents=True)
+            with open(self.queue_path, "w") as f:
+                for event in events:
+                    json.dump(event, f)
+                    f.write("\n")
+        except Exception as e:
+            logger.error(f"Failed to rewrite queue file: {e}")
