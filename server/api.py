@@ -229,27 +229,37 @@ async def ingest_event(
 
     try:
         event = MiniEDREvent(**event_data)
-        stored = storage.store_event(db, event)
-        _schedule_event_side_effects(event, db, background_tasks)
+        result = storage.store_event_once(db, event)
+        if result.created:
+            _schedule_event_side_effects(result.event, db, background_tasks)
 
-        events_ingested_total.labels(event_type=event.event_type).inc()
+        events_ingested_total.labels(event_type=result.event.event_type).inc()
         events_ingested_detail_total.labels(
-            event_type=event.event_type,
-            severity=event.severity,
-            platform=event.platform,
+            event_type=result.event.event_type,
+            severity=result.event.severity,
+            platform=result.event.platform,
         ).inc()
 
-        if event.event_type == "fim":
+        if result.event.event_type == "fim":
             fim_events_total.labels(
-                action=event.payload.get("event_action", "unknown")
+                action=result.event.payload.get("event_action", "unknown")
             ).inc()
-            if event.payload.get("suspicious_file"):
+            if result.event.payload.get("suspicious_file"):
                 fim_suspicious_total.inc()
-        elif event.event_type == "scan":
-            scan_events_total.labels(severity=event.severity).inc()
+        elif result.event.event_type == "scan":
+            scan_events_total.labels(severity=result.event.severity).inc()
 
-        logger.info(f"Event stored: {event.event_id} from {event.agent_id}")
-        return {"event_id": stored.event_id, "accepted": True}
+        if result.created:
+            logger.info(f"Event stored: {result.event.event_id} from {event.agent_id}")
+        else:
+            logger.info(
+                f"Duplicate event accepted: {event.event_id} from {event.agent_id}"
+            )
+        return {
+            "event_id": result.record.event_id,
+            "accepted": True,
+            "duplicate": not result.created,
+        }
 
     except Exception as e:
         events_ingested_total.labels(event_type="error").inc()
@@ -280,24 +290,25 @@ async def ingest_batch(
     for event_data in events:
         try:
             event = MiniEDREvent(**event_data)
-            storage.store_event(db, event)
+            result = storage.store_event_once(db, event)
             accepted += 1
 
-            events_ingested_total.labels(event_type=event.event_type).inc()
-            _schedule_event_side_effects(event, db, background_tasks)
+            events_ingested_total.labels(event_type=result.event.event_type).inc()
+            if result.created:
+                _schedule_event_side_effects(result.event, db, background_tasks)
 
             batch_events_accepted_total.labels(
-                event_type=event.event_type,
-                severity=event.severity,
-                platform=event.platform,
+                event_type=result.event.event_type,
+                severity=result.event.severity,
+                platform=result.event.platform,
             ).inc()
 
-            if event.event_type == "fim":
+            if result.event.event_type == "fim":
                 fim_events_total.labels(
-                    action=event.payload.get("event_action", "unknown")
+                    action=result.event.payload.get("event_action", "unknown")
                 ).inc()
-            elif event.event_type == "scan":
-                scan_events_total.labels(severity=event.severity).inc()
+            elif result.event.event_type == "scan":
+                scan_events_total.labels(severity=result.event.severity).inc()
 
         except Exception as e:
             rejected += 1

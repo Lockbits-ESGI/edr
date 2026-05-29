@@ -1,12 +1,23 @@
 """CRUD operations for database persistence."""
 
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
+from sqlalchemy.exc import IntegrityError
 
 from server.models import Agent, Event, HashCache
 from shared.event_schema import MiniEDREvent, VTResult
-from shared.tags import extract_company_from_tags, normalize_company
+from shared.tags import extract_company_from_tags, merge_company_tag, normalize_company
+
+
+@dataclass(frozen=True)
+class StoreEventResult:
+    """Result of an idempotent event insert."""
+
+    record: Event
+    event: MiniEDREvent
+    created: bool
 
 
 def upsert_agent(
@@ -46,34 +57,69 @@ def upsert_agent(
 
 def store_event(db: Session, event: MiniEDREvent) -> Event:
     """Store event in database with vt_status pending."""
+    return store_event_once(db, event).record
+
+
+def store_event_once(db: Session, event: MiniEDREvent) -> StoreEventResult:
+    """Store an event once, treating duplicate event_ids as already accepted."""
     import json
+
+    enriched_event = enrich_event_company_from_agent(db, event)
+    existing = get_event_by_id(db, enriched_event.event_id)
+    if existing:
+        return StoreEventResult(record=existing, event=enriched_event, created=False)
 
     upsert_agent(
         db,
-        agent_id=event.agent_id,
-        hostname=event.hostname,
-        platform=event.platform,
-        version=str(event.payload.get("agent_version", "1.0.0")),
-        company=extract_company_from_tags(event.tags),
+        agent_id=enriched_event.agent_id,
+        hostname=enriched_event.hostname,
+        platform=enriched_event.platform,
+        version=str(enriched_event.payload.get("agent_version", "1.0.0")),
+        company=extract_company_from_tags(enriched_event.tags),
     )
 
     event_record = Event(
-        event_id=event.event_id,
-        agent_id=event.agent_id,
-        hostname=event.hostname,
-        platform=event.platform,
-        event_type=event.event_type,
-        severity=event.severity,
-        source=event.source,
-        timestamp=datetime.fromisoformat(event.timestamp.replace("Z", "+00:00")),
-        payload_json=json.dumps(event.payload),
-        tags_json=json.dumps(event.tags),
+        event_id=enriched_event.event_id,
+        agent_id=enriched_event.agent_id,
+        hostname=enriched_event.hostname,
+        platform=enriched_event.platform,
+        event_type=enriched_event.event_type,
+        severity=enriched_event.severity,
+        source=enriched_event.source,
+        timestamp=datetime.fromisoformat(
+            enriched_event.timestamp.replace("Z", "+00:00")
+        ),
+        payload_json=json.dumps(enriched_event.payload),
+        tags_json=json.dumps(enriched_event.tags),
         vt_status="pending",
     )
     db.add(event_record)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        existing = get_event_by_id(db, enriched_event.event_id)
+        if existing:
+            return StoreEventResult(
+                record=existing, event=enriched_event, created=False
+            )
+        raise
     db.refresh(event_record)
-    return event_record
+    return StoreEventResult(record=event_record, event=enriched_event, created=True)
+
+
+def enrich_event_company_from_agent(db: Session, event: MiniEDREvent) -> MiniEDREvent:
+    """Attach the registered agent company when an event lacks a company tag."""
+    if extract_company_from_tags(event.tags):
+        return event
+
+    agent = get_agent_by_id(db, event.agent_id)
+    if not agent or not agent.company:
+        return event
+
+    event_data = event.model_dump()
+    event_data["tags"] = merge_company_tag(event.tags, agent.company)
+    return MiniEDREvent(**event_data)
 
 
 def get_events(

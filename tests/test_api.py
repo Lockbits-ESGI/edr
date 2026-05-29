@@ -136,6 +136,79 @@ class TestEventEndpoints:
         assert response.status_code == 201
         assert created_events == [EVENT_ID]
 
+    def test_event_uses_registered_agent_company_for_glpi(self, client, monkeypatch):
+        """Events without company tags inherit the company from heartbeat metadata."""
+        created_tags = []
+
+        class FakeGLPIClient:
+            def create_ticket_for_event(self, event):
+                created_tags.append(event.tags)
+                return 123
+
+        import server.api as api
+
+        monkeypatch.setattr(api, "_glpi_client", FakeGLPIClient())
+        heartbeat_data = {
+            "agent_id": AGENT_ID,
+            "hostname": "test",
+            "platform": "Linux",
+            "agent_version": "1.0.0",
+            "status": "online",
+            "company": "test",
+        }
+        event_data = {
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
+            "hostname": "test",
+            "platform": "Linux",
+            "event_type": "fim",
+            "severity": "high",
+            "timestamp": "2026-05-07T10:00:00Z",
+            "source": "agent",
+            "payload": {"filepath": "/tmp/suspicious.sh", "event_action": "created"},
+            "tags": ["fim", "created"],
+        }
+
+        client.post("/api/v1/heartbeat", json=heartbeat_data)
+        response = client.post("/api/v1/events", json=event_data)
+
+        assert response.status_code == 201
+        assert created_tags == [["fim", "created", "company:test"]]
+
+    def test_duplicate_event_is_idempotent(self, client, monkeypatch):
+        """Duplicate event_ids are accepted without replaying side effects."""
+        created_events = []
+
+        class FakeGLPIClient:
+            def create_ticket_for_event(self, event):
+                created_events.append(event.event_id)
+                return 123
+
+        import server.api as api
+
+        monkeypatch.setattr(api, "_glpi_client", FakeGLPIClient())
+        event_data = {
+            "event_id": EVENT_ID,
+            "agent_id": AGENT_ID,
+            "hostname": "test",
+            "platform": "Linux",
+            "event_type": "fim",
+            "severity": "high",
+            "timestamp": "2026-05-07T10:00:00Z",
+            "source": "agent",
+            "payload": {"filepath": "/tmp/suspicious.sh", "event_action": "created"},
+            "tags": ["fim", "created"],
+        }
+
+        first_response = client.post("/api/v1/events", json=event_data)
+        second_response = client.post("/api/v1/events", json=event_data)
+
+        assert first_response.status_code == 201
+        assert first_response.json()["duplicate"] is False
+        assert second_response.status_code == 201
+        assert second_response.json()["duplicate"] is True
+        assert created_events == [EVENT_ID]
+
     def test_post_batch_events(self, client):
         """Test POST /api/v1/events/batch."""
         batch_data = {
