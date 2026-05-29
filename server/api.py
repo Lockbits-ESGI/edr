@@ -48,6 +48,7 @@ from server.metrics import (
     heartbeat_errors_total,
 )
 from shared.event_schema import MiniEDREvent
+from shared.tags import extract_company_from_tags, normalize_company
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -325,8 +326,11 @@ def heartbeat(
         hostname = hb_data.get("hostname")
         platform = hb_data.get("platform")
         version = hb_data.get("agent_version", "1.0.0")
+        company = normalize_company(hb_data.get("company")) or extract_company_from_tags(
+            hb_data.get("tags", [])
+        )
 
-        storage.upsert_agent(db, agent_id, hostname, platform, version)
+        storage.upsert_agent(db, agent_id, hostname, platform, version, company=company)
         agents_registered_total.inc()
         logger.info(f"Heartbeat from {agent_id} ({hostname})")
 
@@ -432,6 +436,7 @@ def list_agents(request: Request, db: Session = Depends(get_db)) -> list[AgentRe
             hostname=a.hostname,
             platform=a.platform,
             agent_version=a.agent_version,
+            company=a.company or "",
             first_seen=a.first_seen,
             last_seen=a.last_seen,
             status=a.status,
@@ -453,6 +458,7 @@ def get_agent(agent_id: str, db: Session = Depends(get_db)) -> AgentResponse:
         hostname=agent.hostname,
         platform=agent.platform,
         agent_version=agent.agent_version,
+        company=agent.company or "",
         first_seen=agent.first_seen,
         last_seen=agent.last_seen,
         status=agent.status,

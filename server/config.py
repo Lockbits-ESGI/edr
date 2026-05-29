@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     GLPI_USER_TOKEN: str | None = None
     GLPI_TICKET_ENTITY_ID: int | None = None
     GLPI_TICKET_CATEGORY_ID: int | None = None
+    GLPI_COMPANY_REQUESTER_TYPE: str = "Group"
     GLPI_TIMEOUT_SECONDS: float = 10.0
 
     @field_validator("GLPI_TICKET_ENTITY_ID", "GLPI_TICKET_CATEGORY_ID", mode="before")

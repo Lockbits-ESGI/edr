@@ -37,6 +37,7 @@ from shared.utils import (
     utc_now_iso,
 )
 from shared.event_schema import MiniEDREvent
+from shared.tags import extract_company_from_tags, merge_company_tag, normalize_company
 from agent.sender import EventSender
 from agent.heartbeat import HeartbeatWorker
 
@@ -56,6 +57,7 @@ class MiniEDRAgent:
         self.agent_id = load_agent_id(
             Path(agent_id_file) if agent_id_file else get_config_dir() / "agent_id"
         )
+        self.company = self._load_company()
 
         server_config = self.config.get("server", {})
         queue_config = self.config.get("queue", {})
@@ -97,7 +99,7 @@ class MiniEDRAgent:
             timestamp=utc_now_iso(),
             source="agent",
             payload=payload,
-            tags=tags or [],
+            tags=merge_company_tag(tags, self.company),
         )
 
     def run_scan_mode(self) -> int:
@@ -154,6 +156,7 @@ class MiniEDRAgent:
                 agent_id=self.agent_id,
                 hostname=socket.gethostname(),
                 platform=platform.system(),
+                company=self.company,
                 interval_s=self.config.get("agent", {}).get("heartbeat_interval", 300),
             )
             self.heartbeat_worker.start()
@@ -224,6 +227,21 @@ class MiniEDRAgent:
         if current == "Darwin":
             return "darwin"
         return "linux"
+
+    def _load_company(self) -> str:
+        """Load the deployment company from env, config, or existing tags."""
+        env_company = os.environ.get("MINIEDR_AGENT_COMPANY") or os.environ.get(
+            "AGENT_COMPANY"
+        )
+        if env_company is not None:
+            return normalize_company(env_company)
+
+        agent_config = self.config.get("agent", {})
+        config_company = normalize_company(agent_config.get("company"))
+        if config_company:
+            return config_company
+
+        return extract_company_from_tags(agent_config.get("tags", []))
 
     def _snapshot_to_event(
         self, snapshot: dict, event_type: str, tags: list[str]

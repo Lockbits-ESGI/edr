@@ -1,6 +1,7 @@
 agent:
   id_file: "./agent_id"
   version: "1.0.0"
+  company: ""
   heartbeat_interval: 300
   snapshot_interval: 600
   generate_local_report: false

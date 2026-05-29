@@ -11,6 +11,7 @@ from urllib.parse import urljoin
 import requests
 
 from shared.event_schema import MiniEDREvent
+from shared.tags import extract_company_from_tags
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +29,7 @@ class GLPIConfig:
     timeout_seconds: float = 10.0
     ticket_entity_id: int | None = None
     ticket_category_id: int | None = None
+    company_requester_type: str = "Group"
 
 
 class GLPIClient:
@@ -137,6 +139,7 @@ class GLPIClient:
         payload = event.payload if isinstance(event.payload, dict) else {}
         event_action = payload.get("event_action")
         filepath = payload.get("filepath")
+        company = extract_company_from_tags(event.tags)
 
         name = (
             f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
@@ -151,6 +154,7 @@ class GLPIClient:
             "source": event.source,
             "timestamp": event.timestamp,
             "tags": event.tags,
+            "company": company,
             "event_action": event_action,
             "filepath": filepath,
             "payload": payload,
@@ -171,6 +175,14 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
+        if company:
+            ticket["team"] = [
+                {
+                    "type": self.config.company_requester_type,
+                    "name": company,
+                    "role": "requester",
+                }
+            ]
         return ticket
 
     @staticmethod
@@ -224,5 +236,6 @@ def build_glpi_client(settings: Any) -> GLPIClient | None:
             timeout_seconds=settings.GLPI_TIMEOUT_SECONDS,
             ticket_entity_id=settings.GLPI_TICKET_ENTITY_ID,
             ticket_category_id=settings.GLPI_TICKET_CATEGORY_ID,
+            company_requester_type=settings.GLPI_COMPANY_REQUESTER_TYPE,
         )
     )
