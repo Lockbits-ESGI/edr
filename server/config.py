@@ -1,5 +1,7 @@
 """Server configuration loaded from environment and config file."""
 
+from typing import Any
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 try:
@@ -29,10 +31,19 @@ class Settings(BaseSettings):
     GLPI_TICKET_ENTITY_ID: int | None = None
     GLPI_TICKET_CATEGORY_ID: int | None = None
     GLPI_TIMEOUT_SECONDS: float = 10.0
+
+    @field_validator("GLPI_TICKET_ENTITY_ID", "GLPI_TICKET_CATEGORY_ID", mode="before")
+    @classmethod
+    def empty_str_to_none(cls, v: Any) -> Any:
+        if v == "":
+            return None
+        return v
+
     LOG_LEVEL: str = "INFO"
     CORS_ORIGINS: str = "*"  # comma-separated list of allowed origins, or "*" for all
     MAX_EVENTS_PER_PAGE: int = 100
     WORKERS: int = 1
+    AGENT_TIMEOUT_SECONDS: int = 630  # 2× heartbeat_interval + 30s grace
 
     if SettingsConfigDict:
         model_config = SettingsConfigDict(
