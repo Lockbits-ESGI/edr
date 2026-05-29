@@ -326,9 +326,9 @@ def heartbeat(
         hostname = hb_data.get("hostname")
         platform = hb_data.get("platform")
         version = hb_data.get("agent_version", "1.0.0")
-        company = normalize_company(hb_data.get("company")) or extract_company_from_tags(
-            hb_data.get("tags", [])
-        )
+        company = normalize_company(
+            hb_data.get("company")
+        ) or extract_company_from_tags(hb_data.get("tags", []))
 
         storage.upsert_agent(db, agent_id, hostname, platform, version, company=company)
         agents_registered_total.inc()
