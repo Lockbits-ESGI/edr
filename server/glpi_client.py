@@ -44,12 +44,23 @@ class GLPIClient:
 
     def create_ticket_for_event(self, event: MiniEDREvent) -> int | None:
         """Create one GLPI ticket for an accepted EDR event."""
+        company = extract_company_from_tags(event.tags)
         payload = self._build_ticket_payload(event)
         response = self._post_ticket(payload)
         response.raise_for_status()
 
         data = response.json()
         ticket_id = self._extract_created_id(data)
+        if company and ticket_id is not None:
+            self._try_add_company_requester(ticket_id, company, event.event_id)
+        elif company:
+            logger.warning(
+                "GLPI ticket created for event %s but no ticket id was returned; "
+                "company requester '%s' could not be added",
+                event.event_id,
+                company,
+            )
+
         logger.info(
             "GLPI ticket created for event %s: %s",
             event.event_id,
@@ -90,6 +101,132 @@ class GLPIClient:
         if last_response is None:
             raise RuntimeError("No GLPI ticket endpoint was attempted")
         return last_response
+
+    def _try_add_company_requester(
+        self, ticket_id: int, company: str, event_id: str
+    ) -> None:
+        try:
+            self._add_company_requester(ticket_id, company)
+        except Exception as exc:
+            logger.error(
+                "GLPI requester assignment failed for event %s ticket %s company %s: %s",
+                event_id,
+                ticket_id,
+                company,
+                exc,
+            )
+
+    def _add_company_requester(self, ticket_id: int, company: str) -> None:
+        requester_type = self.config.company_requester_type.strip() or "Group"
+        requester_id = self._resolve_requester_actor_id(requester_type, company)
+        if requester_id is None:
+            logger.warning(
+                "GLPI requester '%s' of type '%s' was not found; ticket %s left "
+                "without company requester",
+                company,
+                requester_type,
+                ticket_id,
+            )
+            return
+
+        response = requests.post(
+            self._api_url(f"Assistance/Ticket/{ticket_id}/TeamMember"),
+            headers=self._bearer_headers(),
+            json={
+                "type": requester_type,
+                "id": requester_id,
+                "role": "requester",
+            },
+            timeout=self.config.timeout_seconds,
+        )
+        response.raise_for_status()
+        logger.info(
+            "GLPI requester added to ticket %s: %s %s",
+            ticket_id,
+            requester_type,
+            company,
+        )
+
+    def _resolve_requester_actor_id(self, actor_type: str, company: str) -> int | None:
+        stripped_company = company.strip()
+        if stripped_company.isdigit():
+            return int(stripped_company)
+
+        path = self._requester_collection_path(actor_type)
+        exact_filter = f'name=="{self._escape_rsql_value(stripped_company)}"'
+        filtered = self._get_collection(
+            path, params={"filter": exact_filter, "limit": 20}
+        )
+        actor_id = self._find_actor_id_by_name(filtered, stripped_company)
+        if actor_id is not None:
+            return actor_id
+
+        start = 0
+        limit = 100
+        while start < 500:
+            page = self._get_collection(path, params={"start": start, "limit": limit})
+            actor_id = self._find_actor_id_by_name(page, stripped_company)
+            if actor_id is not None:
+                return actor_id
+            if len(page) < limit:
+                break
+            start += limit
+
+        return None
+
+    def _get_collection(
+        self, path: str, params: dict[str, Any]
+    ) -> list[dict[str, Any]]:
+        response = requests.get(
+            self._api_url(path),
+            headers=self._bearer_headers(),
+            params=params,
+            timeout=self.config.timeout_seconds,
+        )
+        response.raise_for_status()
+        data = response.json()
+        if isinstance(data, list):
+            return [item for item in data if isinstance(item, dict)]
+        if isinstance(data, dict):
+            for key in ("data", "items"):
+                items = data.get(key)
+                if isinstance(items, list):
+                    return [item for item in items if isinstance(item, dict)]
+        return []
+
+    @staticmethod
+    def _requester_collection_path(actor_type: str) -> str:
+        paths = {
+            "group": "Administration/Group",
+            "supplier": "Management/Supplier",
+            "user": "Administration/User",
+        }
+        path = paths.get(actor_type.strip().lower())
+        if path is None:
+            raise ValueError(
+                "GLPI_COMPANY_REQUESTER_TYPE must be one of Group, Supplier, User"
+            )
+        return path
+
+    @staticmethod
+    def _find_actor_id_by_name(
+        items: list[dict[str, Any]], expected_name: str
+    ) -> int | None:
+        expected = expected_name.casefold()
+        for item in items:
+            names = [item.get("name"), item.get("completename")]
+            for name in names:
+                if isinstance(name, str) and name.casefold() == expected:
+                    item_id = item.get("id")
+                    if isinstance(item_id, int):
+                        return item_id
+                    if isinstance(item_id, str) and item_id.isdigit():
+                        return int(item_id)
+        return None
+
+    @staticmethod
+    def _escape_rsql_value(value: str) -> str:
+        return value.replace("\\", "\\\\").replace('"', '\\"')
 
     def _get_access_token(self) -> str:
         if self._access_token and time.time() < self._access_token_expires_at:
@@ -175,14 +312,6 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
-        if company:
-            ticket["team"] = [
-                {
-                    "type": self.config.company_requester_type,
-                    "name": company,
-                    "role": "requester",
-                }
-            ]
         return ticket
 
     @staticmethod
@@ -199,7 +328,13 @@ class GLPIClient:
     def _extract_created_id(data: Any) -> int | None:
         if isinstance(data, dict):
             item_id = data.get("id")
-            return item_id if isinstance(item_id, int) else None
+            if isinstance(item_id, int):
+                return item_id
+            href = data.get("href")
+            if isinstance(href, str):
+                tail = href.rstrip("/").rsplit("/", 1)[-1]
+                return int(tail) if tail.isdigit() else None
+            return None
         if isinstance(data, list) and data and isinstance(data[0], dict):
             item_id = data[0].get("id")
             return item_id if isinstance(item_id, int) else None
