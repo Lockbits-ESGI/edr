@@ -38,6 +38,7 @@ class AgentResponse(BaseModel):
     hostname: str
     platform: str
     agent_version: str
+    company: str = ""
     first_seen: datetime
     last_seen: datetime
     status: str

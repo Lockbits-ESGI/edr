@@ -6,17 +6,26 @@ from sqlalchemy import func, and_
 
 from server.models import Agent, Event, HashCache
 from shared.event_schema import MiniEDREvent, VTResult
+from shared.tags import extract_company_from_tags, normalize_company
 
 
 def upsert_agent(
-    db: Session, agent_id: str, hostname: str, platform: str, version: str
+    db: Session,
+    agent_id: str,
+    hostname: str,
+    platform: str,
+    version: str,
+    company: str = "",
 ) -> Agent:
     """Create or update agent record."""
+    company = normalize_company(company)
     agent = db.query(Agent).filter(Agent.agent_id == agent_id).first()
     if agent:
         agent.hostname = hostname
         agent.platform = platform
         agent.agent_version = version
+        if company:
+            agent.company = company
         agent.last_seen = datetime.utcnow()
         agent.status = "online"
     else:
@@ -25,6 +34,7 @@ def upsert_agent(
             hostname=hostname,
             platform=platform,
             agent_version=version,
+            company=company,
             status="online",
         )
         db.add(agent)
@@ -44,6 +54,7 @@ def store_event(db: Session, event: MiniEDREvent) -> Event:
         hostname=event.hostname,
         platform=event.platform,
         version=str(event.payload.get("agent_version", "1.0.0")),
+        company=extract_company_from_tags(event.tags),
     )
 
     event_record = Event(

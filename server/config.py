@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     GLPI_USER_TOKEN: str | None = None
     GLPI_TICKET_ENTITY_ID: int | None = None
     GLPI_TICKET_CATEGORY_ID: int | None = None
+    GLPI_COMPANY_REQUESTER_TYPE: str = "Group"
     GLPI_TIMEOUT_SECONDS: float = 10.0
     LOG_LEVEL: str = "INFO"
     CORS_ORIGINS: str = "*"  # comma-separated list of allowed origins, or "*" for all

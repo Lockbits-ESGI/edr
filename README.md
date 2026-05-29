@@ -77,6 +77,7 @@ Scan unique:
 ```bash
 MINIEDR_SERVER_URL=http://IP_DU_SERVEUR:8000 \
 MINIEDR_AUTH_TOKEN=change-me \
+MINIEDR_AGENT_COMPANY=EntrepriseA \
 python -m agent.main --mode scan
 ```
 
@@ -85,8 +86,13 @@ Monitoring continu:
 ```bash
 MINIEDR_SERVER_URL=http://IP_DU_SERVEUR:8000 \
 MINIEDR_AUTH_TOKEN=change-me \
+MINIEDR_AGENT_COMPANY=EntrepriseA \
 python -m agent.main --mode monitor
 ```
+
+`MINIEDR_AGENT_COMPANY` ajoute le tag normalise `company:EntrepriseA` a tous
+les evenements envoyes par l'agent. Ce tag est aussi transmis dans le heartbeat
+pour rattacher l'agent a sa societe cote serveur.
 
 ## Compiler les binaires
 

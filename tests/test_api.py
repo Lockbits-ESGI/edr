@@ -250,6 +250,25 @@ class TestAgentEndpoints:
         assert len(agents) >= 1
         assert agents[0]["agent_id"] == "a1"
 
+    def test_agent_company_is_stored_from_heartbeat(self, client):
+        """Heartbeat metadata keeps the deployment company on the agent."""
+        hb_data = {
+            "agent_id": "a1",
+            "hostname": "test",
+            "platform": "Linux",
+            "agent_version": "1.0.0",
+            "status": "online",
+            "company": "EntrepriseA",
+            "tags": ["company:EntrepriseA"],
+        }
+
+        response = client.post("/api/v1/heartbeat", json=hb_data)
+        assert response.status_code == 200
+
+        response = client.get("/api/v1/agents/a1")
+        assert response.status_code == 200
+        assert response.json()["company"] == "EntrepriseA"
+
     def test_get_single_agent(self, client):
         """Test GET /api/v1/agents/{agent_id}."""
         hb_data = {

@@ -27,6 +27,7 @@ class Agent(Base):
     hostname = Column(String(255), nullable=False)
     platform = Column(String(50), nullable=False)
     agent_version = Column(String(50), default="")
+    company = Column(String(255), default="", index=True)
     first_seen = Column(DateTime, default=datetime.utcnow, nullable=False)
     last_seen = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
@@ -39,6 +40,7 @@ class Agent(Base):
     __table_args__ = (
         Index("idx_agent_id", "agent_id"),
         Index("idx_hostname", "hostname"),
+        Index("idx_company", "company"),
         Index("idx_last_seen", "last_seen"),
     )
 
