@@ -40,6 +40,8 @@ class GLPIClient:
         self.api_url = config.api_url.rstrip("/") + "/"
         self._access_token: str | None = None
         self._access_token_expires_at = 0.0
+        self._user_email_cache: dict[str, int] = {}
+        self._user_email_cache_expires_at = 0.0
 
     def create_ticket_for_event(self, event: MiniEDREvent) -> int | None:
         """Create one GLPI ticket for an accepted EDR event."""
@@ -134,6 +136,43 @@ class GLPIClient:
     def _api_url(self, path: str) -> str:
         return urljoin(self.api_url, path.lstrip("/"))
 
+    def _resolve_requester_by_email(self, email: str) -> int | None:
+        """Search GLPI user by email via search API, return user ID or None."""
+        # Cache check (TTL 5 minutes)
+        now = time.time()
+        if now < self._user_email_cache_expires_at and email in self._user_email_cache:
+            return self._user_email_cache[email]
+
+        # Search GLPI User by email (field 9 = email)
+        try:
+            response = requests.get(
+                self._api_url("search/User"),
+                headers=self._bearer_headers(),
+                params={
+                    "criteria[0][field]": 9,
+                    "criteria[0][searchtype]": "equals",
+                    "criteria[0][value]": email,
+                },
+                timeout=self.config.timeout_seconds,
+            )
+            response.raise_for_status()
+            data = response.json()
+        except requests.RequestException as exc:
+            logger.warning("GLPI user search failed for %s: %s", email, exc)
+            return None
+
+        total = data.get("totalcount", 0) if isinstance(data, dict) else 0
+        if total > 0 and isinstance(data.get("data"), list) and len(data["data"]) > 0:
+            user_id = data["data"][0].get("1")  # field "1" = GLPI user ID
+            if isinstance(user_id, int):
+                self._user_email_cache[email] = user_id
+                self._user_email_cache_expires_at = now + 300  # 5 min TTL
+                logger.info("Resolved GLPI user %s → ID %d", email, user_id)
+                return user_id
+
+        logger.warning("No GLPI user found for email %s", email)
+        return None
+
     def _build_ticket_payload(self, event: MiniEDREvent) -> dict[str, Any]:
         payload = event.payload if isinstance(event.payload, dict) else {}
         event_action = payload.get("event_action")
@@ -194,8 +233,13 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
-        if self.config.requester_id is not None:
-            ticket["_users_id_requester"] = self.config.requester_id
+        requester_id = None
+        if event.glpi_requester_email:
+            requester_id = self._resolve_requester_by_email(event.glpi_requester_email)
+        if requester_id is None:
+            requester_id = self.config.requester_id
+        if requester_id is not None:
+            ticket["_users_id_requester"] = requester_id
         return ticket
 
     @staticmethod

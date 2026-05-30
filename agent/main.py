@@ -78,6 +78,9 @@ class MiniEDRAgent:
 
         self.heartbeat_worker: Optional[HeartbeatWorker] = None
         self.observer = None
+        self.glpi_requester_email: str | None = (
+            os.environ.get("MINIEDR_GLPI_REQUESTER_EMAIL") or None
+        )
 
     def create_event(
         self,
@@ -88,17 +91,18 @@ class MiniEDRAgent:
     ) -> MiniEDREvent:
         """Create MiniEDREvent with standard fields."""
         return MiniEDREvent(
-            event_id=generate_uuid(),
-            agent_id=self.agent_id,
-            hostname=socket.gethostname(),
-            platform=platform.system(),
-            event_type=event_type,
-            severity=severity,
-            timestamp=utc_now_iso(),
-            source="agent",
-            payload=payload,
-            tags=tags or [],
-        )
+                event_id=generate_uuid(),
+                agent_id=self.agent_id,
+                hostname=socket.gethostname(),
+                platform=platform.system(),
+                event_type=event_type,
+                severity=severity,
+                timestamp=utc_now_iso(),
+                source="agent",
+                payload=payload,
+                tags=tags or [],
+                glpi_requester_email=self.glpi_requester_email,
+            )
 
     def run_scan_mode(self) -> int:
         """Run single snapshot mode."""
