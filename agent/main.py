@@ -76,23 +76,8 @@ class MiniEDRAgent:
             queue_path=queue_path,
         )
 
-        self.glpi_requester_id: int | None = self._int_env_or_none(
-            "MINIEDR_GLPI_REQUESTER_ID"
-        )
-
         self.heartbeat_worker: Optional[HeartbeatWorker] = None
         self.observer = None
-
-    @staticmethod
-    def _int_env_or_none(key: str) -> int | None:
-        val = os.environ.get(key)
-        if val is None:
-            return None
-        try:
-            return int(val)
-        except (TypeError, ValueError):
-            logger.warning("Invalid integer for %s=%r, ignoring", key, val)
-            return None
 
     def create_event(
         self,
@@ -113,7 +98,6 @@ class MiniEDRAgent:
             source="agent",
             payload=payload,
             tags=tags or [],
-            glpi_requester_id=self.glpi_requester_id,
         )
 
     def run_scan_mode(self) -> int:
