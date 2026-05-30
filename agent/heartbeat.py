@@ -4,6 +4,7 @@ import logging
 import threading
 
 from shared.event_schema import HeartbeatPayload
+from shared.tags import build_company_tag, normalize_company
 
 logger = logging.getLogger("miniedr.agent.heartbeat")
 
@@ -12,13 +13,20 @@ class HeartbeatWorker(threading.Thread):
     """Daemon thread that sends periodic heartbeat events."""
 
     def __init__(
-        self, sender, agent_id: str, hostname: str, platform: str, interval_s: int = 300
+        self,
+        sender,
+        agent_id: str,
+        hostname: str,
+        platform: str,
+        company: str = "",
+        interval_s: int = 300,
     ):
         super().__init__(daemon=True)
         self.sender = sender
         self.agent_id = agent_id
         self.hostname = hostname
         self.platform = platform
+        self.company = normalize_company(company)
         self.interval_s = interval_s
         self.stop_event = threading.Event()
 
@@ -42,6 +50,9 @@ class HeartbeatWorker(threading.Thread):
                         "agent_version": payload["agent_version"],
                     }
                 )
+                if self.company:
+                    payload["company"] = self.company
+                    payload["tags"] = [build_company_tag(self.company)]
                 self.sender.send_heartbeat(payload)
             except Exception as e:
                 logger.error(f"Heartbeat send failed: {e}")
