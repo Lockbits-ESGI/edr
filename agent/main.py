@@ -78,7 +78,7 @@ class MiniEDRAgent:
 
         self.heartbeat_worker: Optional[HeartbeatWorker] = None
         self.observer = None
-        self.glpi_requester_email: str | None = (
+        self.glpi_requester_email: Optional[str] = (
             os.environ.get("MINIEDR_GLPI_REQUESTER_EMAIL") or None
         )
 

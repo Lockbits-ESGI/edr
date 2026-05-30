@@ -133,7 +133,7 @@ class MiniEDREvent(BaseModel):
     source: str = "agent"
     payload: dict[str, Any] = Field(default_factory=dict)
     tags: list[str] = Field(default_factory=list)
-    glpi_requester_email: str | None = None
+    glpi_requester_email: Optional[str] = None
 
     @field_validator("platform")
     @classmethod
