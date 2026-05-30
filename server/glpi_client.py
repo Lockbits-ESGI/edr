@@ -28,6 +28,7 @@ class GLPIConfig:
     timeout_seconds: float = 10.0
     ticket_entity_id: int | None = None
     ticket_category_id: int | None = None
+    requester_id: int | None = None
 
 
 class GLPIClient:
@@ -141,7 +142,30 @@ class GLPIClient:
         name = (
             f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
         )
-        content = {
+
+        summary_parts = [
+            f"<h2>MiniEDR Security Alert — {event.severity.upper()}</h2>",
+            f"<p><strong>Hostname:</strong> {escape(event.hostname)}</p>",
+            f"<p><strong>Platform:</strong> {escape(event.platform)}</p>",
+            f"<p><strong>Event Type:</strong> {escape(event.event_type)}</p>",
+            f"<p><strong>Severity:</strong> {escape(event.severity)}</p>",
+            f"<p><strong>Timestamp:</strong> {escape(event.timestamp)}</p>",
+            f"<p><strong>Agent ID:</strong> {escape(event.agent_id)}</p>",
+        ]
+        if event_action:
+            summary_parts.append(
+                f"<p><strong>Action:</strong> {escape(event_action)}</p>"
+            )
+        if filepath:
+            summary_parts.append(
+                f"<p><strong>File:</strong> {escape(filepath)}</p>"
+            )
+        if event.tags:
+            summary_parts.append(
+                f"<p><strong>Tags:</strong> {', '.join(escape(t) for t in event.tags)}</p>"
+            )
+
+        detail = {
             "event_id": event.event_id,
             "agent_id": event.agent_id,
             "hostname": event.hostname,
@@ -155,11 +179,10 @@ class GLPIClient:
             "filepath": filepath,
             "payload": payload,
         }
+        json_block = f"<pre>{escape(json.dumps(detail, indent=2, sort_keys=True))}</pre>"
+        content_html = "<br/>".join(summary_parts) + "<br/><br/><hr/>" + json_block
 
-        content_json = json.dumps(content, indent=2, sort_keys=True)
-        content_html = f"<pre>{escape(content_json)}</pre>"
-
-        ticket = {
+        ticket: dict[str, Any] = {
             "name": name,
             "content": content_html,
             "type": 1,
@@ -171,6 +194,8 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
+        if self.config.requester_id is not None:
+            ticket["_users_id_requester"] = self.config.requester_id
         return ticket
 
     @staticmethod
@@ -224,5 +249,6 @@ def build_glpi_client(settings: Any) -> GLPIClient | None:
             timeout_seconds=settings.GLPI_TIMEOUT_SECONDS,
             ticket_entity_id=settings.GLPI_TICKET_ENTITY_ID,
             ticket_category_id=settings.GLPI_TICKET_CATEGORY_ID,
+            requester_id=settings.GLPI_REQUESTER_ID,
         )
     )
