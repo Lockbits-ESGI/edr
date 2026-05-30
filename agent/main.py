@@ -80,6 +80,9 @@ class MiniEDRAgent:
 
         self.heartbeat_worker: Optional[HeartbeatWorker] = None
         self.observer = None
+        self.glpi_requester_email: Optional[str] = (
+            os.environ.get("MINIEDR_GLPI_REQUESTER_EMAIL") or None
+        )
 
     def create_event(
         self,
@@ -100,6 +103,7 @@ class MiniEDRAgent:
             source="agent",
             payload=payload,
             tags=merge_company_tag(tags, self.company),
+            glpi_requester_email=self.glpi_requester_email,
         )
 
     def run_scan_mode(self) -> int:

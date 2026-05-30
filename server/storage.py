@@ -163,6 +163,19 @@ def update_event_vt_status(
     return event
 
 
+def mark_stale_agents_offline(db: Session, timeout_seconds: int) -> int:
+    """Mark agents as offline if last_seen exceeds timeout. Returns count updated."""
+    cutoff = datetime.utcnow() - timedelta(seconds=timeout_seconds)
+    updated = (
+        db.query(Agent).filter(Agent.status == "online", Agent.last_seen < cutoff).all()
+    )
+    for agent in updated:
+        agent.status = "offline"
+    if updated:
+        db.commit()
+    return len(updated)
+
+
 def get_stats(db: Session) -> dict:
     """Get server statistics."""
     total_events = db.query(func.count(Event.id)).scalar() or 0

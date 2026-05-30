@@ -1,5 +1,6 @@
 """FastAPI server application entry point."""
 
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -7,11 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 from slowapi import _rate_limit_exceeded_handler
 
-from server.database import init_db
+from server.database import init_db, SessionLocal
 from server.logger import logger
 from server.config import get_settings
 from server.ratelimit import limiter
 from server.api import router
+from server import storage
 
 settings = get_settings()
 
@@ -29,8 +31,29 @@ async def lifespan(app: FastAPI):
     logger.info("Database initialized")
     logger.info("=" * 60)
 
+    async def _agent_timeout_loop():
+        while True:
+            await asyncio.sleep(60)
+            try:
+                db = SessionLocal()
+                try:
+                    count = storage.mark_stale_agents_offline(
+                        db, settings.AGENT_TIMEOUT_SECONDS
+                    )
+                    if count:
+                        logger.info(
+                            f"Marked {count} agent(s) offline (timeout={settings.AGENT_TIMEOUT_SECONDS}s)"
+                        )
+                finally:
+                    db.close()
+            except Exception as exc:
+                logger.error(f"Agent timeout check failed: {exc}")
+
+    task = asyncio.create_task(_agent_timeout_loop())
+
     yield
 
+    task.cancel()
     logger.info("MiniEDR Server shutting down")
 
 
