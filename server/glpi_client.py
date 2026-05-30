@@ -436,9 +436,7 @@ class GLPIClient:
                 f"<p><strong>Action:</strong> {escape(event_action)}</p>"
             )
         if filepath:
-            summary_parts.append(
-                f"<p><strong>File:</strong> {escape(filepath)}</p>"
-            )
+            summary_parts.append(f"<p><strong>File:</strong> {escape(filepath)}</p>")
         if event.tags:
             summary_parts.append(
                 f"<p><strong>Tags:</strong> {', '.join(escape(t) for t in event.tags)}</p>"
@@ -459,7 +457,9 @@ class GLPIClient:
             "filepath": filepath,
             "payload": payload,
         }
-        json_block = f"<pre>{escape(json.dumps(detail, indent=2, sort_keys=True))}</pre>"
+        json_block = (
+            f"<pre>{escape(json.dumps(detail, indent=2, sort_keys=True))}</pre>"
+        )
         content_html = "<br/>".join(summary_parts) + "<br/><br/><hr/>" + json_block
 
         ticket: dict[str, Any] = {

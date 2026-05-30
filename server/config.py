@@ -35,7 +35,12 @@ class Settings(BaseSettings):
     GLPI_ENTITY_RECURSIVE: bool = True
     GLPI_TIMEOUT_SECONDS: float = 10.0
 
-    @field_validator("GLPI_TICKET_ENTITY_ID", "GLPI_TICKET_CATEGORY_ID", "GLPI_REQUESTER_ID", mode="before")
+    @field_validator(
+        "GLPI_TICKET_ENTITY_ID",
+        "GLPI_TICKET_CATEGORY_ID",
+        "GLPI_REQUESTER_ID",
+        mode="before",
+    )
     @classmethod
     def empty_str_to_none(cls, v: Any) -> Any:
         if v == "":
