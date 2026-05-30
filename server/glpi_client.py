@@ -194,8 +194,13 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
-        if self.config.requester_id is not None:
-            ticket["_users_id_requester"] = self.config.requester_id
+        requester_id = (
+            event.glpi_requester_id
+            if event.glpi_requester_id is not None
+            else self.config.requester_id
+        )
+        if requester_id is not None:
+            ticket["_users_id_requester"] = requester_id
         return ticket
 
     @staticmethod
