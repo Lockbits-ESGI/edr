@@ -1,0 +1,18 @@
+name: Notify parent repo
+
+on:
+  push:
+    branches: ["main", "develop"]
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger submodule update in parent repo
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.PARENT_REPO_PAT }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/Lockbits-ESGI/main/dispatches \
+            -d '{"event_type":"submodule-updated","client_payload":{"submodule":"edr","ref":"${{ github.ref_name }}"}}'
