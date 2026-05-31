@@ -259,7 +259,7 @@ class GLPIClient:
     ) -> list[dict[str, Any]]:
         response = requests.get(
             self._api_url(path),
-            headers=self._bearer_headers(),
+            headers=self._bearer_headers(include_content_type=False),
             params=params,
             timeout=self.config.timeout_seconds,
         )
@@ -353,12 +353,13 @@ class GLPIClient:
         self._access_token_expires_at = time.time() + max(expires_in_seconds - 60, 60)
         return access_token
 
-    def _bearer_headers(self) -> dict[str, str]:
+    def _bearer_headers(self, include_content_type: bool = True) -> dict[str, str]:
         headers = {
             "Authorization": f"Bearer {self._get_access_token()}",
-            "Content-Type": "application/json",
             "Accept": "application/json",
         }
+        if include_content_type:
+            headers["Content-Type"] = "application/json"
         if self.config.ticket_entity_id is not None:
             headers["GLPI-Entity"] = str(self.config.ticket_entity_id)
         headers["GLPI-Entity-Recursive"] = (

@@ -105,6 +105,7 @@ def test_create_ticket_adds_company_as_requester_actor(monkeypatch):
 
     def fake_get(url, headers, params, timeout):
         assert url.endswith("/Administration/Group")
+        assert "Content-Type" not in headers
         assert params["filter"] == 'name=="EntrepriseA"'
         return FakeResponse(status_code=200, data=[{"id": 42, "name": "EntrepriseA"}])
 
@@ -171,6 +172,7 @@ def test_create_ticket_adds_company_requester_by_name_when_lookup_misses(
     def fake_get(url, headers, params, timeout):
         assert headers["GLPI-Entity"] == "7"
         assert headers["GLPI-Entity-Recursive"] == "true"
+        assert "Content-Type" not in headers
         assert url.endswith("/Administration/Group") or url.endswith("/Group")
         return FakeResponse(status_code=200, data=[])
 
