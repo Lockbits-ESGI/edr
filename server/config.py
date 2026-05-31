@@ -30,9 +30,17 @@ class Settings(BaseSettings):
     GLPI_USER_TOKEN: str | None = None
     GLPI_TICKET_ENTITY_ID: int | None = None
     GLPI_TICKET_CATEGORY_ID: int | None = None
+    GLPI_REQUESTER_ID: int | None = None
+    GLPI_COMPANY_REQUESTER_TYPE: str = "Group"
+    GLPI_ENTITY_RECURSIVE: bool = True
     GLPI_TIMEOUT_SECONDS: float = 10.0
 
-    @field_validator("GLPI_TICKET_ENTITY_ID", "GLPI_TICKET_CATEGORY_ID", mode="before")
+    @field_validator(
+        "GLPI_TICKET_ENTITY_ID",
+        "GLPI_TICKET_CATEGORY_ID",
+        "GLPI_REQUESTER_ID",
+        mode="before",
+    )
     @classmethod
     def empty_str_to_none(cls, v: Any) -> Any:
         if v == "":
@@ -44,6 +52,13 @@ class Settings(BaseSettings):
     MAX_EVENTS_PER_PAGE: int = 100
     WORKERS: int = 1
     AGENT_TIMEOUT_SECONDS: int = 630  # 2× heartbeat_interval + 30s grace
+
+    @field_validator("GLPI_TICKET_ENTITY_ID", "GLPI_TICKET_CATEGORY_ID", mode="before")
+    @classmethod
+    def empty_glpi_ids_are_unset(cls, value):
+        if value == "":
+            return None
+        return value
 
     if SettingsConfigDict:
         model_config = SettingsConfigDict(
