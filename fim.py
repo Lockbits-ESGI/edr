@@ -42,7 +42,6 @@ class FIMEventHandler(FileSystemEventHandler):
         from datetime import datetime
 
         if _is_ignored_path(file_path, self.ignored_paths):
-            logger.debug(f"Ignored FIM alert: {event_type} {file_path}")
             return
 
         alert: dict[str, object] = {
