@@ -80,3 +80,32 @@ def test_agent_adds_normalized_company_tag(tmp_path, monkeypatch):
     )
 
     assert event.tags == ["scan", "company:EntrepriseA"]
+
+
+def test_agent_attaches_launch_user_to_events(tmp_path):
+    """Events carry the launch user for GLPI requester assignment."""
+    config_path = tmp_path / "config.yaml"
+    agent_id_file = tmp_path / "agent_id"
+    queue_path = tmp_path / "queue" / "pending_events.jsonl"
+    config_path.write_text(
+        "\n".join(
+            [
+                "agent:",
+                f"  id_file: {agent_id_file}",
+                "server:",
+                "  url: http://127.0.0.1:8000",
+                "queue:",
+                f"  path: {queue_path}",
+            ]
+        )
+    )
+
+    agent = MiniEDRAgent(config_path=config_path, output_dir=tmp_path, user="alice")
+
+    event = agent.create_event(
+        event_type="fim",
+        severity="medium",
+        payload={"filepath": "/tmp/a.sh", "event_action": "created"},
+    )
+
+    assert event.user == "alice"

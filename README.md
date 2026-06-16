@@ -78,7 +78,7 @@ Scan unique:
 MINIEDR_SERVER_URL=http://IP_DU_SERVEUR:8000 \
 MINIEDR_AUTH_TOKEN=change-me \
 MINIEDR_AGENT_COMPANY=EntrepriseA \
-python -m agent.main --mode scan
+python -m agent.main --mode scan --user alice
 ```
 
 Monitoring continu:
@@ -87,12 +87,16 @@ Monitoring continu:
 MINIEDR_SERVER_URL=http://IP_DU_SERVEUR:8000 \
 MINIEDR_AUTH_TOKEN=change-me \
 MINIEDR_AGENT_COMPANY=EntrepriseA \
-python -m agent.main --mode monitor
+python -m agent.main --mode monitor --user alice
 ```
 
 `MINIEDR_AGENT_COMPANY` ajoute le tag normalise `company:EntrepriseA` a tous
 les evenements envoyes par l'agent. Ce tag est aussi transmis dans le heartbeat
 pour rattacher l'agent a sa societe cote serveur.
+
+Le `--user` est transmis au serveur dans chaque evenement et utilise comme
+requester GLPI de type `User` lors de la creation des tickets. Il peut aussi
+etre renseigne via `MINIEDR_USER` ou `agent.user` dans la configuration agent.
 
 ## Compiler les binaires
 

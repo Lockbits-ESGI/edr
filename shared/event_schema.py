@@ -133,6 +133,7 @@ class MiniEDREvent(BaseModel):
     source: str = "agent"
     payload: dict[str, Any] = Field(default_factory=dict)
     tags: list[str] = Field(default_factory=list)
+    user: Optional[str] = None
     glpi_requester_email: Optional[str] = None
 
     @field_validator("platform")
@@ -209,6 +210,14 @@ class MiniEDREvent(BaseModel):
         if isinstance(v, list):
             return v
         raise ValueError("tags must be a list of strings")
+
+    @field_validator("user", "glpi_requester_email", mode="before")
+    @classmethod
+    def empty_optional_strings_are_unset(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            stripped = v.strip()
+            return stripped or None
+        return v
 
     @model_validator(mode="after")
     def validate_payload_structure(self) -> "MiniEDREvent":

@@ -49,13 +49,23 @@ class GLPIClient:
     def create_ticket_for_event(self, event: MiniEDREvent) -> int | None:
         """Create one GLPI ticket for an accepted EDR event."""
         company = extract_company_from_tags(event.tags)
+        requester_user = self._event_requester_user(event)
         payload = self._build_ticket_payload(event)
         response = self._post_ticket(payload)
         response.raise_for_status()
 
         data = response.json()
         ticket_id = self._extract_created_id(data)
-        if company and ticket_id is not None:
+        if requester_user and ticket_id is not None:
+            self._try_add_user_requester(ticket_id, requester_user, event.event_id)
+        elif requester_user:
+            logger.warning(
+                "GLPI ticket created for event %s but no ticket id was returned; "
+                "user requester '%s' could not be added",
+                event.event_id,
+                requester_user,
+            )
+        elif company and ticket_id is not None:
             self._try_add_company_requester(ticket_id, company, event.event_id)
         elif company:
             logger.warning(
@@ -120,16 +130,40 @@ class GLPIClient:
                 exc,
             )
 
+    def _try_add_user_requester(
+        self, ticket_id: int, username: str, event_id: str
+    ) -> None:
+        try:
+            self._add_user_requester(ticket_id, username)
+        except Exception as exc:
+            logger.error(
+                "GLPI requester assignment failed for event %s ticket %s user %s: %s",
+                event_id,
+                ticket_id,
+                username,
+                exc,
+            )
+
     def _add_company_requester(self, ticket_id: int, company: str) -> None:
         requester_type = self._normalize_requester_type(
             self.config.company_requester_type
         )
-        requester_id = self._resolve_requester_actor_id(requester_type, company)
+        self._add_named_requester(ticket_id, requester_type, company)
+
+    def _add_user_requester(self, ticket_id: int, username: str) -> None:
+        self._add_named_requester(ticket_id, "User", username)
+
+    def _add_named_requester(
+        self, ticket_id: int, requester_type: str, requester_name: str
+    ) -> None:
+        requester_id = self._resolve_requester_actor_id(
+            requester_type, requester_name
+        )
         if requester_id is None:
             logger.warning(
                 "GLPI requester '%s' of type '%s' was not found; ticket %s left "
                 "without resolved requester id; trying direct requester name assignment",
-                company,
+                requester_name,
                 requester_type,
                 ticket_id,
             )
@@ -137,7 +171,7 @@ class GLPIClient:
                 ticket_id,
                 {
                     "type": requester_type,
-                    "name": company,
+                    "name": requester_name,
                     "role": "requester",
                 },
             )
@@ -146,7 +180,7 @@ class GLPIClient:
                     "GLPI requester added to ticket %s by name: %s %s",
                     ticket_id,
                     requester_type,
-                    company,
+                    requester_name,
                 )
                 return
             raise RuntimeError(
@@ -165,7 +199,7 @@ class GLPIClient:
                 "GLPI requester added to ticket %s: %s %s",
                 ticket_id,
                 requester_type,
-                company,
+                requester_name,
             )
             return
 
@@ -174,7 +208,7 @@ class GLPIClient:
             ticket_id,
             {
                 "type": requester_type,
-                "name": company,
+                "name": requester_name,
                 "role": "requester",
             },
         )
@@ -184,7 +218,7 @@ class GLPIClient:
                 "failed: %s %s",
                 ticket_id,
                 requester_type,
-                company,
+                requester_name,
             )
             return
 
@@ -375,6 +409,15 @@ class GLPIClient:
     def _api_url(self, path: str) -> str:
         return urljoin(self.api_url, path.lstrip("/"))
 
+    @staticmethod
+    def _event_requester_user(event: MiniEDREvent) -> str | None:
+        user = getattr(event, "user", None)
+        if isinstance(user, str):
+            stripped = user.strip()
+            if stripped:
+                return stripped
+        return None
+
     def _resolve_requester_by_email(self, email: str) -> int | None:
         """Search GLPI user by email via search API, return user ID or None."""
         # Cache check (TTL 5 minutes)
@@ -417,6 +460,7 @@ class GLPIClient:
         event_action = payload.get("event_action")
         filepath = payload.get("filepath")
         company = extract_company_from_tags(event.tags)
+        requester_user = self._event_requester_user(event)
 
         name = (
             f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
@@ -452,6 +496,7 @@ class GLPIClient:
             "source": event.source,
             "timestamp": event.timestamp,
             "tags": event.tags,
+            "user": requester_user,
             "company": company,
             "event_action": event_action,
             "filepath": filepath,
@@ -475,9 +520,9 @@ class GLPIClient:
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
         requester_id = None
-        if event.glpi_requester_email:
+        if requester_user is None and event.glpi_requester_email:
             requester_id = self._resolve_requester_by_email(event.glpi_requester_email)
-        if requester_id is None:
+        if requester_user is None and requester_id is None:
             requester_id = self.config.requester_id
         if requester_id is not None:
             ticket["_users_id_requester"] = requester_id

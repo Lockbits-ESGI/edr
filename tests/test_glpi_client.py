@@ -7,6 +7,20 @@ from shared.event_schema import MiniEDREvent
 from server.glpi_client import GLPIClient, GLPIConfig
 
 
+class FakeResponse:
+    def __init__(self, status_code=200, data=None, payload=None, text=""):
+        self.status_code = status_code
+        self._data = payload if payload is not None else data if data is not None else {}
+        self.text = text
+
+    def json(self):
+        return self._data
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(f"HTTP {self.status_code}")
+
+
 def test_build_ticket_payload_from_event():
     event = MiniEDREvent(
         event_id="11111111-1111-4111-8111-111111111111",
@@ -48,20 +62,6 @@ def test_build_ticket_payload_from_event():
     assert payload["itilcategories_id"] == 2
     assert "11111111-1111-4111-8111-111111111111" in payload["content"]
     assert "/tmp/suspicious.sh" in payload["content"]
-
-
-class FakeResponse:
-    def __init__(self, status_code=200, data=None, text=""):
-        self.status_code = status_code
-        self._data = data if data is not None else {}
-        self.text = text
-
-    def json(self):
-        return self._data
-
-    def raise_for_status(self):
-        if self.status_code >= 400:
-            raise RuntimeError(f"HTTP {self.status_code}")
 
 
 def test_create_ticket_adds_company_as_requester_actor(monkeypatch):
@@ -181,6 +181,88 @@ def test_create_ticket_adds_company_requester_by_name_when_lookup_misses(
 
     assert ticket_id == 123
     assert post_calls[1][1] == {"type": "Group", "name": "test", "role": "requester"}
+
+
+def test_build_ticket_payload_prefers_event_user_over_configured_requester():
+    event = MiniEDREvent(
+        event_id="11111111-1111-4111-8111-111111111111",
+        agent_id="22222222-2222-4222-8222-222222222222",
+        hostname="endpoint-01",
+        platform="Linux",
+        event_type="fim",
+        severity="high",
+        timestamp="2026-05-07T10:00:00Z",
+        source="agent",
+        payload={
+            "filepath": "/tmp/suspicious.sh",
+            "event_action": "created",
+        },
+        tags=["fim", "created", "company:GLPI-Entity"],
+        user="alice",
+    )
+    client = GLPIClient(
+        GLPIConfig(
+            web_url="https://glpi.lockbits.pro",
+            api_url="https://glpi.lockbits.pro/api.php/v2.2",
+            oauth_client_id="client-id",
+            oauth_client_secret="client-secret",
+            api_username="api-bot",
+            api_password="password",
+            requester_id=99,
+        )
+    )
+
+    payload = client._build_ticket_payload(event)
+
+    assert "_users_id_requester" not in payload
+    assert '"user": "alice"' in unescape(payload["content"])
+    assert '"company": "GLPI-Entity"' in unescape(payload["content"])
+
+
+def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
+    event = MiniEDREvent(
+        event_id="11111111-1111-4111-8111-111111111111",
+        agent_id="22222222-2222-4222-8222-222222222222",
+        hostname="endpoint-01",
+        platform="Linux",
+        event_type="fim",
+        severity="high",
+        timestamp="2026-05-07T10:00:00Z",
+        source="agent",
+        payload={
+            "filepath": "/tmp/suspicious.sh",
+            "event_action": "created",
+        },
+        tags=["fim", "created", "company:GLPI-Entity"],
+        user="alice",
+    )
+    client = GLPIClient(
+        GLPIConfig(
+            web_url="https://glpi.lockbits.pro",
+            api_url="https://glpi.lockbits.pro/api.php/v2.2",
+            oauth_client_id="client-id",
+            oauth_client_secret="client-secret",
+            api_username="api-bot",
+            api_password="password",
+        )
+    )
+    added = []
+    monkeypatch.setattr(
+        client, "_post_ticket", lambda payload: FakeResponse(data={"id": 42})
+    )
+    monkeypatch.setattr(
+        client,
+        "_add_user_requester",
+        lambda ticket_id, username: added.append((ticket_id, username)),
+    )
+    monkeypatch.setattr(
+        client,
+        "_add_company_requester",
+        lambda ticket_id, company: added.append(("company", ticket_id, company)),
+    )
+
+    assert client.create_ticket_for_event(event) == 42
+    assert added == [(42, "alice")]
 
 
 def test_glpi_v2_urls():

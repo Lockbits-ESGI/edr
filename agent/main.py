@@ -47,7 +47,7 @@ logger = logging.getLogger("miniedr.agent")
 class MiniEDRAgent:
     """Agent that collects events and sends to server."""
 
-    def __init__(self, config_path: Path, output_dir: Path):
+    def __init__(self, config_path: Path, output_dir: Path, user: str | None = None):
         self.config_path = config_path
         self.output_dir = output_dir
         self.config = _load_agent_config(config_path)
@@ -58,6 +58,8 @@ class MiniEDRAgent:
             Path(agent_id_file) if agent_id_file else get_config_dir() / "agent_id"
         )
         self.company = self._load_company()
+        config_user = self.config.get("agent", {}).get("user")
+        self.user = user or os.environ.get("MINIEDR_USER") or config_user or None
 
         server_config = self.config.get("server", {})
         queue_config = self.config.get("queue", {})
@@ -103,6 +105,7 @@ class MiniEDRAgent:
             source="agent",
             payload=payload,
             tags=merge_company_tag(tags, self.company),
+            user=self.user,
             glpi_requester_email=self.glpi_requester_email,
         )
 
@@ -342,6 +345,11 @@ def main() -> int:
         default=Path("./reports"),
         help="Output directory for reports",
     )
+    parser.add_argument(
+        "--user",
+        default=None,
+        help="Username to attach to events and use as GLPI ticket requester",
+    )
 
     args = parser.parse_args()
 
@@ -357,7 +365,7 @@ def main() -> int:
         log_file=Path(log_file) if log_file else args.output_dir / "agent.log",
     )
 
-    agent = MiniEDRAgent(config_path, args.output_dir)
+    agent = MiniEDRAgent(config_path, args.output_dir, user=args.user)
 
     if args.mode == "scan":
         return agent.run_scan_mode()
