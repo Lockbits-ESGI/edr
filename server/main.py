@@ -64,11 +64,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Prometheus metrics — auto-instrumentation
-# Exposes /metrics with default HTTP metrics (request count, duration, etc.)
-# plus custom EDR metrics defined in server.metrics
-Instrumentator().instrument(app).expose(app)
-
 # CORS middleware — restrict origins in production via CORS_ORIGINS env var
 # In development, keep "*" (all origins). In production, set a comma-separated
 # list of allowed origins (e.g. "https://app.example.com,https://admin.example.com").
@@ -91,6 +86,11 @@ app.add_exception_handler(429, _rate_limit_exceeded_handler)
 
 # Include routes
 app.include_router(router)
+
+# Prometheus metrics — auto-instrumentation
+# Exposes /metrics with default HTTP metrics (request count, duration, etc.)
+# plus custom EDR metrics defined in server.metrics.
+Instrumentator().instrument(app).expose(app)
 
 
 if __name__ == "__main__":

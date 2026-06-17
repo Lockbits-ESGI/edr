@@ -156,9 +156,7 @@ class GLPIClient:
     def _add_named_requester(
         self, ticket_id: int, requester_type: str, requester_name: str
     ) -> None:
-        requester_id = self._resolve_requester_actor_id(
-            requester_type, requester_name
-        )
+        requester_id = self._resolve_requester_actor_id(requester_type, requester_name)
         if requester_id is None:
             logger.warning(
                 "GLPI requester '%s' of type '%s' was not found; ticket %s left "

@@ -10,7 +10,9 @@ from server.glpi_client import GLPIClient, GLPIConfig
 class FakeResponse:
     def __init__(self, status_code=200, data=None, payload=None, text=""):
         self.status_code = status_code
-        self._data = payload if payload is not None else data if data is not None else {}
+        self._data = (
+            payload if payload is not None else data if data is not None else {}
+        )
         self.text = text
 
     def json(self):
