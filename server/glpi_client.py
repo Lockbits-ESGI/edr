@@ -50,15 +50,20 @@ class GLPIClient:
         """Create one GLPI ticket for an accepted EDR event."""
         company = extract_company_from_tags(event.tags)
         requester_user = self._event_requester_user(event)
-        payload = self._build_ticket_payload(event)
+        requester_user_id = (
+            self._resolve_requester_actor_id("User", requester_user)
+            if requester_user
+            else None
+        )
+        payload = self._build_ticket_payload(event, requester_user_id=requester_user_id)
         response = self._post_ticket(payload)
         response.raise_for_status()
 
         data = response.json()
         ticket_id = self._extract_created_id(data)
-        if requester_user and ticket_id is not None:
+        if requester_user and requester_user_id is None and ticket_id is not None:
             self._try_add_user_requester(ticket_id, requester_user, event.event_id)
-        elif requester_user:
+        elif requester_user and requester_user_id is None:
             logger.warning(
                 "GLPI ticket created for event %s but no ticket id was returned; "
                 "user requester '%s' could not be added",
@@ -453,7 +458,9 @@ class GLPIClient:
         logger.warning("No GLPI user found for email %s", email)
         return None
 
-    def _build_ticket_payload(self, event: MiniEDREvent) -> dict[str, Any]:
+    def _build_ticket_payload(
+        self, event: MiniEDREvent, requester_user_id: int | None = None
+    ) -> dict[str, Any]:
         payload = event.payload if isinstance(event.payload, dict) else {}
         event_action = payload.get("event_action")
         filepath = payload.get("filepath")
@@ -517,8 +524,12 @@ class GLPIClient:
             ticket["entities_id"] = self.config.ticket_entity_id
         if self.config.ticket_category_id is not None:
             ticket["itilcategories_id"] = self.config.ticket_category_id
-        requester_id = None
-        if requester_user is None and event.glpi_requester_email:
+        requester_id = requester_user_id
+        if (
+            requester_id is None
+            and requester_user is None
+            and event.glpi_requester_email
+        ):
             requester_id = self._resolve_requester_by_email(event.glpi_requester_email)
         if requester_user is None and requester_id is None:
             requester_id = self.config.requester_id

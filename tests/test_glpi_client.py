@@ -221,6 +221,41 @@ def test_build_ticket_payload_prefers_event_user_over_configured_requester():
     assert '"company": "GLPI-Entity"' in unescape(payload["content"])
 
 
+def test_build_ticket_payload_sets_resolved_event_user_as_requester():
+    event = MiniEDREvent(
+        event_id="11111111-1111-4111-8111-111111111111",
+        agent_id="22222222-2222-4222-8222-222222222222",
+        hostname="endpoint-01",
+        platform="Linux",
+        event_type="fim",
+        severity="high",
+        timestamp="2026-05-07T10:00:00Z",
+        source="agent",
+        payload={
+            "filepath": "/tmp/suspicious.sh",
+            "event_action": "created",
+        },
+        tags=["fim", "created", "company:GLPI-Entity"],
+        user="alice",
+    )
+    client = GLPIClient(
+        GLPIConfig(
+            web_url="https://glpi.lockbits.pro",
+            api_url="https://glpi.lockbits.pro/api.php/v2.2",
+            oauth_client_id="client-id",
+            oauth_client_secret="client-secret",
+            api_username="api-bot",
+            api_password="password",
+            requester_id=99,
+        )
+    )
+
+    payload = client._build_ticket_payload(event, requester_user_id=123)
+
+    assert payload["_users_id_requester"] == 123
+    assert '"user": "alice"' in unescape(payload["content"])
+
+
 def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
     event = MiniEDREvent(
         event_id="11111111-1111-4111-8111-111111111111",
@@ -249,6 +284,7 @@ def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
         )
     )
     added = []
+    monkeypatch.setattr(client, "_resolve_requester_actor_id", lambda *_: None)
     monkeypatch.setattr(
         client, "_post_ticket", lambda payload: FakeResponse(data={"id": 42})
     )
@@ -265,6 +301,54 @@ def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
 
     assert client.create_ticket_for_event(event) == 42
     assert added == [(42, "alice")]
+
+
+def test_create_ticket_sends_resolved_event_user_in_ticket_payload(monkeypatch):
+    event = MiniEDREvent(
+        event_id="11111111-1111-4111-8111-111111111111",
+        agent_id="22222222-2222-4222-8222-222222222222",
+        hostname="endpoint-01",
+        platform="Linux",
+        event_type="fim",
+        severity="high",
+        timestamp="2026-05-07T10:00:00Z",
+        source="agent",
+        payload={
+            "filepath": "/tmp/suspicious.sh",
+            "event_action": "created",
+        },
+        tags=["fim", "created", "company:GLPI-Entity"],
+        user="alice",
+    )
+    client = GLPIClient(
+        GLPIConfig(
+            web_url="https://glpi.lockbits.pro",
+            api_url="https://glpi.lockbits.pro/api.php/v2.2",
+            oauth_client_id="client-id",
+            oauth_client_secret="client-secret",
+            api_username="api-bot",
+            api_password="password",
+        )
+    )
+    posted_payloads = []
+    added = []
+    monkeypatch.setattr(client, "_resolve_requester_actor_id", lambda *_: 123)
+    monkeypatch.setattr(
+        client,
+        "_post_ticket",
+        lambda payload: (
+            posted_payloads.append(payload) or FakeResponse(data={"id": 42})
+        ),
+    )
+    monkeypatch.setattr(
+        client,
+        "_add_user_requester",
+        lambda ticket_id, username: added.append((ticket_id, username)),
+    )
+
+    assert client.create_ticket_for_event(event) == 42
+    assert posted_payloads[0]["_users_id_requester"] == 123
+    assert added == []
 
 
 def test_glpi_v2_urls():
