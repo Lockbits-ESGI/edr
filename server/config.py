@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     GLPI_API_URL: str = "https://glpi.lockbits.pro/api.php/v2.2"
     GLPI_OAUTH_CLIENT_ID: str | None = None
     GLPI_OAUTH_CLIENT_SECRET: str | None = None
+    GLPI_OAUTH_SCOPE: str = "api"
     GLPI_API_USERNAME: str | None = None
     GLPI_API_PASSWORD: str | None = None
     GLPI_APP_TOKEN: str | None = None

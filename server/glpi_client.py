@@ -26,6 +26,7 @@ class GLPIConfig:
     oauth_client_secret: str
     api_username: str
     api_password: str
+    oauth_scope: str = "api"
     timeout_seconds: float = 10.0
     ticket_entity_id: int | None = None
     ticket_category_id: int | None = None
@@ -374,7 +375,7 @@ class GLPIClient:
                 "client_secret": self.config.oauth_client_secret,
                 "username": self.config.api_username,
                 "password": self.config.api_password,
-                "scope": "api",
+                "scope": self.config.oauth_scope,
             },
             timeout=self.config.timeout_seconds,
         )
@@ -606,6 +607,7 @@ def build_glpi_client(settings: Any) -> GLPIClient | None:
             api_url=settings.GLPI_API_URL,
             oauth_client_id=settings.GLPI_OAUTH_CLIENT_ID,
             oauth_client_secret=settings.GLPI_OAUTH_CLIENT_SECRET,
+            oauth_scope=settings.GLPI_OAUTH_SCOPE,
             api_username=settings.GLPI_API_USERNAME,
             api_password=settings.GLPI_API_PASSWORD,
             timeout_seconds=settings.GLPI_TIMEOUT_SECONDS,

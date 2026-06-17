@@ -368,3 +368,27 @@ def test_glpi_v2_urls():
         client._api_url("Assistance/Ticket")
         == "https://glpi.lockbits.pro/api.php/v2.2/Assistance/Ticket"
     )
+
+
+def test_get_access_token_uses_configured_oauth_scope(monkeypatch):
+    post_calls = []
+
+    def fake_post(url, data, timeout):
+        post_calls.append((url, data, timeout))
+        return FakeResponse(data={"access_token": "token", "expires_in": 3600})
+
+    monkeypatch.setattr(glpi_module.requests, "post", fake_post)
+    client = GLPIClient(
+        GLPIConfig(
+            web_url="https://glpi.lockbits.pro",
+            api_url="https://glpi.lockbits.pro/api.php/v2.2",
+            oauth_client_id="client-id",
+            oauth_client_secret="client-secret",
+            api_username="api-bot",
+            api_password="password",
+            oauth_scope="api user email",
+        )
+    )
+
+    assert client._get_access_token() == "token"
+    assert post_calls[0][1]["scope"] == "api user email"
