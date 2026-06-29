@@ -300,7 +300,7 @@ def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
     )
 
     assert client.create_ticket_for_event(event) == 42
-    assert added == [(42, "alice")]
+    assert added == [(42, "alice"), ("company", 42, "GLPI-Entity")]
 
 
 def test_create_ticket_sends_resolved_event_user_in_ticket_payload(monkeypatch):

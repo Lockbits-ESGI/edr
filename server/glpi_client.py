@@ -241,7 +241,9 @@ class GLPIClient:
         rsql_field = "name" if actor_type.lower() != "user" else "username"
 
         for path in self._requester_collection_paths(actor_type):
-            exact_filter = f'{rsql_field}=="{self._escape_rsql_value(stripped_company)}"'
+            exact_filter = (
+                f'{rsql_field}=="{self._escape_rsql_value(stripped_company)}"'
+            )
             try:
                 filtered = self._get_collection(
                     path, params={"filter": exact_filter, "limit": 20}
