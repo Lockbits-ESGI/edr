@@ -71,7 +71,8 @@ class GLPIClient:
                 event.event_id,
                 requester_user,
             )
-        elif company and ticket_id is not None:
+
+        if company and ticket_id is not None:
             self._try_add_company_requester(ticket_id, company, event.event_id)
         elif company:
             logger.warning(
@@ -237,8 +238,10 @@ class GLPIClient:
         if stripped_company.isdigit():
             return int(stripped_company)
 
+        rsql_field = "name" if actor_type.lower() != "user" else "username"
+
         for path in self._requester_collection_paths(actor_type):
-            exact_filter = f'name=="{self._escape_rsql_value(stripped_company)}"'
+            exact_filter = f'{rsql_field}=="{self._escape_rsql_value(stripped_company)}"'
             try:
                 filtered = self._get_collection(
                     path, params={"filter": exact_filter, "limit": 20}
@@ -349,7 +352,7 @@ class GLPIClient:
     ) -> int | None:
         expected = expected_name.casefold()
         for item in items:
-            names = [item.get("name"), item.get("completename")]
+            names = [item.get("name"), item.get("completename"), item.get("username")]
             for name in names:
                 if isinstance(name, str) and name.casefold() == expected:
                     item_id = item.get("id")
