@@ -102,11 +102,12 @@ class GLPIClient:
         candidate_paths = ("Assistance/Ticket", "Ticket")
         fallback_statuses = {400, 404, 405, 422}
         last_response: requests.Response | None = None
+        post_headers = {**self._bearer_headers(), "Content-Type": "application/json"}
 
         for path in candidate_paths:
             response = requests.post(
                 self._api_url(path),
-                headers=self._bearer_headers(),
+                headers=post_headers,
                 json=payload,
                 timeout=self.config.timeout_seconds,
             )
@@ -116,7 +117,7 @@ class GLPIClient:
 
             legacy_shape_response = requests.post(
                 self._api_url(path),
-                headers=self._bearer_headers(),
+                headers=post_headers,
                 json={"input": payload},
                 timeout=self.config.timeout_seconds,
             )
@@ -301,11 +302,12 @@ class GLPIClient:
         )
         fallback_statuses = {400, 404, 405, 422}
         last_response: requests.Response | None = None
+        post_headers = {**self._bearer_headers(), "Content-Type": "application/json"}
 
         for path in candidate_paths:
             response = requests.post(
                 self._api_url(path),
-                headers=self._bearer_headers(),
+                headers=post_headers,
                 json=payload,
                 timeout=self.config.timeout_seconds,
             )
@@ -419,7 +421,6 @@ class GLPIClient:
     def _bearer_headers(self) -> dict[str, str]:
         headers = {
             "Authorization": f"Bearer {self._get_access_token()}",
-            "Content-Type": "application/json",
             "Accept": "application/json",
         }
         if self.config.ticket_entity_id is not None:
