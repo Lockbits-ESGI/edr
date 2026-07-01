@@ -291,7 +291,9 @@ def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
     monkeypatch.setattr(
         client,
         "_add_user_requester",
-        lambda ticket_id, username: added.append((ticket_id, username)),
+        lambda ticket_id, username, user_id=None: added.append(
+            (ticket_id, username)
+        ),
     )
     monkeypatch.setattr(
         client,
@@ -343,12 +345,14 @@ def test_create_ticket_sends_resolved_event_user_in_ticket_payload(monkeypatch):
     monkeypatch.setattr(
         client,
         "_add_user_requester",
-        lambda ticket_id, username: added.append((ticket_id, username)),
+        lambda ticket_id, username, user_id=None: added.append(
+            (ticket_id, username, user_id)
+        ),
     )
 
     assert client.create_ticket_for_event(event) == 42
     assert posted_payloads[0]["_users_id_requester"] == 123
-    assert added == []
+    assert added == [(42, "alice", 123)]
 
 
 def test_glpi_v2_urls():

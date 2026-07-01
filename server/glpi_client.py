@@ -62,9 +62,14 @@ class GLPIClient:
 
         data = response.json()
         ticket_id = self._extract_created_id(data)
-        if requester_user and requester_user_id is None and ticket_id is not None:
-            self._try_add_user_requester(ticket_id, requester_user, event.event_id)
-        elif requester_user and requester_user_id is None:
+        # GLPI v2 API (api.php/v2.2) ignores _users_id_requester in the ticket
+        # creation payload, so the requester must always be added via the
+        # TeamMember endpoint after the ticket is created.
+        if requester_user and ticket_id is not None:
+            self._try_add_user_requester(
+                ticket_id, requester_user, event.event_id, user_id=requester_user_id
+            )
+        elif requester_user:
             logger.warning(
                 "GLPI ticket created for event %s but no ticket id was returned; "
                 "user requester '%s' could not be added",
@@ -138,10 +143,10 @@ class GLPIClient:
             )
 
     def _try_add_user_requester(
-        self, ticket_id: int, username: str, event_id: str
+        self, ticket_id: int, username: str, event_id: str, user_id: int | None = None
     ) -> None:
         try:
-            self._add_user_requester(ticket_id, username)
+            self._add_user_requester(ticket_id, username, user_id)
         except Exception as exc:
             logger.error(
                 "GLPI requester assignment failed for event %s ticket %s user %s: %s",
@@ -157,7 +162,19 @@ class GLPIClient:
         )
         self._add_named_requester(ticket_id, requester_type, company)
 
-    def _add_user_requester(self, ticket_id: int, username: str) -> None:
+    def _add_user_requester(
+        self, ticket_id: int, username: str, user_id: int | None = None
+    ) -> None:
+        if user_id is not None:
+            payload = {"type": "User", "id": user_id, "role": "requester"}
+            response = self._post_team_member_requester(ticket_id, payload)
+            if response.status_code >= 400:
+                raise RuntimeError(
+                    "requester id assignment failed for ticket "
+                    f"{ticket_id} user {user_id}: "
+                    f"{self._response_error_detail(response)}"
+                )
+            return
         self._add_named_requester(ticket_id, "User", username)
 
     def _add_named_requester(
