@@ -62,8 +62,12 @@ def test_build_ticket_payload_from_event():
     assert payload["priority"] == 4
     assert payload["entities_id"] == 1
     assert payload["itilcategories_id"] == 2
-    assert "11111111-1111-4111-8111-111111111111" in payload["content"]
-    assert "/tmp/suspicious.sh" in payload["content"]
+    assert "content" not in payload
+
+    content = client._build_ticket_content(event)
+
+    assert "11111111-1111-4111-8111-111111111111" in content
+    assert "/tmp/suspicious.sh" in content
 
 
 def test_create_ticket_adds_company_as_requester_actor(monkeypatch):
@@ -101,6 +105,8 @@ def test_create_ticket_adds_company_as_requester_actor(monkeypatch):
         post_calls.append((url, json))
         if url.endswith("/Assistance/Ticket"):
             return FakeResponse(status_code=201, data={"id": 123})
+        if url.endswith("/Assistance/Ticket/123/Timeline/Followup"):
+            return FakeResponse(status_code=201, data={"id": 124})
         if url.endswith("/Assistance/Ticket/123/TeamMember"):
             return FakeResponse(status_code=201, data={"id": 456})
         raise AssertionError(f"unexpected POST {url}")
@@ -117,12 +123,16 @@ def test_create_ticket_adds_company_as_requester_actor(monkeypatch):
 
     assert ticket_id == 123
     assert "team" not in post_calls[0][1]
-    assert post_calls[1][1] == {"type": "Group", "id": 42, "role": "requester"}
+    assert "content" not in post_calls[0][1]
+    assert post_calls[1][0].endswith("/Assistance/Ticket/123/Timeline/Followup")
+    assert "11111111-1111-4111-8111-111111111111" in post_calls[1][1]["content"]
+    assert post_calls[2][1] == {"type": "Group", "id": 42, "role": "requester"}
 
     payload = client._build_ticket_payload(event)
+    content = client._build_ticket_content(event)
 
     assert "team" not in payload
-    assert '"company": "EntrepriseA"' in unescape(payload["content"])
+    assert '"company": "EntrepriseA"' in unescape(content)
 
 
 def test_create_ticket_adds_company_requester_by_name_when_lookup_misses(
@@ -166,6 +176,8 @@ def test_create_ticket_adds_company_requester_by_name_when_lookup_misses(
         post_calls.append((url, json))
         if url.endswith("/Assistance/Ticket"):
             return FakeResponse(status_code=201, data={"id": "123"})
+        if url.endswith("/Assistance/Ticket/123/Timeline/Followup"):
+            return FakeResponse(status_code=201, data={"id": 124})
         if url.endswith("/Assistance/Ticket/123/TeamMember"):
             return FakeResponse(status_code=201, data={"id": 456})
         raise AssertionError(f"unexpected POST {url}")
@@ -182,7 +194,7 @@ def test_create_ticket_adds_company_requester_by_name_when_lookup_misses(
     ticket_id = client.create_ticket_for_event(event)
 
     assert ticket_id == 123
-    assert post_calls[1][1] == {"type": "Group", "name": "test", "role": "requester"}
+    assert post_calls[2][1] == {"type": "Group", "name": "test", "role": "requester"}
 
 
 def test_build_ticket_payload_prefers_event_user_over_configured_requester():
@@ -215,10 +227,11 @@ def test_build_ticket_payload_prefers_event_user_over_configured_requester():
     )
 
     payload = client._build_ticket_payload(event)
+    content = client._build_ticket_content(event)
 
     assert "_users_id_requester" not in payload
-    assert '"user": "alice"' in unescape(payload["content"])
-    assert '"company": "GLPI-Entity"' in unescape(payload["content"])
+    assert '"user": "alice"' in unescape(content)
+    assert '"company": "GLPI-Entity"' in unescape(content)
 
 
 def test_build_ticket_payload_sets_resolved_event_user_as_requester():
@@ -251,9 +264,10 @@ def test_build_ticket_payload_sets_resolved_event_user_as_requester():
     )
 
     payload = client._build_ticket_payload(event, requester_user_id=123)
+    content = client._build_ticket_content(event)
 
     assert payload["_users_id_requester"] == 123
-    assert '"user": "alice"' in unescape(payload["content"])
+    assert '"user": "alice"' in unescape(content)
 
 
 def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
@@ -287,6 +301,11 @@ def test_create_ticket_adds_event_user_as_glpi_user_requester(monkeypatch):
     monkeypatch.setattr(client, "_resolve_requester_actor_id", lambda *_: None)
     monkeypatch.setattr(
         client, "_post_ticket", lambda payload: FakeResponse(data={"id": 42})
+    )
+    monkeypatch.setattr(
+        client,
+        "_post_ticket_followup",
+        lambda ticket_id, content: FakeResponse(status_code=201, data={"id": 43}),
     )
     monkeypatch.setattr(
         client,
@@ -342,6 +361,11 @@ def test_create_ticket_sends_resolved_event_user_in_ticket_payload(monkeypatch):
     )
     monkeypatch.setattr(
         client,
+        "_post_ticket_followup",
+        lambda ticket_id, content: FakeResponse(status_code=201, data={"id": 43}),
+    )
+    monkeypatch.setattr(
+        client,
         "_add_user_requester",
         lambda ticket_id, username, user_id=None: added.append(
             (ticket_id, username, user_id)
@@ -369,6 +393,10 @@ def test_glpi_v2_urls():
     assert (
         client._api_url("Assistance/Ticket")
         == "https://glpi.lockbits.pro/api.php/v2.2/Assistance/Ticket"
+    )
+    assert (
+        client._api_url("Assistance/Ticket/42/Timeline/Followup")
+        == "https://glpi.lockbits.pro/api.php/v2.2/Assistance/Ticket/42/Timeline/Followup"
     )
 
 

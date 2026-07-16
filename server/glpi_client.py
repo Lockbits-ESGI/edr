@@ -62,30 +62,27 @@ class GLPIClient:
 
         data = response.json()
         ticket_id = self._extract_created_id(data)
+        if ticket_id is None:
+            raise RuntimeError(
+                "GLPI ticket was created but no ticket id was returned; "
+                "the EDR alert content could not be added"
+            )
+
+        followup_response = self._post_ticket_followup(
+            ticket_id, self._build_ticket_content(event)
+        )
+        followup_response.raise_for_status()
+
         # GLPI v2 API (api.php/v2.2) ignores _users_id_requester in the ticket
         # creation payload, so the requester must always be added via the
         # TeamMember endpoint after the ticket is created.
-        if requester_user and ticket_id is not None:
+        if requester_user:
             self._try_add_user_requester(
                 ticket_id, requester_user, event.event_id, user_id=requester_user_id
             )
-        elif requester_user:
-            logger.warning(
-                "GLPI ticket created for event %s but no ticket id was returned; "
-                "user requester '%s' could not be added",
-                event.event_id,
-                requester_user,
-            )
 
-        if company and ticket_id is not None:
+        if company:
             self._try_add_company_requester(ticket_id, company, event.event_id)
-        elif company:
-            logger.warning(
-                "GLPI ticket created for event %s but no ticket id was returned; "
-                "company requester '%s' could not be added",
-                event.event_id,
-                company,
-            )
 
         logger.info(
             "GLPI ticket created for event %s: %s",
@@ -127,6 +124,47 @@ class GLPIClient:
 
         if last_response is None:
             raise RuntimeError("No GLPI ticket endpoint was attempted")
+        return last_response
+
+    def _post_ticket_followup(self, ticket_id: int, content: str) -> requests.Response:
+        candidate_requests = (
+            (
+                f"Assistance/Ticket/{ticket_id}/Timeline/Followup",
+                {"content": content},
+            ),
+            (f"Ticket/{ticket_id}/Timeline/Followup", {"content": content}),
+            (
+                "ITILFollowup",
+                {"itemtype": "Ticket", "items_id": ticket_id, "content": content},
+            ),
+        )
+        fallback_statuses = {400, 404, 405, 422}
+        last_response: requests.Response | None = None
+        post_headers = {**self._bearer_headers(), "Content-Type": "application/json"}
+
+        for path, payload in candidate_requests:
+            response = requests.post(
+                self._api_url(path),
+                headers=post_headers,
+                json=payload,
+                timeout=self.config.timeout_seconds,
+            )
+            if response.status_code not in fallback_statuses:
+                return response
+            last_response = response
+
+            legacy_shape_response = requests.post(
+                self._api_url(path),
+                headers=post_headers,
+                json={"input": payload},
+                timeout=self.config.timeout_seconds,
+            )
+            if legacy_shape_response.status_code not in fallback_statuses:
+                return legacy_shape_response
+            last_response = legacy_shape_response
+
+        if last_response is None:
+            raise RuntimeError("No GLPI ticket followup endpoint was attempted")
         return last_response
 
     def _try_add_company_requester(
@@ -485,15 +523,41 @@ class GLPIClient:
     def _build_ticket_payload(
         self, event: MiniEDREvent, requester_user_id: int | None = None
     ) -> dict[str, Any]:
+        requester_user = self._event_requester_user(event)
+        name = (
+            f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
+        )
+
+        ticket: dict[str, Any] = {
+            "name": name,
+            "type": 1,
+            "urgency": self._severity_to_glpi_level(event.severity),
+            "impact": self._severity_to_glpi_level(event.severity),
+            "priority": self._severity_to_glpi_level(event.severity),
+        }
+        if self.config.ticket_entity_id is not None:
+            ticket["entities_id"] = self.config.ticket_entity_id
+        if self.config.ticket_category_id is not None:
+            ticket["itilcategories_id"] = self.config.ticket_category_id
+        requester_id = requester_user_id
+        if (
+            requester_id is None
+            and requester_user is None
+            and event.glpi_requester_email
+        ):
+            requester_id = self._resolve_requester_by_email(event.glpi_requester_email)
+        if requester_user is None and requester_id is None:
+            requester_id = self.config.requester_id
+        if requester_id is not None:
+            ticket["_users_id_requester"] = requester_id
+        return ticket
+
+    def _build_ticket_content(self, event: MiniEDREvent) -> str:
         payload = event.payload if isinstance(event.payload, dict) else {}
         event_action = payload.get("event_action")
         filepath = payload.get("filepath")
         company = extract_company_from_tags(event.tags)
         requester_user = self._event_requester_user(event)
-
-        name = (
-            f"[MiniEDR] {event.severity.upper()} {event.event_type} on {event.hostname}"
-        )
 
         summary_parts = [
             f"<h2>MiniEDR Security Alert — {event.severity.upper()}</h2>",
@@ -534,32 +598,7 @@ class GLPIClient:
         json_block = (
             f"<pre>{escape(json.dumps(detail, indent=2, sort_keys=True))}</pre>"
         )
-        content_html = "<br/>".join(summary_parts) + "<br/><br/><hr/>" + json_block
-
-        ticket: dict[str, Any] = {
-            "name": name,
-            "content": content_html,
-            "type": 1,
-            "urgency": self._severity_to_glpi_level(event.severity),
-            "impact": self._severity_to_glpi_level(event.severity),
-            "priority": self._severity_to_glpi_level(event.severity),
-        }
-        if self.config.ticket_entity_id is not None:
-            ticket["entities_id"] = self.config.ticket_entity_id
-        if self.config.ticket_category_id is not None:
-            ticket["itilcategories_id"] = self.config.ticket_category_id
-        requester_id = requester_user_id
-        if (
-            requester_id is None
-            and requester_user is None
-            and event.glpi_requester_email
-        ):
-            requester_id = self._resolve_requester_by_email(event.glpi_requester_email)
-        if requester_user is None and requester_id is None:
-            requester_id = self.config.requester_id
-        if requester_id is not None:
-            ticket["_users_id_requester"] = requester_id
-        return ticket
+        return "<br/>".join(summary_parts) + "<br/><br/><hr/>" + json_block
 
     @staticmethod
     def _severity_to_glpi_level(severity: str) -> int:
